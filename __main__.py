@@ -1,52 +1,50 @@
 import datetime
+import multiprocessing as mp
 
 import numpy as np
 import pandas as pd
 
-from load_data import get_input_data
-from geo_preprocessing import get_gdfs
-from get_traceB_input import get_traceB_input
-from get_eventG_input import get_eventG_input
-from run_traceB_sim import run_traceB_sim
-from run_eventG_sim import run_eventG_sim
+from Loading.load_data import get_input_data
+from Loading.load_data import read_sim_input_data
+
+from SingleRun.get_traceB_input import get_traceB_input
+from SingleRun.get_eventG_input import get_eventG_input
+from SingleRun.run_traceB_sim import run_traceB_sim
+from SingleRun.run_eventG_sim import run_eventG_sim
+
 from SimulationOutput.EFFCS_SimOutput import EFFCS_SimOutput
 
 """
-Init general conf and data structure
+Read input data and create input pickles
 """
 
-city = "Milano"
-bin_side_length = 500
-
-sim_general_conf = {
-
-    "city": city,
-    "bin_side_length": bin_side_length,
-    "requests_rate_factor": 1,
-    "n_cars": 400,
-    "model_start" : datetime.datetime(2017, 9, 1),
-    "model_end" : datetime.datetime(2017, 10, 1),
-    "sim_start" : datetime.datetime(2017, 10, 1),
-    "sim_end" : datetime.datetime(2017, 10, 8)
-}
-
-#months = [9, 10]
 #bookings,\
 #parkings,\
 #grid,\
 #bookings_origins_gdf,\
 #bookings_destinations_gdf,\
-#parkings_gdf = get_input_data(city, months, bin_side_length)
-#bookings.to_pickle("./Data/" + city + "_bookings.pickle")
-#grid.to_pickle("./Data/" + city + "_grid.pickle")
+#parkings_gdf = get_input_data\
+#    ("Torino", [9, 10], 500)
 
-bookings = pd.read_pickle("./Data/" + city + "_bookings.pickle")
-grid = pd.read_pickle("./Data/" + city + "_grid.pickle")
+"""
+Init general conf and data structure
+"""
 
-#fig, ax = plt.subplots(1, 1)
-#grid.plot(color='white', edgecolor='black', ax=ax)
-#grid.geometry.iloc[2500:2502].plot(ax=ax)
+sim_general_conf = {
 
+    "city": "Torino",
+    "bin_side_length": 500,
+    "requests_rate_factor": 1,
+    "n_cars": 400,
+    "model_start" : datetime.datetime(2017, 9, 1),
+    "model_end" : datetime.datetime(2017, 10, 1),
+    "sim_start" : datetime.datetime(2017, 10, 1),
+    "sim_end" : datetime.datetime(2017, 11, 1)
+}
+
+bookings, grid = read_sim_input_data\
+    (sim_general_conf["city"])
+    
 sim_scenario_conf = {
 
     "time_estimation": True,
@@ -76,13 +74,17 @@ simInput_eventG = get_eventG_input\
      grid,
      bookings)
 
-sim_eventG = run_eventG_sim\
-    (simInput = simInput_eventG)        
+#sim_eventG = run_eventG_sim\
+#    (simInput = simInput_eventG)
+    
+with mp.Pool(2) as pool:
+    a = pool.map(run_eventG_sim, 
+             [simInput_eventG, simInput_eventG])
 
-simOutput_eventG = EFFCS_SimOutput(sim_eventG)
-print (simOutput_eventG.sim_stats)
-print (simOutput_eventG.sim_stats.loc["n_no_close_cars"])
-print (simOutput_eventG.sim_stats.loc["n_deaths"])
+#simOutput_eventG = EFFCS_SimOutput(sim_eventG)
+#print (simOutput_eventG.sim_stats)
+#print (simOutput_eventG.sim_stats.loc["n_no_close_cars"])
+#print (simOutput_eventG.sim_stats.loc["n_deaths"])
 
 """
 Only hub, no users contribution, no time estimation

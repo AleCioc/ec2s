@@ -93,10 +93,10 @@ class EFFCS_SimInput ():
 
 #        self.od_distances = self.grid.centroid.apply\
 #            (lambda x: self.grid.centroid.distance(x))
-#        self.od_distances.to_pickle("./Data/" + self.city + "od_distances.pickle")
+#        self.od_distances.to_pickle("./Data/" + self.city + "/od_distances.pickle")
 
         self.od_distances = pd.read_pickle\
-            ("./Data/" + self.city + "_od_distances.pickle")
+            ("./Data/" + self.city + "/od_distances.pickle")
 
         self.neighbors = self.od_distances\
             [self.od_distances < 1000].apply\

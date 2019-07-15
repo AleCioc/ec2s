@@ -13,10 +13,12 @@ class Loader ():
         self.parkings = pd.DataFrame()
         for month in self.months:
             month_bookings = pd.read_excel\
-                ("./Data/" + self.city + "_" + str(month) + "-2017.xlsx",
+                ("./Data/" + self.city + "/"\
+                 + str(month) + "-2017.xlsx",
                  "bookings")
             month_parkings = pd.read_excel\
-                ("./Data/" + self.city + "_" + str(month) + "-2017.xlsx",
+                ("./Data/" + self.city + "/"\
+                 + str(month) + "-2017.xlsx",
                  "parkings")
             self.bookings = pd.concat\
                 ([self.bookings, month_bookings], 
