@@ -15,7 +15,7 @@ from SimulationOutput.EFFCS_SimOutput import EFFCS_SimOutput
 Init general conf and data structure
 """
 
-city = "Torino"
+city = "Milano"
 bin_side_length = 500
 
 sim_general_conf = {
@@ -30,21 +30,22 @@ sim_general_conf = {
     "sim_end" : datetime.datetime(2017, 10, 8)
 }
 
-#months = [9]
-
+#months = [9, 10]
 #bookings,\
 #parkings,\
 #grid,\
 #bookings_origins_gdf,\
 #bookings_destinations_gdf,\
 #parkings_gdf = get_input_data(city, months, bin_side_length)
+#bookings.to_pickle("./Data/" + city + "_bookings.pickle")
+#grid.to_pickle("./Data/" + city + "_grid.pickle")
 
 bookings = pd.read_pickle("./Data/" + city + "_bookings.pickle")
 grid = pd.read_pickle("./Data/" + city + "_grid.pickle")
 
 #fig, ax = plt.subplots(1, 1)
 #grid.plot(color='white', edgecolor='black', ax=ax)
-#grid.geometry.iloc[300:302].plot(ax=ax)
+#grid.geometry.iloc[2500:2502].plot(ax=ax)
 
 sim_scenario_conf = {
 
@@ -52,16 +53,16 @@ sim_scenario_conf = {
     "queuing": True,
     "beta": 100,
 
-    "hub": True,
+    "hub": False,
     "hub_zone_policy": "default",
-    "hub_zone": 300,
+    "hub_zone": 2501,
     "hub_n_charging_poles": 50,
     "relocation": False,
     "finite_workers": False,
     
-    "distributed_cps": False,
+    "distributed_cps": True,
     "cps_placement_policy": "default",
-    "n_charging_poles": 50,
+    "n_charging_poles": 200,
     "cps_zones_percentage": 0.1,
     
     "user_contribution": False,
@@ -80,8 +81,8 @@ sim_eventG = run_eventG_sim\
 
 simOutput_eventG = EFFCS_SimOutput(sim_eventG)
 print (simOutput_eventG.sim_stats)
-#print (simOutput_eventG.sim_stats.loc["n_no_close_cars"])
-#print (simOutput_eventG.sim_stats.loc["n_deaths"])
+print (simOutput_eventG.sim_stats.loc["n_no_close_cars"])
+print (simOutput_eventG.sim_stats.loc["n_deaths"])
 
 """
 Only hub, no users contribution, no time estimation

@@ -108,9 +108,6 @@ class EventG_EFFCS_Sim (EFFCS_Sim):
                 (np.random.exponential\
                  (1/1/self.current_arrival_rate))
             
-#            print ((self.current_datetime\
-#            + datetime.timedelta(seconds = timeout_sec))\
-#                .hour, self.current_hour)
             yield self.env.timeout(timeout_sec)
             self.create_booking_request(timeout_sec)
             
@@ -120,7 +117,7 @@ class EventG_EFFCS_Sim (EFFCS_Sim):
 #                    yield self.env.timeout(timeout_sec)
 #                    self.create_booking_request(timeout_sec)
 #            else:
-#                yield self.env.timeout(60)
+#                yield self.env.timeout(timeout_sec)
 #                self.update_time_info()
 #                self.update_data_structures()
     
