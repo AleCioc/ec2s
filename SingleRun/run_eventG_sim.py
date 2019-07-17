@@ -19,6 +19,10 @@ def run_eventG_sim (simInput):
     t1 = datetime.datetime.now()
     print (t1 - t0)
 
-    simOutput_eventG = EFFCS_SimOutput(sim_eventG)
+    return sim_eventG
+
+def get_eventG_sim_stats (simInput):
     
-    return simOutput_eventG
+    sim_eventG = run_eventG_sim(simInput)
+    simOutput_eventG = EFFCS_SimOutput(sim_eventG)
+    return simOutput_eventG.sim_stats

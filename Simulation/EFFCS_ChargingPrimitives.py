@@ -123,7 +123,7 @@ class EFFCS_ChargingPrimitives ():
             (booking_request, 
              self.cars_soc_dict, 
              car, 
-             25,
+             self.simInput.sim_scenario_conf["alpha"],
              self.simInput.sim_scenario_conf["beta"])
 
     def check_user_charge (self, booking_request, car):
@@ -133,7 +133,7 @@ class EFFCS_ChargingPrimitives ():
              self.cars_soc_dict, 
              car, 
              self.charging_poles_dict,
-             100,
+             self.simInput.sim_scenario_conf["alpha"],
              self.simInput.sim_scenario_conf["willingness"])
     
     def get_timeout (self, origin_id, destination_id):

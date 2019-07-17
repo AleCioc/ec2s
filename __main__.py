@@ -11,6 +11,7 @@ from SingleRun.get_traceB_input import get_traceB_input
 from SingleRun.get_eventG_input import get_eventG_input
 from SingleRun.run_traceB_sim import run_traceB_sim
 from SingleRun.run_eventG_sim import run_eventG_sim
+from SingleRun.run_eventG_sim import get_eventG_sim_stats
 
 from SimulationOutput.EFFCS_SimOutput import EFFCS_SimOutput
 
@@ -35,30 +36,30 @@ sim_general_conf = {
     "city": "Torino",
     "bin_side_length": 500,
     "requests_rate_factor": 1,
-    "n_cars": 400,
     "model_start" : datetime.datetime(2017, 9, 1),
     "model_end" : datetime.datetime(2017, 10, 1),
     "sim_start" : datetime.datetime(2017, 10, 1),
     "sim_end" : datetime.datetime(2017, 11, 1)
-}
 
-bookings, grid = read_sim_input_data\
-    (sim_general_conf["city"])
+}
     
 sim_scenario_conf = {
 
-    "time_estimation": True,
+    "n_cars": 400,
+
+    "time_estimation": False,
     "queuing": True,
+    "alpha": 25,
     "beta": 100,
 
-    "hub": False,
+    "hub": True,
     "hub_zone_policy": "default",
     "hub_zone": 2501,
     "hub_n_charging_poles": 50,
     "relocation": False,
     "finite_workers": False,
     
-    "distributed_cps": True,
+    "distributed_cps": False,
     "cps_placement_policy": "default",
     "n_charging_poles": 200,
     "cps_zones_percentage": 0.1,
@@ -66,7 +67,11 @@ sim_scenario_conf = {
     "user_contribution": False,
     "willingness": 0.99,    
     
-    }
+}
+
+"""
+Single Run
+"""
 
 simInput_eventG = get_eventG_input\
     (sim_general_conf,
@@ -74,17 +79,42 @@ simInput_eventG = get_eventG_input\
      grid,
      bookings)
 
-#sim_eventG = run_eventG_sim\
-#    (simInput = simInput_eventG)
-    
-with mp.Pool(2) as pool:
-    a = pool.map(run_eventG_sim, 
-             [simInput_eventG, simInput_eventG])
+sim_eventG = run_eventG_sim\
+    (simInput = simInput_eventG)
 
-#simOutput_eventG = EFFCS_SimOutput(sim_eventG)
+simOutput_eventG = EFFCS_SimOutput(sim_eventG)
 #print (simOutput_eventG.sim_stats)
-#print (simOutput_eventG.sim_stats.loc["n_no_close_cars"])
-#print (simOutput_eventG.sim_stats.loc["n_deaths"])
+
+"""
+Multiple Runs with multiprocessing
+"""
+
+#with mp.Pool(4) as pool:
+#
+#    bookings, grid = read_sim_input_data\
+#        (sim_general_conf["city"])
+#
+#    sim_inputs = []
+#    for n_cars in np.arange(200, 501, 50):
+#        for beta in np.arange(100, 101, 5):
+#            sim_scenario_conf["hub_n_charging_poles"]\
+#                = n_cars
+#            sim_scenario_conf["n_cars"]\
+#                = n_cars
+#            sim_scenario_conf["beta"]\
+#                = beta            
+#            simInput_eventG = get_eventG_input\
+#                (sim_general_conf,
+#                 sim_scenario_conf, 
+#                 grid,
+#                 bookings)
+#            sim_inputs += [simInput_eventG]
+#
+#    pool_stats_df = pool.map\
+#        (get_eventG_sim_stats, sim_inputs)
+#
+#sim_stats_df = pd.concat\
+#    ([s for s in pool_stats_df], axis=1, ignore_index=True).T
 
 """
 Only hub, no users contribution, no time estimation

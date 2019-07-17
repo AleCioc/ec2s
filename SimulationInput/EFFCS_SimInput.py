@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.neighbors import KernelDensity
+from utils.car_utils import get_soc_delta
 
 class EFFCS_SimInput ():
     
@@ -20,10 +21,13 @@ class EFFCS_SimInput ():
             sim_general_conf["city"]
 
         self.n_cars = \
-            sim_general_conf["n_cars"]
+            sim_scenario_conf["n_cars"]
         
         self.grid = grid
         self.bookings = bookings.copy()
+        
+        self.n_cars_original = \
+            len(self.bookings.plate.unique())
 
         self.hub_n_charging_poles = \
             sim_scenario_conf["hub_n_charging_poles"]
@@ -97,6 +101,9 @@ class EFFCS_SimInput ():
 
         self.od_distances = pd.read_pickle\
             ("./Data/" + self.city + "/od_distances.pickle")
+        self.max_dist = self.od_distances.max().max()
+        self.sim_general_conf["alpha"]\
+            = abs(get_soc_delta(self.max_dist/1000))
 
         self.neighbors = self.od_distances\
             [self.od_distances < 1000].apply\
