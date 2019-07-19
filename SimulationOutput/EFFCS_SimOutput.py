@@ -80,6 +80,20 @@ class EFFCS_SimOutput ():
         self.sim_stats.loc["n_deaths"] = \
             sim.n_deaths
 
+        self.sim_stats["n_booking_reqs"] = \
+            self.sim_stats["n_same_zone_trips"]\
+            + self.sim_stats["n_not_same_zone_trips"]\
+            + self.sim_stats["n_no_close_cars"]\
+            + self.sim_stats["n_deaths"]
+        
+        self.sim_stats["n_bookings"] = \
+            self.sim_stats["n_same_zone_trips"]\
+            + self.sim_stats["n_not_same_zone_trips"]
+        
+        self.sim_stats["n_unsatisfied"] = \
+            self.sim_stats["n_no_close_cars"]\
+            + self.sim_stats["n_deaths"]
+
         self.sim_stats.loc["n_charges"] = \
             len(self.sim_charges)
 

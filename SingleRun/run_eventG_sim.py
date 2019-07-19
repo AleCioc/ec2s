@@ -21,6 +21,11 @@ def run_eventG_sim (simInput):
 
     return sim_eventG
 
+def get_eventG_sim_output (simInput):
+    
+    sim_eventG = run_eventG_sim(simInput)
+    return EFFCS_SimOutput(sim_eventG)
+
 def get_eventG_sim_stats (simInput):
     
     sim_eventG = run_eventG_sim(simInput)
