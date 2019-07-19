@@ -2,3 +2,6 @@
 Data/**
 Results/**
 Figures/**
+
+**/*~
+*.ipynb
