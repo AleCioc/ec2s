@@ -38,7 +38,7 @@ class EFFCS_SimOutput ():
             (lambda d: d.hour)
 
         self.sim_users_charges_bookings = pd.DataFrame\
-            (sim.chargingStrategy.list_users_charging,
+            (sim.chargingStrategy.list_users_charging_bookings,
              columns = self.sim_system_charges_bookings.columns)
 
         self.sim_users_charges_bookings["end_hour"] = \
@@ -56,6 +56,11 @@ class EFFCS_SimOutput ():
 
         self.sim_booking_requests["n_cars_booked"] = \
             pd.Series(sim.list_n_cars_booked)
+
+        self.sim_charge_deaths = \
+            pd.DataFrame(sim.chargingStrategy.sim_unfeasible_charge_bookings)
+
+        # Sim Stats creation
 
         self.sim_stats = \
             pd.Series(name="sim_stats")
@@ -97,6 +102,16 @@ class EFFCS_SimOutput ():
         self.sim_stats.loc["n_charges"] = \
             len(self.sim_charges)
 
+        self.sim_stats.loc["n_charging_requests_system"] = \
+            len(self.sim_system_charges_bookings)
+
+        self.sim_stats.loc["n_charges_system"] = \
+            self.sim_charges.groupby("operator")\
+            	.date.count().loc["system"]
+
+        self.sim_stats.loc["n_charge_deaths"] = \
+            len(self.sim_charge_deaths)
+
         self.sim_stats.loc["soc_avg"] = \
             self.sim_bookings.start_soc.mean()
 
@@ -137,8 +152,34 @@ class EFFCS_SimOutput ():
                 .date.count().loc["users"]\
                 / len(self.sim_charges)
         else:
-            self.sim_stats.loc["percentage_charges_users"] = 0            
+            self.sim_stats.loc["percentage_charges_users"] = 0
 
+        if len(self.sim_users_charges_bookings):
+            self.sim_stats.loc["percentage_energy_system"] = \
+                self.sim_charges.groupby("operator")\
+                .soc_delta_kwh.sum().loc["system"]\
+                / self.sim_stats["tot_energy"]
+            self.sim_stats.loc["percentage_energy_users"] = \
+                self.sim_charges.groupby("operator")\
+                .soc_delta_kwh.sum().loc["users"]\
+                / self.sim_stats["tot_energy"]
+        else:
+            self.sim_stats.loc["percentage_energy_system"] = 1
+            self.sim_stats.loc["percentage_energy_users"] = 0   
+
+        if len(self.sim_users_charges_bookings):
+            self.sim_stats.loc["percentage_duration_system"] = \
+                self.sim_charges.groupby("operator")\
+                .duration.sum().loc["system"]\
+                / self.sim_charges.duration.sum()
+            self.sim_stats.loc["percentage_duration_users"] = \
+                self.sim_charges.groupby("operator")\
+                .duration.sum().loc["users"]\
+                / self.sim_charges.duration.sum()
+        else:
+            self.sim_stats.loc["percentage_duration_system"] = 1
+            self.sim_stats.loc["percentage_duration_users"] = 0   
+            
         self.sim_stats.loc["charging_energy_event_avg"] = \
             self.sim_charges.soc_delta_kwh.mean()
 
@@ -148,52 +189,66 @@ class EFFCS_SimOutput ():
         self.sim_stats.loc["charging_energy_event_med"] = \
             self.sim_charges.soc_delta_kwh.median()
 
-        stat_names = ["n_charges", "charging_energy"]
-        group_cols = ["date", "day_hour"]
-        stat_ops = ["avg", "max", "med"]
+#        stat_names = ["n_charges", "charging_energy"]
+#        group_cols = ["date", "day_hour"]
+#        stat_ops = ["avg", "max", "med"]
+#
+#        for group_col in group_cols:
+#
+#            self.sim_stats.loc["n_charges_by_" + group_col + "_avg"] = \
+#                self.sim_charges.groupby(group_col).date.count().mean()
+#            self.sim_stats.loc["n_charges_by_" + group_col + "_max"] = \
+#                self.sim_charges.groupby(group_col).date.count().max()
+#            self.sim_stats.loc["n_charges_by_" + group_col + "_med"] = \
+#                self.sim_charges.groupby(group_col).date.count().median()
+#
+#        for group_col in group_cols:
+#
+#            self.sim_stats.loc["charging_energy_by_" + group_col + "_avg"] = \
+#                self.sim_charges.groupby(group_col).soc_delta_kwh.sum().mean()
+#            self.sim_stats.loc["charging_energy_by_" + group_col + "_max"] = \
+#                self.sim_charges.groupby(group_col).soc_delta_kwh.sum().max()
+#            self.sim_stats.loc["charging_energy_by_" + group_col + "_med"] = \
+#                self.sim_charges.groupby(group_col).soc_delta_kwh.sum().median()
+#
+#        stat_names = ["n_charges", "charging_energy"]
+#        resample_freqs = ["60Min", "1440Min", "10080Min"]
+#        stat_ops = ["avg", "max", "med"]
+#
+#        for freq_col in resample_freqs:
+#
+#            self.sim_stats.loc["n_charges_by_" + freq_col + "_avg"] = \
+#                self.sim_charges.set_index("start_time")\
+#                .resample(freq_col).date.count().mean()
+#            self.sim_stats.loc["n_charges_by_" + freq_col + "_max"] = \
+#                self.sim_charges.set_index("start_time")\
+#                .resample(freq_col).date.count().max()
+#            self.sim_stats.loc["n_charges_by_" + freq_col + "_med"] = \
+#                self.sim_charges.set_index("start_time")\
+#                .resample(freq_col).date.count().median()
+#
+#        for freq_col in resample_freqs:
+#
+#            self.sim_stats.loc["charging_energy_by_" + freq_col + "_avg"] = \
+#                self.sim_charges.set_index("start_time")\
+#                .resample(freq_col).soc_delta_kwh.sum().mean()
+#            self.sim_stats.loc["charging_energy_by_" + freq_col + "_max"] = \
+#                self.sim_charges.set_index("start_time")\
+#                .resample(freq_col).soc_delta_kwh.sum().max()
+#            self.sim_stats.loc["charging_energy_by_" + freq_col + "_med"] = \
+#                self.sim_charges.set_index("start_time")\
+#                .resample(freq_col).soc_delta_kwh.sum().median()
+                
+        self.sim_stats.loc["cum_relo_out_t"] = \
+            self.sim_charges.timeout_outward.sum() / 60 / 60
+            
+        self.sim_stats.loc["cum_relo_ret_t"] = \
+            self.sim_charges.timeout_return.sum() / 60 / 60
+            
+        self.sim_stats.loc["cum_relo_t"] = \
+            self.sim_stats.cum_relo_out_t + \
+            self.sim_stats.cum_relo_ret_t
+            
+        self.sim_stats.loc["cum_relo_khw"] = \
+            self.sim_charges.cr_soc_delta_kwh.sum()
 
-        for group_col in group_cols:
-
-            self.sim_stats.loc["n_charges_by_" + group_col + "_avg"] = \
-                self.sim_charges.groupby(group_col).date.count().mean()
-            self.sim_stats.loc["n_charges_by_" + group_col + "_max"] = \
-                self.sim_charges.groupby(group_col).date.count().max()
-            self.sim_stats.loc["n_charges_by_" + group_col + "_med"] = \
-                self.sim_charges.groupby(group_col).date.count().median()
-
-        for group_col in group_cols:
-
-            self.sim_stats.loc["charging_energy_by_" + group_col + "_avg"] = \
-                self.sim_charges.groupby(group_col).soc_delta_kwh.sum().mean()
-            self.sim_stats.loc["charging_energy_by_" + group_col + "_max"] = \
-                self.sim_charges.groupby(group_col).soc_delta_kwh.sum().max()
-            self.sim_stats.loc["charging_energy_by_" + group_col + "_med"] = \
-                self.sim_charges.groupby(group_col).soc_delta_kwh.sum().median()
-
-        stat_names = ["n_charges", "charging_energy"]
-        resample_freqs = ["60Min", "1440Min", "10080Min"]
-        stat_ops = ["avg", "max", "med"]
-
-        for freq_col in resample_freqs:
-
-            self.sim_stats.loc["n_charges_by_" + freq_col + "_avg"] = \
-                self.sim_charges.set_index("start_time")\
-                .resample(freq_col).date.count().mean()
-            self.sim_stats.loc["n_charges_by_" + freq_col + "_max"] = \
-                self.sim_charges.set_index("start_time")\
-                .resample(freq_col).date.count().max()
-            self.sim_stats.loc["n_charges_by_" + freq_col + "_med"] = \
-                self.sim_charges.set_index("start_time")\
-                .resample(freq_col).date.count().median()
-
-        for freq_col in resample_freqs:
-
-            self.sim_stats.loc["charging_energy_by_" + freq_col + "_avg"] = \
-                self.sim_charges.set_index("start_time")\
-                .resample(freq_col).soc_delta_kwh.sum().mean()
-            self.sim_stats.loc["charging_energy_by_" + freq_col + "_max"] = \
-                self.sim_charges.set_index("start_time")\
-                .resample(freq_col).soc_delta_kwh.sum().max()
-            self.sim_stats.loc["charging_energy_by_" + freq_col + "_med"] = \
-                self.sim_charges.set_index("start_time")\
-                .resample(freq_col).soc_delta_kwh.sum().median()

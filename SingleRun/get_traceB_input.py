@@ -2,18 +2,12 @@ import datetime
 
 from SimulationInput.EFFCS_SimInput import EFFCS_SimInput
 
-def get_traceB_input (sim_general_conf,
-                      sim_scenario_conf, 
-                      grid, 
-                      bookings):
+def get_traceB_input (conf_tuple):
 
     print ("Creating traceB simulation input ..")
     t0 = datetime.datetime.now()
     simInput = EFFCS_SimInput\
-         (sim_general_conf,
-          sim_scenario_conf,
-          grid=grid,
-          bookings=bookings)
+         (conf_tuple)
     simInput.get_input_bookings_filtered()
     simInput.get_neighbors_dicts()
     simInput.get_booking_requests_list()

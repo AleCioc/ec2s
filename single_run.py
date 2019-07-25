@@ -47,7 +47,7 @@ sim_general_conf = {
     
 sim_scenario_conf = {
 
-    "n_cars": 400,
+    "n_cars": 350,
 
     "time_estimation": False,
     "queuing": True,
@@ -56,17 +56,19 @@ sim_scenario_conf = {
 
     "hub": True,
     "hub_zone_policy": "default",
-    "hub_zone": 2501,
-    "hub_n_charging_poles": 50,
+    "hub_zone": 200,
+    "hub_n_charging_poles": 20,
+    
     "relocation": False,
     "finite_workers": False,
     
-    "distributed_cps": False,
+    "distributed_cps": True,
     "cps_placement_policy": "default",
-    "n_charging_poles": 200,
+    "n_charging_poles": 20,
     "cps_zones_percentage": 0.1,
     
-    "user_contribution": False,
+    "user_contribution": True,
+    "system_cps": False,
     "willingness": 0.99,    
     
 }
@@ -76,13 +78,23 @@ Single Run
 """
 
 simInput_eventG = get_eventG_input\
-    (sim_general_conf,
+    ((sim_general_conf,
      sim_scenario_conf, 
      grid,
-     bookings)
+     bookings))
 
 sim_eventG = run_eventG_sim\
     (simInput = simInput_eventG)
 
 simOutput_eventG = EFFCS_SimOutput(sim_eventG)
 #print (simOutput_eventG.sim_stats)
+sim_stats = simOutput_eventG.sim_stats
+
+#fig, ax = plt.subplots(1,1)
+#grid.plot(color="white", edgecolor="black", ax=ax)
+#grid.loc[simInput_eventG.valid_zones, "valid"] = True
+#grid.dropna(subset=["valid"]).plot\
+#    (color="lavender", edgecolor="blue", column="valid", ax=ax).plot()
+#grid.iloc[200:201].plot(ax=ax)
+#grid.iloc[350:351].plot(ax=ax)
+#grid.iloc[620:621].plot(ax=ax)

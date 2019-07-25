@@ -29,16 +29,22 @@ class EFFCS_Sim ():
 
         self.simInput = \
             simInput
+
         self.simInputCopy = \
             copy.deepcopy(simInput)
+
         self.available_cars_dict = \
             self.simInput.available_cars_dict
+
         self.neighbors_cars_dict = \
             self.simInput.neighbors_cars_dict
+
         self.n_charging_poles_by_zone = \
             self.simInput.n_charging_poles_by_zone
+
         self.cars_soc_dict = \
             self.simInput.cars_soc_dict
+
         self.cars_zones = \
             self.simInput.cars_zones
            
@@ -177,11 +183,12 @@ class EFFCS_Sim ():
                     (booking_request, max_soc_car_neighbors, max_neighbor))
                 self.n_not_same_zone_trips += 1
 
-        if not found_car_flag and not available_car_flag:
+        if not available_car_flag:
             self.n_no_close_cars += 1
             self.sim_unsatisfied_requests += [booking_request]
 
         if not found_car_flag and available_car_flag:
+#            print(booking_request)
             self.n_deaths += 1
             death = copy.deepcopy(booking_request)
             if available_car_flag_same_zone and available_car_flag_not_same_zone:

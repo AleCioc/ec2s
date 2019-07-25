@@ -2,6 +2,7 @@
 Data/**
 Results/**
 Figures/**
+Retrieval/**
 
 **/*~
 *.ipynb

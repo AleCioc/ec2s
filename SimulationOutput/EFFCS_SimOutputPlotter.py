@@ -41,9 +41,13 @@ sim_system_charges_bookings = \
 
 sim_users_charges_bookings = \
     simOutput_eventG.sim_users_charges_bookings
+
 sim_cars_events = pd.concat\
     ([sim_bookings, sim_charges], ignore_index=True, sort=False)\
     .sort_values("start_time")
+
+sim_charge_deaths = \
+    simOutput_eventG.sim_charge_deaths
 
 #plt.figure()
 #sim_charges.duration.apply\
@@ -76,21 +80,21 @@ sim_cars_events = pd.concat\
 #plt.show()
 #plt.close()
 #
-#plt.figure()
-#sim_system_charges_bookings.set_index\
-#    ("start_time").resample\
-#    ("60Min").destination_id.count().plot(label="system")
-#if len(sim_users_charges_bookings):
-#    sim_users_charges_bookings.set_index\
-#        ("start_time").resample\
-#        ("60Min").destination_id.count().plot(label="users")
-#plt.title("number of charging events sum by hour in time")
-#plt.legend()
-#plt.xlabel("t")
-#plt.ylabel("n charges")
-#plt.show()
-#plt.close()
-#
+plt.figure()
+sim_system_charges_bookings.set_index\
+    ("start_time").resample\
+    ("60Min").destination_id.count().plot(label="system")
+if len(sim_users_charges_bookings):
+    sim_users_charges_bookings.set_index\
+        ("start_time").resample\
+        ("60Min").destination_id.count().plot(label="users")
+plt.title("number of charging events sum by hour in time")
+plt.legend()
+plt.xlabel("t")
+plt.ylabel("n charges")
+plt.show()
+plt.close()
+
 #plt.figure()
 #sim_charges.sort_values\
 #    ("start_time").groupby\

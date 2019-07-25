@@ -6,34 +6,35 @@ from utils.car_utils import get_soc_delta
 class EFFCS_SimInput ():
     
     def __init__ (self,
-                  sim_general_conf,
-                  sim_scenario_conf, 
-                  grid,
-                  bookings):
+                  conf_tuple):
         
         self.sim_general_conf = \
-            sim_general_conf
-
+            conf_tuple[0]
+            
         self.sim_scenario_conf = \
-            sim_scenario_conf
+            conf_tuple[1]
+
+        self.grid = \
+            conf_tuple[2]
+
+        self.bookings = \
+            conf_tuple[3].copy()
 
         self.city = \
-            sim_general_conf["city"]
+            self.sim_general_conf["city"]
 
         self.n_cars = \
-            sim_scenario_conf["n_cars"]
+            self.sim_scenario_conf["n_cars"]
         
-        self.grid = grid
-        self.bookings = bookings.copy()
         
         self.n_cars_original = \
             len(self.bookings.plate.unique())
 
         self.hub_n_charging_poles = \
-            sim_scenario_conf["hub_n_charging_poles"]
+            self.sim_scenario_conf["hub_n_charging_poles"]
 
         self.n_charging_poles = \
-            sim_scenario_conf["n_charging_poles"]
+            self.sim_scenario_conf["n_charging_poles"]
 
     def get_input_bookings_filtered (self):
 
