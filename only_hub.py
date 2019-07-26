@@ -19,8 +19,12 @@ city = sys.argv[1]
 if not Path(os.path.join(os.getcwd(), "Results")).exists():
     os.mkdir(Path(os.path.join(os.getcwd(), "Results")))
     os.mkdir(Path(os.path.join(os.getcwd(), "Results", city)))
+    os.mkdir(Path(os.path.join(os.getcwd(), "Results", city, "only_hub")))    
 elif not Path(os.path.join(os.getcwd(), "Results", city)).exists():
     os.mkdir(Path(os.path.join(os.getcwd(), "Results", city)))
+    os.mkdir(Path(os.path.join(os.getcwd(), "Results", city, "only_hub")))    
+elif not Path(os.path.join(os.getcwd(), "Results", city, "only_hub")).exists():
+    os.mkdir(Path(os.path.join(os.getcwd(), "Results", city, "only_hub")))    
 
 """
 Init general conf and data structure
