@@ -75,7 +75,7 @@ sim_scenario_conf_grid = {
 Multiple Runs with multiprocessing
 """
 
-n_cores = 2
+n_cores = 30
 
 with mp.Pool(n_cores) as pool:
 
