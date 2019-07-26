@@ -1,35 +1,27 @@
 import datetime
+import os
+import sys
+import psutil
+from pathlib import Path
 import multiprocessing as mp
 
 import numpy as np
 import pandas as pd
 
-from Loading.load_data import get_input_data
 from Loading.load_data import read_sim_input_data
 
 from SimulationInput.EFFCS_SimConfGrid import EFFCS_SimConfGrid
 
-from SingleRun.get_traceB_input import get_traceB_input
-from SingleRun.run_traceB_sim import run_traceB_sim
-
 from SingleRun.get_eventG_input import get_eventG_input
-from SingleRun.run_eventG_sim import run_eventG_sim
-from SingleRun.run_eventG_sim import get_eventG_sim_output
 from SingleRun.run_eventG_sim import get_eventG_sim_stats
 
-from SimulationOutput.EFFCS_SimOutput import EFFCS_SimOutput
+city = sys.argv[1]
 
-"""
-Create input pickles
-"""
-
-#bookings,\
-#parkings,\
-#grid,\
-#bookings_origins_gdf,\
-#bookings_destinations_gdf,\
-#parkings_gdf = get_input_data\
-#    ("Torino", [9, 10], 500)
+if not Path(os.path.join(os.getcwd(), "Results")).exists():
+    os.mkdir(Path(os.path.join(os.getcwd(), "Results")))
+    os.mkdir(Path(os.path.join(os.getcwd(), "Results", city)))
+elif not Path(os.path.join(os.getcwd(), "Results", city)).exists():
+    os.mkdir(Path(os.path.join(os.getcwd(), "Results", city)))
 
 """
 Init general conf and data structure
@@ -37,7 +29,7 @@ Init general conf and data structure
 
 sim_general_conf = {
 
-    "city": "Torino",
+    "city": city,
     "bin_side_length": 500,
     "requests_rate_factor": 1,
     "model_start" : datetime.datetime(2017, 9, 1),
@@ -47,30 +39,34 @@ sim_general_conf = {
 
 }
     
+"""
+Only hub ideal
+"""
+
 sim_scenario_conf_grid = {
 
-    "n_cars": [350],
+    "n_cars": [250, 300, 350],
 
-    "time_estimation": [True],
-    "queuing": [True],
+    "time_estimation": [False],
+    "queuing": [True, False],
     "alpha": [25],
-    "beta": [40, 60, 80, 90, 100],
+    "beta": [60, 80, 100],
 
-    "hub": [False],
+    "hub": [True],
     "hub_zone_policy": ["default"],
-    "hub_zone": [350],
-    "hub_n_charging_poles": [10, 20],
+    "hub_zone": [0],
+    "hub_n_charging_poles": np.arange(20, 80, 3),
 
     "relocation": [True],
     "finite_workers": [False],
     
-    "distributed_cps": [True],
+    "distributed_cps": [False],
     "cps_placement_policy": ["default"],
     "n_charging_poles": [20],
     "cps_zones_percentage": [0.1],
     
-    "user_contribution": [True],
-    "system_cps": [True],
+    "user_contribution": [False],
+    "system_cps": [False],
     "willingness": [0.99],
     
 }
@@ -79,7 +75,8 @@ sim_scenario_conf_grid = {
 Multiple Runs with multiprocessing
 """
 
-n_cores = 10
+n_cores = 2
+
 with mp.Pool(n_cores) as pool:
 
     bookings, grid = read_sim_input_data\
@@ -103,11 +100,14 @@ with mp.Pool(n_cores) as pool:
 
         pool_stats_list += pool.map\
             (get_eventG_sim_stats, sim_inputs)
+            
+        print ("Available RAM [GB]: ",
+               pd.Series(dict(psutil.virtual_memory()._asdict()))\
+                   .loc["available"].apply(lambda x: x/10**9))
+
 
 sim_stats_df = pd.concat\
     ([sim_stats for sim_stats in pool_stats_list], 
      axis=1, ignore_index=True).T
 
-sim_stats_df.to_pickle("Results/Torino/only_cps/trial_tlcdocker.pickle")
-
-
+sim_stats_df.to_pickle("Results/" + city + "/only_hub/nocost.pickle")

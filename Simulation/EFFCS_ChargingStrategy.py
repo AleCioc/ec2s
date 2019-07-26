@@ -288,16 +288,30 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
         
         # Post-charging relocation
         
-        if self.simInput.sim_scenario_conf["hub"]\
-        and not self.simInput.sim_scenario_conf["time_estimation"]:
-            relocation_zone_id = booking_request["destination_id"]
-        else:
-            if charge_flag and not user_charge_flag:
+        if charge_flag and not user_charge_flag:
+
+            if not self.simInput.sim_scenario_conf["time_estimation"]:
+
+                if self.simInput.sim_scenario_conf["hub"]:
+                    relocation_zone_id = booking_request["destination_id"]
+
+                if self.simInput.sim_scenario_conf["distributed_cps"]:
+
+                    if not self.simInput.sim_scenario_conf["relocation"]:
+                        relocation_zone_id = charging_zone_id
+                        
+                    elif self.simInput.sim_scenario_conf["relocation"]:
+                        relocation_zone_id = booking_request["destination_id"]
+
+            else:
+
                 if not self.simInput.sim_scenario_conf["relocation"]:
                     relocation_zone_id = charging_zone_id
+                    
                 elif self.simInput.sim_scenario_conf["relocation"]:
                     relocation_zone_id = booking_request["destination_id"]
-            else:
-                relocation_zone_id = booking_request["destination_id"]            
+
+        else:
+            relocation_zone_id = booking_request["destination_id"]            
         
         return relocation_zone_id
