@@ -74,6 +74,69 @@ sim_scenario_conf_grid = {
     
 }
 
+n_cores = 30
+
+with mp.Pool(n_cores) as pool:
+
+    bookings, grid = read_sim_input_data\
+        (sim_general_conf["city"])
+                        
+    sim_conf_grid = EFFCS_SimConfGrid\
+        (sim_general_conf, sim_scenario_conf_grid)
+
+    pool_stats_list = []
+    for i in np.arange(0, len(sim_conf_grid.conf_list), n_cores):
+
+        conf_tuples = []
+        for sim_scenario_conf in sim_conf_grid.conf_list[i: i + n_cores]:
+            conf_tuples += [(sim_general_conf,
+                            sim_scenario_conf,
+                            grid,
+                            bookings)]
+
+        sim_inputs = pool.map\
+            (get_eventG_input, conf_tuples)
+
+        pool_stats_list += pool.map\
+            (get_eventG_sim_stats, sim_inputs)
+
+sim_stats_df = pd.concat\
+    ([sim_stats for sim_stats in pool_stats_list], 
+     axis=1, ignore_index=True).T
+sim_stats_df.to_pickle("Results/" + city + "/only_hub/nocost.pickle")
+
+"""
+Only hub cost considered
+"""
+
+sim_scenario_conf_grid = {
+
+    "n_cars": [350],
+
+    "time_estimation": [False],
+    "queuing": [True],
+    "alpha": [25],
+    "beta": [60, 80, 100],
+
+    "hub": [True],
+    "hub_zone_policy": ["default"],
+    "hub_zone": [200, 350, 620],
+    "hub_n_charging_poles": np.arange(20, 80, 5),
+
+    "relocation": [True],
+    "finite_workers": [False],
+    
+    "distributed_cps": [False],
+    "cps_placement_policy": ["default"],
+    "n_charging_poles": [20],
+    "cps_zones_percentage": [0.1],
+    
+    "user_contribution": [False],
+    "system_cps": [False],
+    "willingness": [0.99],
+    
+}
+
 """
 Multiple Runs with multiprocessing
 """
@@ -107,5 +170,4 @@ with mp.Pool(n_cores) as pool:
 sim_stats_df = pd.concat\
     ([sim_stats for sim_stats in pool_stats_list], 
      axis=1, ignore_index=True).T
-
-sim_stats_df.to_pickle("Results/" + city + "/only_hub/nocost.pickle")
+sim_stats_df.to_pickle("Results/" + city + "/only_hub/cost.pickle")

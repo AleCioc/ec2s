@@ -312,6 +312,7 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
                     relocation_zone_id = booking_request["destination_id"]
 
         else:
+
             relocation_zone_id = booking_request["destination_id"]            
         
         return relocation_zone_id
