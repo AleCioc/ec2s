@@ -1,7 +1,6 @@
 import datetime
 import os
 import sys
-import psutil
 from pathlib import Path
 import multiprocessing as mp
 
@@ -100,11 +99,6 @@ with mp.Pool(n_cores) as pool:
 
         pool_stats_list += pool.map\
             (get_eventG_sim_stats, sim_inputs)
-            
-        print ("Available RAM [GB]: ",
-               pd.Series(dict(psutil.virtual_memory()._asdict()))\
-                   .loc["available"].apply(lambda x: x/10**9))
-
 
 sim_stats_df = pd.concat\
     ([sim_stats for sim_stats in pool_stats_list], 
