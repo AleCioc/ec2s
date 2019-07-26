@@ -44,7 +44,7 @@ Only hub ideal
 
 sim_scenario_conf_grid = {
 
-    "n_cars": [250, 300, 350],
+    "n_cars": [350],
 
     "time_estimation": [False],
     "queuing": [True, False],
@@ -54,7 +54,7 @@ sim_scenario_conf_grid = {
     "hub": [True],
     "hub_zone_policy": ["default"],
     "hub_zone": [0],
-    "hub_n_charging_poles": np.arange(20, 80, 3),
+    "hub_n_charging_poles": np.arange(20, 80, 5),
 
     "relocation": [True],
     "finite_workers": [False],
