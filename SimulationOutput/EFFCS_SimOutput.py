@@ -100,10 +100,10 @@ class EFFCS_SimOutput ():
             + self.sim_stats["n_deaths"]
             
         self.sim_stats.loc["percentage_satisfied"] = \
-            sim.self.sim_stats["n_bookings"] / self.sim_stats["n_booking_reqs"]
+            self.sim_stats["n_bookings"] / self.sim_stats["n_booking_reqs"]
 
         self.sim_stats.loc["percentage_same_zone_trips"] = \
-            sim.self.sim_stats["n_unsatisfied"] / self.sim_stats["n_booking_reqs"]
+            self.sim_stats["n_unsatisfied"] / self.sim_stats["n_booking_reqs"]
             
         self.sim_stats.loc["percentage_same_zone_trips"] = \
             sim.n_same_zone_trips / self.sim_stats["n_booking_reqs"]
