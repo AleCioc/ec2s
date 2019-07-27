@@ -98,6 +98,36 @@ class EFFCS_SimOutput ():
         self.sim_stats["n_unsatisfied"] = \
             self.sim_stats["n_no_close_cars"]\
             + self.sim_stats["n_deaths"]
+            
+        self.sim_stats.loc["percentage_satisfied"] = \
+            sim.self.sim_stats["n_bookings"] / self.sim_stats["n_booking_reqs"]
+
+        self.sim_stats.loc["percentage_same_zone_trips"] = \
+            sim.self.sim_stats["n_unsatisfied"] / self.sim_stats["n_booking_reqs"]
+            
+        self.sim_stats.loc["percentage_same_zone_trips"] = \
+            sim.n_same_zone_trips / self.sim_stats["n_booking_reqs"]
+
+        self.sim_stats.loc["percentage_not_same_zone_trips"] = \
+            sim.n_not_same_zone_trips / self.sim_stats["n_booking_reqs"]
+
+        self.sim_stats.loc["percentage_no_close_cars"] = \
+            sim.n_no_close_cars / self.sim_stats["n_booking_reqs"]
+
+        self.sim_stats.loc["percentage_deaths"] = \
+            sim.n_deaths / self.sim_stats["n_booking_reqs"]
+
+        self.sim_stats.loc["percentage_same_zone_trips_satisfied"] = \
+            sim.n_same_zone_trips / self.sim_stats["n_bookings"]
+
+        self.sim_stats.loc["percentage_not_same_zone_trips_satisfied"] = \
+            sim.n_not_same_zone_trips / self.sim_stats["n_bookings"]
+
+        self.sim_stats.loc["percentage_no_close_cars_unsatisfied"] = \
+            sim.n_no_close_cars / self.sim_stats["n_unsatisfied"]
+
+        self.sim_stats.loc["percentage_deaths_unsatisfied"] = \
+            sim.n_deaths / self.sim_stats["n_unsatisfied"]
 
         self.sim_stats.loc["n_charges"] = \
             len(self.sim_charges)
@@ -111,6 +141,12 @@ class EFFCS_SimOutput ():
 
         self.sim_stats.loc["n_charge_deaths"] = \
             len(self.sim_charge_deaths)
+            
+        self.sim_stats.loc["percentage_charge_deaths"] = \
+            len(self.sim_charge_deaths) / self.sim_stats.loc["n_charges"]
+
+        self.sim_stats.loc["percentage_charge_deaths_system"] = \
+            len(self.sim_charge_deaths) / self.sim_stats.loc["n_charges_system"]
 
         self.sim_stats.loc["soc_avg"] = \
             self.sim_bookings.start_soc.mean()

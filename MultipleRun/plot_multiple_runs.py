@@ -32,3 +32,29 @@ def plot_events_percentage (sim_stats_df, x_col, marker="o", label_add=""):
     plt.ylabel("percentage of events")
 
 
+def plot_param_cross_section (results_df, x_col, y_col, param_col):
+    plt.figure(figsize=(15,7))
+    plt.title(y_col)
+    plt.ylabel(y_col)
+    plt.xlabel(x_col)
+    for param_value in results_df[param_col].unique():
+        group_df = results_df.loc\
+            [(results_df[param_col] == param_value)]
+        plt.plot(group_df.hub_n_charging_poles, 
+                 group_df.n_deaths / group_df.n_booking_reqs, 
+                 marker="o", 
+                 label=param_col + "=" + str(param_value))
+    plt.legend()
+    
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.style.use('ggplot')
+matplotlib.rcParams["axes.grid"] = True
+matplotlib.rcParams["figure.figsize"] = (15., 7.)
+
+path = "/".join(["Results", "Torino", "only_hub/"])
+path += "nocost.pickle"
+x_col = "hub_n_charging_poles"
+
+results_df = pd.read_pickle(path)
