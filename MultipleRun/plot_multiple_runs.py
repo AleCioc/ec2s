@@ -45,16 +45,3 @@ def plot_param_cross_section (results_df, x_col, y_col, param_col):
                  marker="o", 
                  label=param_col + "=" + str(param_value))
     plt.legend()
-    
-import pandas as pd
-import matplotlib
-import matplotlib.pyplot as plt
-matplotlib.style.use('ggplot')
-matplotlib.rcParams["axes.grid"] = True
-matplotlib.rcParams["figure.figsize"] = (15., 7.)
-
-path = "/".join(["Results", "Torino", "only_hub/"])
-path += "nocost.pickle"
-x_col = "hub_n_charging_poles"
-
-results_df = pd.read_pickle(path)

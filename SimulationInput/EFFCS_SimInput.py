@@ -22,13 +22,14 @@ class EFFCS_SimInput ():
 
         self.city = \
             self.sim_general_conf["city"]
-
-        self.n_cars = \
-            self.sim_scenario_conf["n_cars"]
-        
         
         self.n_cars_original = \
             len(self.bookings.plate.unique())
+
+        self.n_cars = \
+            abs(self.n_cars_original * self.sim_scenario_conf["n_cars_factor"])
+
+        self.sim_general_conf["n_cars"] = self.n_cars
 
         self.hub_n_charging_poles = \
             self.sim_scenario_conf["hub_n_charging_poles"]
@@ -132,7 +133,10 @@ class EFFCS_SimInput ():
                 self.request_rates[daytype][hour] = \
                     hour_df.city.count()\
                     / (len(hour_df.day.unique()))\
-                    / 3600
+                    / 3600 * self.sim_scenario_conf["requests_rate_factor"]
+
+        self.sim_general_conf["avg_request_rate"] = \
+            pd.DataFrame(self.request_rates.values()).mean().mean()
 
         return self.request_rates
 

@@ -35,6 +35,7 @@ sim_general_conf = {
     "city": city,
     "bin_side_length": 500,
     "requests_rate_factor": 1,
+    "n_cars_factor": 1,
     "model_start" : datetime.datetime(2017, 9, 1),
     "model_end" : datetime.datetime(2017, 10, 1),
     "sim_start" : datetime.datetime(2017, 10, 1),
@@ -47,8 +48,6 @@ Only hub ideal
 """
 
 sim_scenario_conf_grid = {
-
-    "n_cars": [350],
 
     "time_estimation": [False],
     "queuing": [True, False],
