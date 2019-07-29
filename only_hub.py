@@ -76,7 +76,7 @@ sim_scenario_conf_grid = {
     
 }
 
-n_cores = 4
+n_cores = 20
 
 with mp.Pool(n_cores) as pool:
 
