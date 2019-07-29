@@ -9,6 +9,8 @@ import pandas as pd
 
 from Loading.load_data import read_sim_input_data
 
+from DataStructures.City import City
+
 from SimulationInput.EFFCS_SimConfGrid import EFFCS_SimConfGrid
 
 from SingleRun.get_eventG_input import get_eventG_input
@@ -48,7 +50,8 @@ Hub + cps ideal and real
 
 sim_scenario_conf_grid = {
 
-    "n_cars": [350],
+    "requests_rate_factor": [1],
+    "n_cars_factor": [1],
 
     "time_estimation": [True, False],
     "queuing": [True],
@@ -74,12 +77,13 @@ sim_scenario_conf_grid = {
     
 }
 
-n_cores = 30
+n_cores = 4
 
 with mp.Pool(n_cores) as pool:
 
-    bookings, grid = read_sim_input_data\
-        (sim_general_conf["city"])
+    city_obj = City\
+        (sim_general_conf["city"],
+         sim_general_conf)                        
                         
     sim_conf_grid = EFFCS_SimConfGrid\
         (sim_general_conf, sim_scenario_conf_grid)
@@ -91,8 +95,7 @@ with mp.Pool(n_cores) as pool:
         for sim_scenario_conf in sim_conf_grid.conf_list[i: i + n_cores]:
             conf_tuples += [(sim_general_conf,
                             sim_scenario_conf,
-                            grid,
-                            bookings)]
+                            city_obj)]
 
         sim_inputs = pool.map\
             (get_eventG_input, conf_tuples)

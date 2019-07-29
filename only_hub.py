@@ -9,6 +9,8 @@ import pandas as pd
 
 from Loading.load_data import read_sim_input_data
 
+from DataStructures.City import City
+
 from SimulationInput.EFFCS_SimConfGrid import EFFCS_SimConfGrid
 
 from SingleRun.get_eventG_input import get_eventG_input
@@ -34,8 +36,6 @@ sim_general_conf = {
 
     "city": city,
     "bin_side_length": 500,
-    "requests_rate_factor": 1,
-    "n_cars_factor": 1,
     "model_start" : datetime.datetime(2017, 9, 1),
     "model_end" : datetime.datetime(2017, 10, 1),
     "sim_start" : datetime.datetime(2017, 10, 1),
@@ -49,6 +49,9 @@ Only hub ideal
 
 sim_scenario_conf_grid = {
 
+    "requests_rate_factor": [1],
+    "n_cars_factor": [1],
+        
     "time_estimation": [False],
     "queuing": [True, False],
     "alpha": [25],
@@ -73,12 +76,13 @@ sim_scenario_conf_grid = {
     
 }
 
-n_cores = 30
+n_cores = 4
 
 with mp.Pool(n_cores) as pool:
 
-    bookings, grid = read_sim_input_data\
-        (sim_general_conf["city"])
+    city_obj = City\
+        (sim_general_conf["city"],
+         sim_general_conf)                        
                         
     sim_conf_grid = EFFCS_SimConfGrid\
         (sim_general_conf, sim_scenario_conf_grid)
@@ -90,8 +94,7 @@ with mp.Pool(n_cores) as pool:
         for sim_scenario_conf in sim_conf_grid.conf_list[i: i + n_cores]:
             conf_tuples += [(sim_general_conf,
                             sim_scenario_conf,
-                            grid,
-                            bookings)]
+                            city_obj)]
 
         sim_inputs = pool.map\
             (get_eventG_input, conf_tuples)
@@ -144,8 +147,9 @@ n_cores = 30
 
 with mp.Pool(n_cores) as pool:
 
-    bookings, grid = read_sim_input_data\
-        (sim_general_conf["city"])
+    city_obj = City\
+        (sim_general_conf["city"],
+         sim_general_conf)                        
                         
     sim_conf_grid = EFFCS_SimConfGrid\
         (sim_general_conf, sim_scenario_conf_grid)
@@ -157,8 +161,7 @@ with mp.Pool(n_cores) as pool:
         for sim_scenario_conf in sim_conf_grid.conf_list[i: i + n_cores]:
             conf_tuples += [(sim_general_conf,
                             sim_scenario_conf,
-                            grid,
-                            bookings)]
+                            city_obj)]
 
         sim_inputs = pool.map\
             (get_eventG_input, conf_tuples)

@@ -30,23 +30,23 @@ def get_input_data (city, months, bin_side_length):
          bookings,
          parkings)
         
-#    bookings.to_pickle\
-#        ("./Data/" + city + "/bookings.pickle")
-#
-#    parkings.to_pickle\
-#        ("./Data/" + city + "/parkings.pickle")
-#
-#    grid.to_pickle\
-#        ("./Data/" + city + "/grid.pickle")
-#
-#    bookings_origins_gdf.to_pickle\
-#        ("./Data/" + city + "/bookings_origins_gdf.pickle")
-#
-#    bookings_destinations_gdf.to_pickle\
-#        ("./Data/" + city + "/bookings_destinations_gdf.pickle")
-#
-#    parkings_gdf.to_pickle\
-#        ("./Data/" + city + "/parkings_gdf.pickle")
+    bookings.to_pickle\
+        ("./Data/" + city + "/bookings.pickle")
+
+    parkings.to_pickle\
+        ("./Data/" + city + "/parkings.pickle")
+
+    grid.to_pickle\
+        ("./Data/" + city + "/grid.pickle")
+
+    bookings_origins_gdf.to_pickle\
+        ("./Data/" + city + "/bookings_origins_gdf.pickle")
+
+    bookings_destinations_gdf.to_pickle\
+        ("./Data/" + city + "/bookings_destinations_gdf.pickle")
+
+    parkings_gdf.to_pickle\
+        ("./Data/" + city + "/parkings_gdf.pickle")
 
     return bookings,\
             parkings,\
@@ -65,3 +65,11 @@ def read_sim_input_data (city):
     print (t1 - t0)
 
     return bookings, grid
+
+#bookings,\
+#parkings,\
+#grid,\
+#bookings_origins_gdf,\
+#bookings_destinations_gdf,\
+#parkings_gdf = get_input_data\
+#    (city_name, months, bin_side_length)

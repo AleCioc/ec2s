@@ -1,3 +1,4 @@
+import os
 import datetime
 import multiprocessing as mp
 
@@ -6,6 +7,8 @@ import pandas as pd
 
 from Loading.load_data import get_input_data
 from Loading.load_data import read_sim_input_data
+
+from DataStructures.City import City
 
 from SimulationInput.EFFCS_SimConfGrid import EFFCS_SimConfGrid
 
@@ -19,17 +22,6 @@ from SingleRun.run_eventG_sim import get_eventG_sim_stats
 
 from SimulationOutput.EFFCS_SimOutput import EFFCS_SimOutput
 
-"""
-Create input pickles
-"""
-
-#bookings,\
-#parkings,\
-#grid,\
-#bookings_origins_gdf,\
-#bookings_destinations_gdf,\
-#parkings_gdf = get_input_data\
-#    ("Torino", [9, 10], 500)
 
 """
 Init general conf and data structure
@@ -39,7 +31,6 @@ sim_general_conf = {
 
     "city": "Torino",
     "bin_side_length": 500,
-    "requests_rate_factor": 1,
     "model_start" : datetime.datetime(2017, 9, 1),
     "model_end" : datetime.datetime(2017, 10, 1),
     "sim_start" : datetime.datetime(2017, 10, 1),
@@ -49,17 +40,18 @@ sim_general_conf = {
     
 sim_scenario_conf_grid = {
 
-    "n_cars": [350],
+    "requests_rate_factor": [1],
+    "n_cars_factor": [1],
 
     "time_estimation": [True],
     "queuing": [True],
     "alpha": [25],
-    "beta": [40, 60, 80, 90, 100],
+    "beta": [40, 60, 80, 90],
 
     "hub": [False],
     "hub_zone_policy": ["default"],
     "hub_zone": [350],
-    "hub_n_charging_poles": [10, 20],
+    "hub_n_charging_poles": [10, 20, 30, 40],
 
     "relocation": [True],
     "finite_workers": [False],
@@ -79,12 +71,13 @@ sim_scenario_conf_grid = {
 Multiple Runs with multiprocessing
 """
 
-n_cores = 10
+n_cores = 4
 with mp.Pool(n_cores) as pool:
 
-    bookings, grid = read_sim_input_data\
-        (sim_general_conf["city"])
-                        
+    city_obj = City\
+        (sim_general_conf["city"],
+         sim_general_conf)                        
+
     sim_conf_grid = EFFCS_SimConfGrid\
         (sim_general_conf, sim_scenario_conf_grid)
 
@@ -95,8 +88,7 @@ with mp.Pool(n_cores) as pool:
         for sim_scenario_conf in sim_conf_grid.conf_list[i: i + n_cores]:
             conf_tuples += [(sim_general_conf,
                             sim_scenario_conf,
-                            grid,
-                            bookings)]
+                            city_obj)]
 
         sim_inputs = pool.map\
             (get_eventG_input, conf_tuples)
@@ -108,6 +100,7 @@ sim_stats_df = pd.concat\
     ([sim_stats for sim_stats in pool_stats_list], 
      axis=1, ignore_index=True).T
 
-sim_stats_df.to_pickle("Results/Torino/only_cps/trial_tlcdocker.pickle")
-
-
+sim_stats_df.to_pickle\
+    (os.path.join(os.getcwd(), 
+                  "Results",
+                  "trial.pickle"))

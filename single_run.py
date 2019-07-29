@@ -7,6 +7,8 @@ import pandas as pd
 from Loading.load_data import get_input_data
 from Loading.load_data import read_sim_input_data
 
+from DataStructures.City import City
+
 from SingleRun.get_traceB_input import get_traceB_input
 from SingleRun.get_eventG_input import get_eventG_input
 from SingleRun.run_traceB_sim import run_traceB_sim
@@ -19,12 +21,12 @@ from SimulationOutput.EFFCS_SimOutput import EFFCS_SimOutput
 Init general conf and data structure
 """
 
-city = "Torino"
+city_name = "Torino"
 bin_side_length = 500
 
 sim_general_conf = {
 
-    "city": city,
+    "city": city_name,
     "bin_side_length": bin_side_length,
     "model_start" : datetime.datetime(2017, 9, 1),
     "model_end" : datetime.datetime(2017, 10, 1),
@@ -32,27 +34,6 @@ sim_general_conf = {
     "sim_end" : datetime.datetime(2017, 11, 1)
 
 }
-
-"""
-Create input pickles
-"""
-
-#months = [9, 10]
-#bookings,\
-#parkings,\
-#grid,\
-#bookings_origins_gdf,\
-#bookings_destinations_gdf,\
-#parkings_gdf = get_input_data\
-#    (city, months, sim_general_conf["bin_side_length"])
-
-
-
-"""
-Read input pickles
-"""
-
-bookings, grid = read_sim_input_data("Torino")
 
 """
 Set scenario configuration
@@ -91,11 +72,18 @@ sim_scenario_conf = {
 Single Run
 """
 
+#bookings, grid = read_sim_input_data("Torino")
+
+
+city_obj = City\
+    (city_name,
+     sim_general_conf,
+     sim_scenario_conf)
+
 simInput_eventG = get_eventG_input\
     ((sim_general_conf,
      sim_scenario_conf, 
-     grid,
-     bookings))
+     city_obj))
 
 sim_eventG = run_eventG_sim\
     (simInput = simInput_eventG)

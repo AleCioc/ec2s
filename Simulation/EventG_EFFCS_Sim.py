@@ -106,7 +106,9 @@ class EventG_EFFCS_Sim (EFFCS_Sim):
 
             timeout_sec = \
                 (np.random.exponential\
-                 (1 / self.current_arrival_rate))
+                 (1 / self.simInput.sim_scenario_conf\
+                      ["requests_rate_factor"]\
+                  / self.current_arrival_rate))
             
             yield self.env.timeout(timeout_sec)
             self.create_booking_request(timeout_sec)
