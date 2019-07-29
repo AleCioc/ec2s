@@ -48,16 +48,15 @@ sim_scenario_conf_grid = {
     "alpha": [25],
     "beta": [40, 60, 80, 90],
 
-    "hub": [False],
-    "hub_zone_policy": ["default"],
-    "hub_zone": [350],
+    "hub": [True],
+    "hub_zone_policy": ["num_parkings"],
     "hub_n_charging_poles": [10, 20, 30, 40],
 
     "relocation": [True],
     "finite_workers": [False],
     
     "distributed_cps": [True],
-    "cps_placement_policy": ["default"],
+    "cps_placement_policy": ["num_parkings"],
     "n_charging_poles": [20],
     "cps_zones_percentage": [0.1],
     

@@ -12,6 +12,7 @@ def get_eventG_input (conf_tuple):
 
     simInput.init_cars()
     simInput.init_cars_dicts()
+    simInput.init_hub()
     simInput.init_charging_poles()
 
     t1 = datetime.datetime.now()

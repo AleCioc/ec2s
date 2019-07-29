@@ -50,15 +50,14 @@ sim_scenario_conf = {
     "beta": 100,
 
     "hub": True,
-    "hub_zone_policy": "default",
-    "hub_zone": 0,
+    "hub_zone_policy": "num_parkings",
     "hub_n_charging_poles": 20,
     
     "relocation": False,
     "finite_workers": False,
     
     "distributed_cps": False,
-    "cps_placement_policy": "default",
+    "cps_placement_policy": "num_parkings",
     "n_charging_poles": 20,
     "cps_zones_percentage": 0.1,
     
@@ -77,8 +76,7 @@ Single Run
 
 city_obj = City\
     (city_name,
-     sim_general_conf,
-     sim_scenario_conf)
+     sim_general_conf)
 
 simInput_eventG = get_eventG_input\
     ((sim_general_conf,

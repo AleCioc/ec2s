@@ -20,10 +20,6 @@ class City ():
 
     def get_neighbors_dicts (self):
 
-#        self.od_distances = self.grid.centroid.apply\
-#            (lambda x: self.grid.centroid.distance(x))
-#        self.od_distances.to_pickle("./Data/" + self.city + "/od_distances.pickle")
-
         self.od_distances = pd.read_pickle\
             ("./Data/" + self.city_name + "/od_distances.pickle")
         self.max_dist = self.od_distances.max().max()

@@ -41,6 +41,11 @@ class EFFCS_SimInput ():
 
         self.n_charging_poles = \
             self.sim_scenario_conf["n_charging_poles"]
+
+        if self.sim_scenario_conf["cps_placement_policy"] == "num_parkings":
+            self.n_charging_zones = \
+                int(self.sim_scenario_conf["cps_zones_percentage"]\
+                * len(self.valid_zones))
             
     def get_booking_requests_list (self):
 
@@ -112,45 +117,57 @@ class EFFCS_SimInput ():
         return self.available_cars_dict,\
                 self.neighbors_cars_dict
 
+    def init_hub (self):
+        
+        if self.sim_scenario_conf["hub_zone_policy"] == "manual":
+            pass
+        
+        if self.sim_scenario_conf["hub_zone_policy"] == "num_parkings":
+            self.sim_scenario_conf["hub_zone"] = int(self.input_bookings\
+                .destination_id.value_counts().iloc[:1].index[0])
+
     def init_charging_poles (self):
 
-        top_dest_zones = self.input_bookings\
-            .destination_id.value_counts().iloc[:40]
+        if self.sim_scenario_conf["hub_zone_policy"] == "num_parkings":
 
-        self.n_charging_poles_by_zone = \
-            dict((top_dest_zones / top_dest_zones.sum()\
-                  * self.n_charging_poles))
+            top_dest_zones = self.input_bookings\
+                .destination_id.value_counts()\
+                .iloc[:self.n_charging_zones]
+    
+            self.n_charging_poles_by_zone = \
+                dict((top_dest_zones / top_dest_zones.sum()\
+                      * self.n_charging_poles))
+                    
+            def assign_incrementally ():            
+                assigned_cps = 0
+                for zone_id in self.n_charging_poles_by_zone:
+                    zone_n_cps = int(np.floor\
+                        (self.n_charging_poles_by_zone[zone_id]))
+                    assigned_cps += zone_n_cps
+                    self.n_charging_poles_by_zone[zone_id] = \
+                        zone_n_cps
+                for zone_id in self.n_charging_poles_by_zone:
+                    if assigned_cps < self.n_charging_poles:
+                        self.n_charging_poles_by_zone[zone_id] += 1
+                        assigned_cps += 1
                 
-        def assign_incrementally ():            
-            assigned_cps = 0
-            for zone_id in self.n_charging_poles_by_zone:
-                zone_n_cps = int(np.floor\
-                    (self.n_charging_poles_by_zone[zone_id]))
-                assigned_cps += zone_n_cps
-                self.n_charging_poles_by_zone[zone_id] = \
-                    zone_n_cps
-            for zone_id in self.n_charging_poles_by_zone:
-                if assigned_cps < self.n_charging_poles:
-                    self.n_charging_poles_by_zone[zone_id] += 1
-                    assigned_cps += 1
-            
-        assign_incrementally()
-
-        self.n_charging_poles_by_zone = \
-            dict(pd.Series\
-            (self.n_charging_poles_by_zone)\
-            .replace({0:np.NaN}).dropna())
-
-        zones_with_cps = pd.Series\
-            (self.n_charging_poles_by_zone).index
-
-        self.zones_cp_distances = \
-            self.grid.centroid.apply\
-            (lambda x: self.grid.loc[zones_with_cps]\
-             .centroid.distance(x))
-
-        self.closest_cp_zone = \
-            self.zones_cp_distances.idxmin(axis=1)
+            assign_incrementally()
+    
+            self.n_charging_poles_by_zone = \
+                dict(pd.Series\
+                (self.n_charging_poles_by_zone)\
+                .replace({0:np.NaN}).dropna())
+    
+            zones_with_cps = pd.Series\
+                (self.n_charging_poles_by_zone).index
+    
+            self.zones_cp_distances = \
+                self.grid.centroid.apply\
+                (lambda x: self.grid.loc[zones_with_cps]\
+                 .centroid.distance(x))
+    
+            self.closest_cp_zone = \
+                self.zones_cp_distances.idxmin(axis=1)
 
         return self.n_charging_poles_by_zone
 

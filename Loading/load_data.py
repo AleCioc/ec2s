@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pd
 
 import datetime
@@ -48,6 +50,10 @@ def get_input_data (city, months, bin_side_length):
     parkings_gdf.to_pickle\
         ("./Data/" + city + "/parkings_gdf.pickle")
 
+    od_distances = grid.centroid.apply\
+        (lambda x: grid.centroid.distance(x))
+    od_distances.to_pickle("./Data/" + city + "/od_distances.pickle")
+
     return bookings,\
             parkings,\
             grid,\
@@ -65,11 +71,3 @@ def read_sim_input_data (city):
     print (t1 - t0)
 
     return bookings, grid
-
-#bookings,\
-#parkings,\
-#grid,\
-#bookings_origins_gdf,\
-#bookings_destinations_gdf,\
-#parkings_gdf = get_input_data\
-#    (city_name, months, bin_side_length)
