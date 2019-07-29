@@ -113,7 +113,8 @@ Only hub cost considered
 
 sim_scenario_conf_grid = {
 
-    "n_cars": [350],
+    "requests_rate_factor": [1],
+    "n_cars_factor": [1],
 
     "time_estimation": [False],
     "queuing": [True],
