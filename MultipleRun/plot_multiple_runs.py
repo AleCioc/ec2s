@@ -9,7 +9,7 @@ def plot_events_percentage (sim_stats_df,
                             x_col, 
                             marker="o", 
                             title_add="",
-                            figpath="Figures"):
+                            figpath=""):
 
     plt.figure(figsize=(15, 7))
     plt.title("Percentage of events"+ title_add)    
@@ -46,7 +46,11 @@ def plot_events_percentage (sim_stats_df,
     plt.show()
     plt.close()
 
-def plot_param_cross_section (results_df, x_col, y_col, param_col):
+def plot_param_cross_section (results_df, 
+                              x_col, 
+                              y_col, 
+                              param_col,
+                              figpath=""):
 
     plt.figure(figsize=(15,7))
     plt.title(y_col)
@@ -55,9 +59,10 @@ def plot_param_cross_section (results_df, x_col, y_col, param_col):
     for param_value in results_df[param_col].unique():
         group_df = results_df.loc\
             [(results_df[param_col] == param_value)]
-        plt.plot(group_df.hub_n_charging_poles, 
+        plt.plot(group_df[x_col], 
                  group_df[y_col], 
                  marker="o", 
                  label=param_col + "=" + str(param_value))
     
     plt.legend()
+#    plt.savefig(figpath)

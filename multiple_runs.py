@@ -84,6 +84,7 @@ with mp.Pool(n_cores) as pool:
     for i in np.arange(0, len(sim_conf_grid.conf_list), n_cores):
 
         conf_tuples = []
+
         for sim_scenario_conf in sim_conf_grid.conf_list[i: i + n_cores]:
             conf_tuples += [(sim_general_conf,
                             sim_scenario_conf,
