@@ -8,4 +8,5 @@ Retrieval/**
 **/*~
 *.ipynb
 
-.idea/*
+.idea/
+venv/
