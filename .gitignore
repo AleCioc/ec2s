@@ -1,4 +1,5 @@
 **/__pycache__/
+
 Data/**
 Results/**
 Figures/**
@@ -6,3 +7,5 @@ Retrieval/**
 
 **/*~
 *.ipynb
+
+.idea/*
