@@ -71,8 +71,7 @@ sim_scenario_conf = {
 Single Run
 """
 
-#bookings, grid = read_sim_input_data("Torino")
-
+# bookings, grid = read_sim_input_data(city_name)
 
 city_obj = City\
     (city_name,

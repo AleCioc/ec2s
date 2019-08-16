@@ -41,7 +41,14 @@ class City ():
     def get_input_bookings_filtered (self):
 
         def filter_bookings_for_simulation (bookings):
-        
+
+            bookings["date"] = \
+                bookings.start_time.apply(lambda d: d.date())
+            date_hour_count = \
+                bookings.groupby("date").hour.apply(lambda h: len(h.unique()))
+            bad_data_dates = \
+                list(date_hour_count[date_hour_count < 24].index)
+
             return \
                 bookings.loc\
                 [(bookings.duration > 3)\

@@ -13,6 +13,7 @@ def get_traceB_input (conf_tuple):
     simInput.get_booking_requests_list()
     simInput.init_cars()
     simInput.init_cars_dicts()
+    simInput.init_hub()
     simInput.init_charging_poles()
 
     t1 = datetime.datetime.now()

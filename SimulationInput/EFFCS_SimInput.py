@@ -138,7 +138,7 @@ class EFFCS_SimInput ():
                 dict((top_dest_zones / top_dest_zones.sum()\
                       * self.n_charging_poles))
                     
-            def assign_incrementally ():            
+            def assign_incrementally ():
                 assigned_cps = 0
                 for zone_id in self.n_charging_poles_by_zone:
                     zone_n_cps = int(np.floor\
