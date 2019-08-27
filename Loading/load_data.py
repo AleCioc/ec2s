@@ -19,18 +19,35 @@ def get_bookings_parkings (city, months):
     
     return bookings, parkings
 
-def get_input_data (city, months, bin_side_length):
-    
+
+def get_input_data(city, months, bin_side_length):
     bookings, parkings = get_bookings_parkings(city, months)
-    
-    grid,\
-    bookings_origins_gdf,\
-    bookings_destinations_gdf,\
-    parkings_gdf = get_gdfs\
+
+    grid, \
+    bookings_origins_gdf, \
+    bookings_destinations_gdf, \
+    parkings_gdf = get_gdfs \
         (city,
          bin_side_length,
          bookings,
          parkings)
+
+
+    return bookings,\
+            parkings,\
+            grid,\
+            bookings_origins_gdf,\
+            bookings_destinations_gdf,\
+            parkings_gdf
+
+def create_input_pickles (city, months, bin_side_length):
+    
+    bookings,\
+    parkings,\
+    grid,\
+    bookings_origins_gdf,\
+    bookings_destinations_gdf,\
+    parkings_gdf = get_input_data(city, month, bin_side_length)
         
     bookings.to_pickle\
         ("./Data/" + city + "/bookings.pickle")
@@ -54,12 +71,6 @@ def get_input_data (city, months, bin_side_length):
         (lambda x: grid.centroid.distance(x))
     od_distances.to_pickle("./Data/" + city + "/od_distances.pickle")
 
-    return bookings,\
-            parkings,\
-            grid,\
-            bookings_origins_gdf,\
-            bookings_destinations_gdf,\
-            parkings_gdf            
 
 def read_sim_input_data (city):
 

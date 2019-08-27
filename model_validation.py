@@ -34,50 +34,44 @@ city_obj = City\
     (city,
      sim_general_conf)
 
-# simInput_traceB = get_traceB_input\
-#     ((sim_general_conf,
-#      sim_scenario_conf,
-#      city_obj))
-#
-# sim_traceB = run_traceB_sim\
-#     (simInput = simInput_traceB)
-#
-# simOutput_traceB = EFFCS_SimOutput(sim_traceB)
-# #print (simOutput_traceB.sim_stats)
-#
-# simInput_eventG = get_eventG_input\
-#     ((sim_general_conf,
-#      sim_scenario_conf,
-#      city_obj))
-#
-# sim_eventG = run_eventG_sim\
-#     (simInput = simInput_eventG)
-#
-# simOutput_eventG = EFFCS_SimOutput(sim_eventG)
-# #print (simOutput_eventG.sim_stats)
-# sim_stats = simOutput_eventG.sim_stats
-#
-# #print (simOutput_eventG.sim_stats)
-#
-# sim_stats_comparison = \
-#     pd.concat([simOutput_traceB.sim_stats,
-#                simOutput_eventG.sim_stats],
-#     axis=1, sort=False)
-#
-# sim_reqs_eventG = \
-#     simOutput_eventG.sim_booking_requests
-# sim_reqs_traceB = \
-#     simOutput_traceB.sim_booking_requests
-#
-# print(sim_reqs_eventG.shape[0],
-#       sim_reqs_traceB.shape[0])
-#
-# print(len(sim_reqs_eventG.date.unique()),
-#       len(sim_reqs_traceB.date.unique()))
-#
-# trace_timeouts = \
-#     sim_reqs_traceB.ia_timeout.loc\
-#     [sim_reqs_traceB.ia_timeout < 5000]
-#
-# from SingleRun.model_validation_plot import plot_ia_validation
-# plot_ia_validation(1000, city, sim_reqs_eventG, trace_timeouts)
+simInput_traceB = get_traceB_input\
+    ((sim_general_conf,
+     sim_scenario_conf,
+     city_obj))
+
+sim_traceB = run_traceB_sim\
+    (simInput = simInput_traceB)
+
+simOutput_traceB = EFFCS_SimOutput(sim_traceB)
+#print (simOutput_traceB.sim_stats)
+
+simInput_eventG = get_eventG_input\
+    ((sim_general_conf,
+     sim_scenario_conf,
+     city_obj))
+
+sim_eventG = run_eventG_sim\
+    (simInput = simInput_eventG)
+
+simOutput_eventG = EFFCS_SimOutput(sim_eventG)
+#print (simOutput_eventG.sim_stats)
+sim_stats = simOutput_eventG.sim_stats
+
+#print (simOutput_eventG.sim_stats)
+
+sim_stats_comparison = \
+    pd.concat([simOutput_traceB.sim_stats,
+               simOutput_eventG.sim_stats],
+    axis=1, sort=False)
+
+sim_reqs_eventG = \
+    simOutput_eventG.sim_booking_requests
+sim_reqs_traceB = \
+    simOutput_traceB.sim_booking_requests
+
+trace_timeouts = \
+    sim_reqs_traceB.ia_timeout.loc\
+    [sim_reqs_traceB.ia_timeout < 5000]
+
+from SingleRun.model_validation_plot import plot_ia_validation
+plot_ia_validation(1000, city, sim_reqs_eventG, trace_timeouts)
