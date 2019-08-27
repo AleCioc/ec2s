@@ -6,8 +6,13 @@ matplotlib.style.use('ggplot')
 matplotlib.rcParams["axes.grid"] = True
 matplotlib.rcParams["figure.figsize"] = (15., 7.)
 
-from model_validation_utils import get_plot_samples
-from model_validation_utils import get_grouped_reqs_count
+import seaborn as sns
+
+from ModelValidation.model_validation_utils import get_plot_samples
+from ModelValidation.model_validation_utils import get_grouped_reqs_count
+from ModelValidation.model_validation_utils import get_day_moments
+from ModelValidation.model_validation_utils import get_od_err
+from ModelValidation.model_validation_utils import get_hourly_daytype_od_err
 
 def plot_ia_validation(ia_threshold, city, sim_reqs_eventG, trace_timeouts):
 
@@ -40,10 +45,9 @@ def plot_tot_reqs_count(group_col, normed, city, sim_reqs_eventG, sim_reqs_trace
         title = ""
         figfilename = "_".join([group_col, "reqs-count"])
 
-    plt.figure(figsize=(15, 7))
     pd.concat([sim_reqs_eventG_count,
                sim_reqs_traceB_count], axis=1) \
-        .plot.bar()
+        .plot.bar(figsize=(15, 7))
     plt.title(title + " count of booking requests by " + group_col)
     plt.xlabel(group_col)
     plt.ylabel("% booking requests")
@@ -78,9 +82,8 @@ def plot_tot_reqs_count_err(group_col, normed, city, sim_reqs_eventG, sim_reqs_t
     print("Total error:",
           (sim_reqs_eventG_count - sim_reqs_traceB_count).abs().sum())
 
-    plt.figure(figsize=(15, 7))
     (sim_reqs_eventG_count - sim_reqs_traceB_count).abs() \
-        .plot.bar()
+        .plot.bar(figsize=(15, 7))
     plt.title(title + " count error by " + group_col)
     plt.xlabel(group_col)
     plt.ylabel("% booking requests")
@@ -114,18 +117,82 @@ def plot_tot_reqs_count_err_agg(group_col, normed, city, sim_reqs_eventG, sim_re
     print("Total error:",
           (sim_reqs_eventG_count - sim_reqs_traceB_count).abs().sum())
 
-    spatial_errs_df = pd.DataFrame()
+    errs_df = pd.DataFrame()
     for daytype in ["weekday", "weekend"]:
-        spatial_errs_df[daytype] = \
+        errs_df[daytype] = \
             sim_reqs_eventG_count.loc[daytype] \
             - sim_reqs_traceB_count.loc[daytype]
 
-    plt.figure(figsize=(15, 7))
-    (spatial_errs_df).abs() \
+    (errs_df).abs() \
         .plot.bar(figsize=(15, 7))
     plt.title(title + " count error by hour and daytype")
     plt.xlabel("hour")
     plt.ylabel("% booking requests")
     plt.savefig("./Figures/" + city + "/validation/" + figfilename)
+    plt.show()
+    plt.close()
+
+
+def plot_regr_qq_sns(city, sim_reqs_eventG, trace_timeouts):
+
+    eventG_ia_samples, traceB_ia_samples = \
+        get_plot_samples(1000, sim_reqs_eventG, trace_timeouts)
+
+    sns_df = pd.concat([pd.Series(eventG_ia_samples.sort_values().reset_index()["ia_timeout"],
+                                  name="ia_eventG"),
+                        pd.Series(traceB_ia_samples.sort_values().reset_index()["ia_timeout"],
+                                  name="ia_traceB")], axis=1)
+
+    sns.jointplot("ia_eventG", "ia_traceB", sns_df, kind="reg", height=9)
+    plt.plot(eventG_ia_samples, eventG_ia_samples, color="black", label="bisector")
+    plt.title("Regression and q-q plots for ia times model, with sample distributions")
+    plt.legend()
+    plt.savefig("Figures/" + city + "/validation/reg1000_sns.png")
+    sns.despine()
+    plt.show()
+    plt.close()
+
+def plot_od_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
+
+    sim_reqs_eventG, sim_reqs_traceB = \
+        get_day_moments(sim_reqs_eventG, sim_reqs_traceB)
+
+    grid = get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB)
+
+    fig, axs = plt.subplots(2, 2, figsize=(12, 12))
+
+    i = 0
+    j = 0
+
+    for daymoment in ["night", "morning", "afternoon", "evening"]:
+
+        grid.dropna(subset=["od_count_diff_" + daymoment]) \
+            .plot(column="od_count_diff_" + daymoment, ax=axs[i][j], legend=True)
+        axs[i][j].set_title("od balance diff heatmap " + daymoment)
+        axs[i][j].set_xlabel("longitude")
+        axs[i][j].set_ylabel("latitude")
+
+        if j == 1:
+            i = (i + 1) % 2
+        j = (j + 1) % 2
+
+    plt.savefig("./Figures/" + city + "/validation/sp_err.png")
+    plt.show()
+    plt.close()
+
+def plot_hourly_daytype_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
+
+    spatial_errs_df = \
+        get_hourly_daytype_od_err(grid, sim_reqs_eventG, sim_reqs_traceB)
+
+    sim_reqs_eventG_count, sim_reqs_traceB_count = \
+        get_grouped_reqs_count("hour", sim_reqs_eventG, sim_reqs_traceB)
+
+    (spatial_errs_df.divide(sim_reqs_traceB_count, axis=0)).plot.bar(figsize=(15, 7))
+
+    plt.title("Spatial error by hour and daytype")
+    plt.xlabel("hour")
+    plt.ylabel("% booking requests")
+    plt.savefig("./Figures/" + city + "/validation/sp_hourly_daytype_err.png")
     plt.show()
     plt.close()
