@@ -18,11 +18,11 @@ sim_scenario_conf_grid = {
     "time_estimation": [False],
     "queuing": [True, False],
     "alpha": [25],
-    "beta": [60, 80, 100],
+    "beta": [100],
 
     "hub": [True],
     "hub_zone_policy": ["num_parkings"],
-    "hub_zone" : []
+    "hub_zone" : [200, 350, 620]
     "hub_n_charging_poles": np.arange(20, 80, 5),
 
     "relocation": [True],

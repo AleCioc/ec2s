@@ -11,14 +11,15 @@ from SimulationInput.EFFCS_SimConfGrid import EFFCS_SimConfGrid
 from SingleRun.get_eventG_input import get_eventG_input
 from SingleRun.run_eventG_sim import get_eventG_sim_stats
 
-from SimulationInput.confs.multiple_runs_conf import sim_general_conf
-from SimulationInput.confs.multiple_runs_conf import sim_scenario_conf_grid
+def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid, n_cores = 4):
 
-def multiple_runs(city):
+    results_path = os.path.join(os.getcwd(), "Results", city, sim_type)
+    if not os.path.exists(results_path):
+        os.mkdir(results_path)
 
     sim_general_conf["city"] = city
     sim_general_conf["bin_side_length"] = 500
-    n_cores = 4
+
     with mp.Pool(n_cores) as pool:
 
         city_obj = City\
@@ -49,6 +50,13 @@ def multiple_runs(city):
          axis=1, ignore_index=True).T
 
     sim_stats_df.to_pickle\
-        (os.path.join(os.getcwd(),
-                      "Results",
-                      "trial.pickle"))
+        (os.path.join(results_path,
+                      sim_type + ".pickle"))
+
+    pd.Series(sim_general_conf).to_pickle\
+        (os.path.join(results_path,
+                      "sim_general_conf.pickle"))
+
+    pd.Series(sim_scenario_conf_grid).to_pickle\
+        (os.path.join(results_path,
+                      "sim_scenario_conf_grid.pickle"))

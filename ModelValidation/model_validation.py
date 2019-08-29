@@ -1,6 +1,4 @@
-import sys
-
-from Loading.load_data import read_sim_input_data
+import os
 
 from DataStructures.City import City
 
@@ -23,6 +21,10 @@ from ModelValidation.model_validation_plot import plot_od_err
 from ModelValidation.model_validation_plot import plot_hourly_daytype_err
 
 def run_model_validation (city):
+
+    results_path = os.path.join(os.getcwd(), "Results", city, "validation")
+    if not os.path.exists(results_path):
+        os.mkdir(results_path)
 
     sim_general_conf["city"] = city
     sim_general_conf["bin_side_length"] = 500
