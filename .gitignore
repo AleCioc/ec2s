@@ -9,4 +9,4 @@ Retrieval/**
 *.ipynb
 
 .idea/
-venv/
+venv2/
