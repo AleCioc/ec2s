@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 from sklearn.neighbors import KernelDensity
 
@@ -12,16 +14,20 @@ class City ():
         self.sim_general_conf = sim_general_conf
         self.bookings, self.grid = read_sim_input_data\
             (city_name)
+        self.get_od_distances()
         self.neighbors, self.neighbors_dict = self.get_neighbors_dicts()
         self.input_bookings = self.get_input_bookings_filtered()
         self.request_rates = self.get_requests_rates()
         self.trip_kdes = self.get_trip_kdes()
         self.valid_zones = self.get_valid_zones()
 
-    def get_neighbors_dicts (self):
+    def get_od_distances (self):
 
         self.od_distances = pd.read_pickle\
-            ("./Data/" + self.city_name + "/od_distances.pickle")
+            ("./Data/" + self.city_name + "/")
+
+    def get_neighbors_dicts (self):
+
         self.max_dist = self.od_distances.max().max()
 
         self.neighbors = self.od_distances\
@@ -34,7 +40,7 @@ class City ():
         for zone in self.neighbors.index:
             self.neighbors_dict[int(zone)] = \
                 dict(self.neighbors.loc[zone].dropna())
-                
+
         return self.neighbors,\
                 self.neighbors_dict
 
