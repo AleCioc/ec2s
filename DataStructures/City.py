@@ -24,7 +24,7 @@ class City ():
     def get_od_distances (self):
 
         self.od_distances = pd.read_pickle\
-            ("./Data/" + self.city_name + "/")
+            ("./Data/" + self.city_name + "/od_distances.pickle")
 
     def get_neighbors_dicts (self):
 
