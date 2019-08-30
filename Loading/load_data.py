@@ -69,31 +69,13 @@ def create_input_pickles (city, months, bin_side_length):
     #     ("./Data/" + city + "/parkings_gdf.pickle")
 
     bookings, grid = read_sim_input_data(city)
-    grid_lat_lon = grid.copy()
-    grid_lat_lon.crs = {"init": "epsg:3857"}
-    grid_lat_lon = grid_lat_lon.to_crs({"init": "epsg:4326"})
-    centroids_tuple = grid_lat_lon.centroid.apply(lambda p: (p.x, p.y))
-
     print (grid.shape)
-    distances = {}
-    for i in range(len(centroids_tuple.values)):
-        destinations = []
-        for j in range(len(centroids_tuple.values)):
-            centroid_i = centroids_tuple.values[i]
-            centroid_j = centroids_tuple.values[j]
-            destinations += [(i,
-                              j,
-                              centroid_i[0],
-                              centroid_i[1],
-                              centroid_j[0],
-                              centroid_j[1])]
-        destinations = pd.Series(destinations)
-        destinations_distances = \
-            list(destinations.apply(lambda pp: haversine(pp[2], pp[3], pp[4], pp[5])))
-        distances[i] = destinations_distances
-
-    od_distances = pd.DataFrame(distances)
-    od_distances.to_pickle("./Data/" + city + "/od_distances.pickle")
+    print (datetime.datetime.now())
+    od_distances = []
+    for point in grid.centroid.geometry:
+        od_distances += [grid.centroid.geometry.distance(point)]
+    pd.DataFrame(od_distances).to_pickle("./Data/" + city + "/od_distances.pickle")
+    print (datetime.datetime.now())
 
 def read_sim_input_data (city):
 
