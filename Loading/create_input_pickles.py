@@ -1,3 +1,4 @@
+import os
 import datetime
 
 import pandas as pd
@@ -12,33 +13,40 @@ def create_input_pickles(city, months, bin_side_length):
 
     print(datetime.datetime.now())
 
-    bookings,\
-    parkings,\
-    grid,\
-    bookings_origins_gdf,\
-    bookings_destinations_gdf,\
-    parkings_gdf = get_input_data(city, months, bin_side_length)
+    path = os.path.join("Data", city, "bookings.pickle")
+    if not os.path.exists(path):
 
-    bookings.to_pickle\
-        ("./Data/" + city + "/bookings.pickle")
+        bookings,\
+        parkings,\
+        grid,\
+        bookings_origins_gdf,\
+        bookings_destinations_gdf,\
+        parkings_gdf = get_input_data(city, months, bin_side_length)
 
-    parkings.to_pickle\
-        ("./Data/" + city + "/parkings.pickle")
+        bookings.to_pickle\
+            ("./Data/" + city + "/bookings.pickle")
 
-    grid.to_pickle\
-        ("./Data/" + city + "/grid.pickle")
+        parkings.to_pickle\
+            ("./Data/" + city + "/parkings.pickle")
 
-    bookings_origins_gdf.to_pickle\
-        ("./Data/" + city + "/bookings_origins_gdf.pickle")
+        grid.to_pickle\
+            ("./Data/" + city + "/grid.pickle")
 
-    bookings_destinations_gdf.to_pickle\
-        ("./Data/" + city + "/bookings_destinations_gdf.pickle")
+        bookings_origins_gdf.to_pickle\
+            ("./Data/" + city + "/bookings_origins_gdf.pickle")
 
-    parkings_gdf.to_pickle\
-        ("./Data/" + city + "/parkings_gdf.pickle")
+        bookings_destinations_gdf.to_pickle\
+            ("./Data/" + city + "/bookings_destinations_gdf.pickle")
 
-    print(datetime.datetime.now())
-    city_obj = City \
-        (city,
-         sim_general_conf)
-    print(datetime.datetime.now())
+        parkings_gdf.to_pickle\
+            ("./Data/" + city + "/parkings_gdf.pickle")
+
+    path = os.path.join("Data", city, "od_distances.pickle")
+    if not os.path.exists(path):
+
+        print(datetime.datetime.now())
+        # contains od_distances creation
+        city_obj = City \
+            (city,
+             sim_general_conf)
+        print(datetime.datetime.now())

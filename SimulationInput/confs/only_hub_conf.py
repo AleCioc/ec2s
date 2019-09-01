@@ -15,7 +15,7 @@ sim_scenario_conf_grid = {
     "requests_rate_factor": [1],
     "n_cars_factor": [1],
 
-    "time_estimation": [False],
+    "time_estimation": [True, False],
     "queuing": [True, False],
     "alpha": [25],
     "beta": [60, 80, 100],

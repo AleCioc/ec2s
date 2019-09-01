@@ -22,7 +22,7 @@ from ModelValidation.model_validation_plot import plot_hourly_daytype_err
 
 def run_model_validation (city):
 
-    results_path = os.path.join(os.getcwd(), "Results", city, "validation")
+    results_path = os.path.join(os.getcwd(), "Figures", city, "validation")
     if not os.path.exists(results_path):
         os.mkdir(results_path)
 
