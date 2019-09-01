@@ -15,7 +15,8 @@ class EventG_EFFCS_Sim (EFFCS_Sim):
         self.booking_request_arrival_rates = \
             self.simInput.request_rates
         self.trip_kdes = self.simInput.trip_kdes
-        self.od_distances = self.simInput.od_distances        
+        self.od_distances = self.simInput.od_distances
+        self.valid_zones = self.simInput.valid_zones
         self.update_data_structures()
 
     def update_time_info (self):
@@ -70,6 +71,9 @@ class EventG_EFFCS_Sim (EFFCS_Sim):
             self.current_hour
 
         trip_sample = self.current_trip_kde.sample()
+        # while (trip_sample.astype(int)[0][0] not in self.valid_zones\
+        # and trip_sample.astype(int)[0][1] not in self.valid_zones):
+        #     trip_sample = self.current_trip_kde.sample()
 
         booking_request["origin_id"] = \
             trip_sample.astype(int)[0][0]

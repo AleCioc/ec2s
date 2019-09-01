@@ -9,22 +9,43 @@ from Loading.load_data import read_sim_input_data
 class City ():
     
     def __init__ (self, city_name, sim_general_conf):
-            
+
+        print (city_name)
         self.city_name = city_name
         self.sim_general_conf = sim_general_conf
+
         self.bookings, self.grid = read_sim_input_data\
             (city_name)
-        self.get_od_distances()
-        self.neighbors, self.neighbors_dict = self.get_neighbors_dicts()
+
         self.input_bookings = self.get_input_bookings_filtered()
-        self.request_rates = self.get_requests_rates()
-        self.trip_kdes = self.get_trip_kdes()
+
         self.valid_zones = self.get_valid_zones()
+
+        self.grid = self.grid.loc[self.valid_zones]
+        self.grid["new_zone_id"] = range(len(self.grid))
+        self.input_bookings[["origin_id", "destination_id"]] = \
+            self.input_bookings[["origin_id", "destination_id"]]\
+            .replace(self.grid.new_zone_id.to_dict())
+        self.grid["zone_id"] = self.grid.new_zone_id
+        self.grid = self.grid.reset_index()
+
+        self.get_od_distances()
+        self.od_distances = self.od_distances\
+            .loc[self.valid_zones, self.valid_zones]
+        self.od_distances = self.od_distances.reset_index()
+        self.od_distances.columns = self.od_distances.T.reset_index().index
+
+        self.neighbors, self.neighbors_dict = self.get_neighbors_dicts()
+
+        self.request_rates = self.get_requests_rates()
+
+        self.trip_kdes = self.get_trip_kdes()
 
     def get_od_distances (self):
 
+        # cfr. projection distortion
         self.od_distances = pd.read_pickle\
-            ("./Data/" + self.city_name + "/od_distances.pickle")
+            ("./Data/" + self.city_name + "/od_distances.pickle") * 0.7
 
     def get_neighbors_dicts (self):
 
@@ -139,5 +160,9 @@ class City ():
         self.valid_zones = valid_origin_zones.index\
             .intersection(valid_dest_zones.index)\
             .astype(int)
+
+        self.input_bookings = self.input_bookings.loc\
+            [(self.input_bookings.origin_id.isin(self.valid_zones))\
+             & (self.input_bookings.destination_id.isin(self.valid_zones))]
 
         return self.valid_zones

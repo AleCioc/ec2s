@@ -36,8 +36,8 @@ class EFFCS_Sim ():
         self.available_cars_dict = \
             self.simInput.available_cars_dict
 
-        self.neighbors_cars_dict = \
-            self.simInput.neighbors_cars_dict
+        self.neighbors_dict = \
+            self.simInput.neighbors_dict
 
         self.n_charging_poles_by_zone = \
             self.simInput.n_charging_poles_by_zone
@@ -69,24 +69,18 @@ class EFFCS_Sim ():
         self.list_n_cars_available = []
         self.list_death_cars = []
         self.list_death_cars_zones = []
-		
+
         self.chargingStrategy = \
-			EFFCS_ChargingStrategy\
-				(self.env, 
-				 simInput)
+            EFFCS_ChargingStrategy\
+            (self.env,
+            simInput)
         
     def schedule_booking (self, booking_request, car, zone_id):
 
         self.n_booked_cars += 1
-        
-#        print (zone_id)
+
         self.available_cars_dict\
             [zone_id].remove(car)
-        for neighbor in self.neighbors_cars_dict\
-        [zone_id].keys():
-            self.neighbors_cars_dict[neighbor]\
-                [zone_id]\
-                .remove(car)
         del self.cars_zones[car]
         booking_request["start_soc"] = \
             self.cars_soc_dict[car]
@@ -110,11 +104,6 @@ class EFFCS_Sim ():
 
         self.available_cars_dict\
             [relocation_zone_id].append(car)
-        for neighbor in self.neighbors_cars_dict\
-        [relocation_zone_id].keys():
-            self.neighbors_cars_dict[neighbor]\
-                [relocation_zone_id]\
-                .append(car)
         self.cars_zones[car] = relocation_zone_id
                 
     def process_booking_request(self, booking_request):
@@ -167,7 +156,7 @@ class EFFCS_Sim ():
         max_soc_neighbors = -1
         max_neighbor = None
         if not found_car_flag:
-            for neighbor in self.neighbors_cars_dict\
+            for neighbor in self.neighbors_dict\
             [booking_request["origin_id"]].keys():
                 if len(self.available_cars_dict[neighbor]) and not found_car_flag:
                     available_car_flag = True

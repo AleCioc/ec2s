@@ -49,15 +49,8 @@ class EFFCS_SimInput ():
             
     def get_booking_requests_list (self):
 
-        self.sim_bookings = self.bookings.loc\
-            [(self.bookings.start_time\
-              > self.sim_general_conf["sim_start"])\
-             & (self.bookings.start_time\
-              < self.sim_general_conf["sim_end"])]
-#        print(self.sim_bookings.shape)
-        
         self.booking_requests_list = \
-            self.sim_bookings[[
+            self.input_bookings[[
                     "origin_id",
                     "destination_id",
                     "start_time",
@@ -79,6 +72,7 @@ class EFFCS_SimInput ():
             list(np.random.uniform\
                  (25, 100, self.n_cars)\
                  .astype(int))
+
         self.cars_soc_dict = \
             {i:self.cars_soc_dict[i] for i in range(self.n_cars)}            
 
@@ -86,9 +80,11 @@ class EFFCS_SimInput ():
             list(np.random.uniform\
                  (0, len(self.valid_zones), self.n_cars)\
                  .astype(int))
+
         self.cars_zones = \
-            [self.valid_zones[i] 
+            [self.grid.index[i]
             for i in self.cars_zones]
+
         self.cars_zones = \
             {i:self.cars_zones[i] for i in range(self.n_cars)}            
 
@@ -99,23 +95,12 @@ class EFFCS_SimInput ():
         
         self.available_cars_dict = \
             {int(zone):[] for zone in self.grid.zone_id}
-
-        self.neighbors_cars_dict = \
-            {int(zone):{} for zone in self.grid.zone_id}
-        for zone in range(len(self.neighbors_dict)):
-            for k in self.neighbors_dict[zone]:
-                self.neighbors_cars_dict[zone]\
-                [int(self.neighbors_dict[zone][k])] = []
                     
         for car in range(len(self.cars_zones)):
             zone = self.cars_zones[car]
             self.available_cars_dict[zone] += [car]
-            for neighbor in self.neighbors_cars_dict[zone].keys():
-                self.neighbors_cars_dict[neighbor][zone]\
-                    .append(car)
 
-        return self.available_cars_dict,\
-                self.neighbors_cars_dict
+        return self.available_cars_dict
 
     def init_hub (self):
         

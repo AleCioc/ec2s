@@ -1,8 +1,14 @@
 import sys
-city_name = sys.argv[1]
+city_name = "Torino"
 
 # from Loading.create_input_pickles import run_create_pickles
 # run_create_pickles(city_name)
+
+from DataStructures.City import City
+from SimulationInput.confs.model_validation_conf import sim_general_conf
+city_obj = City \
+    (city_name,
+     sim_general_conf)
 
 from ModelValidation.model_validation import run_model_validation
 run_model_validation(city_name)
