@@ -27,7 +27,7 @@ def plot_ia_validation(ia_threshold, city, sim_reqs_eventG, trace_timeouts):
     plt.xlabel("sim ia times")
     plt.ylabel("trace ia times [s]")
     plt.savefig("./Figures/" + city + "/validation/qq-" + str(ia_threshold))
-    plt.show()
+    # plt.show()
     plt.close()
 
 def plot_tot_reqs_count(group_col, normed, city, sim_reqs_eventG, sim_reqs_traceB):
@@ -53,7 +53,7 @@ def plot_tot_reqs_count(group_col, normed, city, sim_reqs_eventG, sim_reqs_trace
     plt.ylabel("% booking requests")
     plt.legend()
     plt.savefig("./Figures/" + city + "/validation/" + figfilename)
-    plt.show()
+    # plt.show()
     plt.close()
 
 
@@ -88,7 +88,7 @@ def plot_tot_reqs_count_err(group_col, normed, city, sim_reqs_eventG, sim_reqs_t
     plt.xlabel(group_col)
     plt.ylabel("% booking requests")
     plt.savefig("./Figures/" + city + "/validation/" + figfilename)
-    plt.show()
+    # plt.show()
     plt.close()
 
 
@@ -129,7 +129,7 @@ def plot_tot_reqs_count_err_agg(group_col, normed, city, sim_reqs_eventG, sim_re
     plt.xlabel("hour")
     plt.ylabel("% booking requests")
     plt.savefig("./Figures/" + city + "/validation/" + figfilename)
-    plt.show()
+    # plt.show()
     plt.close()
 
 
@@ -149,7 +149,7 @@ def plot_regr_qq_sns(city, sim_reqs_eventG, trace_timeouts):
     plt.legend()
     plt.savefig("Figures/" + city + "/validation/reg1000_sns.png")
     sns.despine()
-    plt.show()
+    # plt.show()
     plt.close()
 
 def plot_od_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
@@ -177,7 +177,7 @@ def plot_od_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
         j = (j + 1) % 2
 
     plt.savefig("./Figures/" + city + "/validation/sp_err.png")
-    plt.show()
+    # plt.show()
     plt.close()
 
 def plot_hourly_daytype_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
@@ -194,5 +194,5 @@ def plot_hourly_daytype_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
     plt.xlabel("hour")
     plt.ylabel("% booking requests")
     plt.savefig("./Figures/" + city + "/validation/sp_hourly_daytype_err.png")
-    plt.show()
+    # plt.show()
     plt.close()

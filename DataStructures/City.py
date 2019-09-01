@@ -1,4 +1,5 @@
 import os
+import datetime
 
 import pandas as pd
 from sklearn.neighbors import KernelDensity
@@ -10,7 +11,6 @@ class City ():
     
     def __init__ (self, city_name, sim_general_conf):
 
-        print (city_name)
         self.city_name = city_name
         self.sim_general_conf = sim_general_conf
 
@@ -20,6 +20,7 @@ class City ():
         self.input_bookings = self.get_input_bookings_filtered()
 
         self.valid_zones = self.get_valid_zones()
+        # print (self.grid.shape, len(self.valid_zones))
 
         self.grid = self.grid.loc[self.valid_zones]
         self.grid["new_zone_id"] = range(len(self.grid))
@@ -29,11 +30,7 @@ class City ():
         self.grid["zone_id"] = self.grid.new_zone_id
         self.grid = self.grid.reset_index()
 
-        self.get_od_distances()
-        self.od_distances = self.od_distances\
-            .loc[self.valid_zones, self.valid_zones]
-        self.od_distances = self.od_distances.reset_index()
-        self.od_distances.columns = self.od_distances.T.reset_index().index
+        self.od_distances = self.get_od_distances()
 
         self.neighbors, self.neighbors_dict = self.get_neighbors_dicts()
 
@@ -43,9 +40,17 @@ class City ():
 
     def get_od_distances (self):
 
+        path = os.path.join("Data", self.city_name, "od_distances.pickle")
+
+        if not os.path.exists(path):
+            points = self.grid.centroid.geometry
+            od_distances = points.apply(lambda p: points.distance(p))
+            od_distances.to_pickle(path)
+
         # cfr. projection distortion
         self.od_distances = pd.read_pickle\
-            ("./Data/" + self.city_name + "/od_distances.pickle") * 0.7
+            (path) * 0.7
+        return self.od_distances
 
     def get_neighbors_dicts (self):
 

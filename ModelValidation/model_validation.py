@@ -58,10 +58,10 @@ def run_model_validation (city):
         sim_reqs_traceB.ia_timeout.loc\
         [sim_reqs_traceB.ia_timeout < 5000]
 
-    # plot_ia_validation(1000, city, sim_reqs_eventG, trace_timeouts)
-    # plot_tot_reqs_count("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)
-    # plot_tot_reqs_count_err("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)
-    # plot_tot_reqs_count_err_agg("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)
-    # plot_regr_qq_sns(city, sim_reqs_eventG, trace_timeouts)
-    # plot_od_err(city, city_obj.grid, sim_reqs_eventG, sim_reqs_traceB)
-    # plot_hourly_daytype_err(city, city_obj.grid, sim_reqs_eventG, sim_reqs_traceB)
+    plot_ia_validation(1000, city, sim_reqs_eventG, trace_timeouts)
+    plot_tot_reqs_count("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)
+    plot_tot_reqs_count_err("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)
+    plot_tot_reqs_count_err_agg("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)
+    plot_regr_qq_sns(city, sim_reqs_eventG, trace_timeouts)
+    plot_od_err(city, city_obj.grid, sim_reqs_eventG, sim_reqs_traceB)
+    plot_hourly_daytype_err(city, city_obj.grid, sim_reqs_eventG, sim_reqs_traceB)
