@@ -12,7 +12,6 @@ from ModelValidation.model_validation_utils import get_plot_samples
 from ModelValidation.model_validation_utils import get_grouped_reqs_count
 from ModelValidation.model_validation_utils import get_day_moments
 from ModelValidation.model_validation_utils import get_od_err
-from ModelValidation.model_validation_utils import get_hourly_daytype_od_err
 
 def plot_ia_validation(ia_threshold, city, sim_reqs_eventG, trace_timeouts):
 
@@ -177,22 +176,5 @@ def plot_od_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
         j = (j + 1) % 2
 
     plt.savefig("./Figures/" + city + "/validation/sp_err.png")
-    # plt.show()
-    plt.close()
-
-def plot_hourly_daytype_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
-
-    spatial_errs_df = \
-        get_hourly_daytype_od_err(grid, sim_reqs_eventG, sim_reqs_traceB)
-
-    sim_reqs_eventG_count, sim_reqs_traceB_count = \
-        get_grouped_reqs_count("hour", sim_reqs_eventG, sim_reqs_traceB)
-
-    (spatial_errs_df.divide(sim_reqs_traceB_count, axis=0)).plot.bar(figsize=(15, 7))
-
-    plt.title("Spatial error by hour and daytype")
-    plt.xlabel("hour")
-    plt.ylabel("% booking requests")
-    plt.savefig("./Figures/" + city + "/validation/sp_hourly_daytype_err.png")
     # plt.show()
     plt.close()

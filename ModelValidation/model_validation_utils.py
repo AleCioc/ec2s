@@ -21,6 +21,7 @@ def get_plot_samples(ia_threshold, sim_reqs_eventG, trace_timeouts):
     return eventG_ia_samples, traceB_ia_samples
 
 def get_grouped_reqs_count(group_col, sim_reqs_eventG, sim_reqs_traceB):
+
     sim_reqs_eventG_count = \
         pd.Series((sim_reqs_eventG\
                    .sort_values("start_time")\
@@ -32,6 +33,60 @@ def get_grouped_reqs_count(group_col, sim_reqs_eventG, sim_reqs_traceB):
                    .groupby(group_col).origin_id.count()), name="traceB")
 
     return sim_reqs_eventG_count, sim_reqs_traceB_count
+
+def get_tot_zones_errs (sim_reqs_eventG, sim_reqs_traceB):
+
+    traceB_origin_count = sim_reqs_traceB.origin_id.value_counts() / len(sim_reqs_traceB)
+    eventG_origin_count = sim_reqs_eventG.origin_id.value_counts() / len(sim_reqs_eventG)
+    zones_origin_errs = (traceB_origin_count - eventG_origin_count)
+
+    traceB_destination_count = sim_reqs_traceB.destination_id.value_counts() / len(sim_reqs_traceB)
+    eventG_destination_count = sim_reqs_eventG.destination_id.value_counts() / len(sim_reqs_eventG)
+    zones_destination_errs = (traceB_destination_count - eventG_destination_count)
+
+    origin_tot_err = zones_origin_errs.abs().max()
+    destination_tot_err = zones_destination_errs.abs().max()
+    print (origin_tot_err, destination_tot_err)
+
+    return zones_origin_errs, zones_destination_errs
+
+def get_grouped_zones_errs (sim_reqs_eventG, sim_reqs_traceB, group_col):
+
+    traceB_origin_count_grouped = \
+        sim_reqs_traceB.groupby(group_col).origin_id.value_counts()\
+        / sim_reqs_traceB.groupby(group_col).origin_id.sum()
+    eventG_origin_count_grouped = \
+        sim_reqs_eventG.groupby(group_col).origin_id.value_counts()\
+        / sim_reqs_eventG.groupby(group_col).origin_id.sum()
+
+    traceB_destination_count_grouped = \
+        sim_reqs_traceB.groupby(group_col).destination_id.value_counts()\
+        / sim_reqs_traceB.groupby(group_col).destination_id.sum()
+    eventG_destination_count_grouped = \
+        sim_reqs_eventG.groupby(group_col).destination_id.value_counts()\
+        / sim_reqs_eventG.groupby(group_col).destination_id.sum()
+
+    origin_tot_err = (traceB_origin_count_grouped - eventG_origin_count_grouped)
+    destination_tot_err = (traceB_destination_count_grouped - eventG_destination_count_grouped)
+    print (origin_tot_err, destination_tot_err)
+
+def get_double_grouped_zones_errs (sim_reqs_eventG, sim_reqs_traceB, group_cols):
+
+    traceB_origin_count_grouped = \
+        sim_reqs_traceB.groupby(group_cols).origin_id.value_counts()
+    eventG_origin_count_grouped = \
+        sim_reqs_eventG.groupby(group_cols).origin_id.value_counts()
+    origin_tot_err =  ((traceB_origin_count_grouped - eventG_origin_count_grouped).abs().sum()\
+           / len(sim_reqs_traceB))
+
+    traceB_destination_count_grouped = \
+        sim_reqs_traceB.groupby(group_cols).destination_id.value_counts()
+    eventG_destination_count_grouped = \
+        sim_reqs_eventG.groupby(group_cols).destination_id.value_counts()
+    destination_tot_err =  ((traceB_destination_count_grouped - eventG_destination_count_grouped).abs().sum()\
+           / len(sim_reqs_traceB))
+
+    print (origin_tot_err, destination_tot_err)
 
 def get_day_moments (sim_reqs_eventG, sim_reqs_traceB):
 
@@ -61,10 +116,10 @@ def get_day_moments (sim_reqs_eventG, sim_reqs_traceB):
 
     return sim_reqs_eventG, sim_reqs_traceB
 
-
 def get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB):
 
     for daymoment in ["night", "morning", "afternoon", "evening"]:
+
         grid["eventG_origin_count_" + daymoment] = \
             sim_reqs_eventG[sim_reqs_eventG.daymoment == daymoment] \
                 .origin_id.value_counts() \
@@ -85,66 +140,23 @@ def get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB):
                 .destination_id.value_counts() \
             / len(sim_reqs_eventG[sim_reqs_eventG.daymoment == daymoment])
 
-        grid["eventG_od_count_diff_" + daymoment] = \
-            grid["eventG_origin_count_" + daymoment] \
-            - grid["eventG_destination_count_" + daymoment]
+        grid["origin_count_diff_" + daymoment] = \
+            (grid["eventG_origin_count_" + daymoment] \
+            - grid["traceB_origin_count_" + daymoment]).abs()
 
-        grid["traceB_od_count_diff_" + daymoment] = \
-            grid["traceB_origin_count_" + daymoment] \
-            - grid["traceB_destination_count_" + daymoment]
+        grid["destinations_od_count_diff_" + daymoment] = \
+            (grid["eventG_destination_count_" + daymoment] \
+            - grid["traceB_destination_count_" + daymoment]).abs()
 
         current_grid = grid.loc \
-            [:, ["eventG_od_count_diff_" + daymoment,
-                 "traceB_od_count_diff_" + daymoment]] \
+            [:, ["origin_count_diff_" + daymoment,
+                 "destinations_od_count_diff_" + daymoment]] \
             .dropna(how="all").fillna(0)
 
         grid["od_count_diff_" + daymoment] = \
-            current_grid["eventG_od_count_diff_" + daymoment] \
-            - current_grid["traceB_od_count_diff_" + daymoment]
+            current_grid["origin_count_diff_" + daymoment] \
+            + current_grid["destinations_od_count_diff_" + daymoment]
+
+        print(grid["od_count_diff_" + daymoment].sum())
 
     return grid
-
-def get_hourly_daytype_od_err(grid, sim_reqs_eventG, sim_reqs_traceB):
-    mi_eventG_origin_count = \
-        sim_reqs_eventG.groupby(["daytype", "hour"]) \
-            .origin_id.value_counts()
-
-    mi_traceB_origin_count = \
-        sim_reqs_traceB.groupby(["daytype", "hour"]) \
-            .origin_id.value_counts()
-
-    mi_eventG_destination_count = \
-        sim_reqs_eventG.groupby(["daytype", "hour"]) \
-            .destination_id.value_counts()
-
-    mi_traceB_destination_count = \
-        sim_reqs_traceB.groupby(["daytype", "hour"]) \
-            .destination_id.value_counts()
-
-    spatial_errs_df = pd.DataFrame()
-
-    for daytype in ["weekday", "weekend"]:
-
-        spatial_errs_df[daytype] = pd.Series(index=range(24))
-
-        for hour in range(24):
-            mi_eventG_od_count_diff = \
-                mi_eventG_origin_count.loc[daytype, hour] \
-                - mi_eventG_destination_count.loc[daytype, hour]
-
-            mi_traceB_od_count_diff = \
-                mi_traceB_origin_count.loc[daytype, hour] \
-                - mi_traceB_destination_count.loc[daytype, hour]
-
-            current_grid = pd.concat \
-                ([mi_eventG_od_count_diff,
-                  mi_traceB_od_count_diff], axis=1) \
-                .dropna(how="all").fillna(0)
-
-            grid["od_count_diff_" + daytype + "_" + str(hour)] = \
-                current_grid[0] - current_grid[1]
-
-            spatial_errs_df.loc[hour, daytype] = \
-                grid["od_count_diff_" + daytype + "_" + str(hour)].sum()
-
-    return spatial_errs_df

@@ -71,15 +71,12 @@ class EventG_EFFCS_Sim (EFFCS_Sim):
             self.current_hour
 
         trip_sample = self.current_trip_kde.sample()
-        # while (trip_sample.astype(int)[0][0] not in self.valid_zones\
-        # and trip_sample.astype(int)[0][1] not in self.valid_zones):
-        #     trip_sample = self.current_trip_kde.sample()
 
         booking_request["origin_id"] = \
-            trip_sample.astype(int)[0][0]
+            abs(trip_sample.astype(int)[0][0]) % len(self.valid_zones)
 
         booking_request["destination_id"] = \
-            trip_sample.astype(int)[0][1]
+            abs(trip_sample.astype(int)[0][1]) % len(self.valid_zones)
 
         booking_request["euclidean_distance"] = \
             self.od_distances.loc\
