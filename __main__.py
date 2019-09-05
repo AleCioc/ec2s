@@ -12,7 +12,7 @@ from SimulationInput.confs.single_run_conf import sim_general_conf
 from SimulationInput.confs.single_run_conf import sim_scenario_conf
 single_run(city_name, "single_run", sim_general_conf, sim_scenario_conf)
 
-from MultipleRun.multiple_runs import multiple_runs
-from SimulationInput.confs.multiple_runs_conf import sim_general_conf
-from SimulationInput.confs.multiple_runs_conf import sim_scenario_conf_grid
-multiple_runs(city_name, "trial", sim_general_conf, sim_scenario_conf_grid)
+# from MultipleRun.multiple_runs import multiple_runs
+# from SimulationInput.confs.multiple_runs_conf import sim_general_conf
+# from SimulationInput.confs.multiple_runs_conf import sim_scenario_conf_grid
+# multiple_runs(city_name, "trial", sim_general_conf, sim_scenario_conf_grid)

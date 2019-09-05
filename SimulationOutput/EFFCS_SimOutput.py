@@ -274,7 +274,11 @@ class EFFCS_SimOutput ():
 #            self.sim_stats.loc["charging_energy_by_" + freq_col + "_med"] = \
 #                self.sim_charges.set_index("start_time")\
 #                .resample(freq_col).soc_delta_kwh.sum().median()
-                
+
+        self.sim_charges["cr_timeout"] = \
+            self.sim_charges.timeout_outward\
+            + self.sim_charges.timeout_return
+
         self.sim_stats.loc["cum_relo_out_t"] = \
             self.sim_charges.timeout_outward.sum() / 60 / 60
             
@@ -288,3 +292,5 @@ class EFFCS_SimOutput ():
         self.sim_stats.loc["cum_relo_khw"] = \
             self.sim_charges.cr_soc_delta_kwh.sum()
 
+        self.sim_stats.loc["avg_hourly_relo_t"] = \
+            self.sim_charges.groupby("hour").cr_timeout.sum().mean()
