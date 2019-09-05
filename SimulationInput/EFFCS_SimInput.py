@@ -113,7 +113,7 @@ class EFFCS_SimInput ():
 
     def init_charging_poles (self):
 
-        if self.sim_scenario_conf["hub_zone_policy"] == "num_parkings":
+        if self.sim_scenario_conf["cps_placement_policy"] == "num_parkings":
 
             top_dest_zones = self.input_bookings\
                 .destination_id.value_counts()\

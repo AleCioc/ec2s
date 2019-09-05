@@ -7,8 +7,9 @@ from sklearn.neighbors import KernelDensity
 from Loading.load_data import get_input_data
 from Loading.load_data import read_sim_input_data
 
-class City ():
-    
+
+class City:
+
     def __init__ (self, city_name, sim_general_conf, kde_bw=5):
 
         self.city_name = city_name
