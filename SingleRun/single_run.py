@@ -8,6 +8,7 @@ from SingleRun.get_eventG_input import get_eventG_input
 from SingleRun.run_eventG_sim import run_eventG_sim
 
 from SimulationOutput.EFFCS_SimOutput import EFFCS_SimOutput
+from SimulationOutput.EFFCS_SimOutputPlotter import EFFCS_SimOutputPlotter
 
 def single_run(city, sim_type, sim_general_conf, sim_scenario_conf):
 
@@ -42,3 +43,24 @@ def single_run(city, sim_type, sim_general_conf, sim_scenario_conf):
     pd.Series(sim_scenario_conf).to_pickle\
         (os.path.join(results_path,
                       "sim_scenario_conf.pickle"))
+
+    plotter = EFFCS_SimOutputPlotter(simOutput_eventG, city, simInput_eventG.grid)
+    plotter.plot_events_profile()
+    plotter.plot_charging_duration_hist()
+    plotter.plot_n_charges_avg()
+    plotter.plot_charging_energy_avg()
+    plotter.plot_n_charges_t()
+    plotter.plot_tot_energy()
+    plotter.plot_fleet_status()
+    plotter.plot_n_cars_charging()
+    plotter.plot_charging_t_hist()
+    plotter.plot_origin_heatmap()
+    plotter.plot_charging_heatmap_system()
+    plotter.plot_charging_heatmap_users()
+    plotter.plot_unsatisfied_t_hist()
+    plotter.plot_unsatisfied_origins_heatmap()
+    plotter.plot_deaths_t_hist()
+    plotter.plot_deaths_origins_heatmap()
+    plotter.plot_charge_deaths_t_hist()
+    plotter.plot_charge_deaths_origins_heatmap()
+    plotter.plot_relo_cost_t()

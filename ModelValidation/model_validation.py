@@ -51,9 +51,9 @@ def run_traceB_eventG (city, sim_general_conf, sim_scenario_conf, kde_bw=0.01):
 
 def run_model_validation (city):
 
-    results_path = os.path.join(os.getcwd(), "Figures", city, "validation")
-    if not os.path.exists(results_path):
-        os.mkdir(results_path)
+    figures_path = os.path.join(os.getcwd(), "Figures", city, "validation")
+    if not os.path.exists(figures_path):
+        os.mkdir(figures_path)
 
     sim_general_conf["city"] = city
     sim_general_conf["bin_side_length"] = 500

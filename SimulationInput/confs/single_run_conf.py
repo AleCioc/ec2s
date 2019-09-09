@@ -26,12 +26,12 @@ sim_scenario_conf = {
     "relocation": False,
     "finite_workers": False,
 
-    "distributed_cps": False,
+    "distributed_cps": True,
     "cps_placement_policy": "num_parkings",
     "n_charging_poles": 20,
     "cps_zones_percentage": 0.1,
 
-    "user_contribution": False,
+    "user_contribution": True,
     "system_cps": False,
     "willingness": 0.99,
 

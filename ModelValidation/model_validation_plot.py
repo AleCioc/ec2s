@@ -78,8 +78,8 @@ def plot_tot_reqs_count_err(group_col, normed, city, sim_reqs_eventG, sim_reqs_t
         title = ""
         figfilename = "_".join([group_col, "reqs-count"])
 
-    print("Total error:",
-          (sim_reqs_eventG_count - sim_reqs_traceB_count).abs().sum())
+    # print("Total error:",
+    #       (sim_reqs_eventG_count - sim_reqs_traceB_count).abs().sum())
 
     (sim_reqs_eventG_count - sim_reqs_traceB_count).abs() \
         .plot.bar(figsize=(15, 7))
@@ -113,8 +113,8 @@ def plot_tot_reqs_count_err_agg(group_col, normed, city, sim_reqs_eventG, sim_re
         title = ""
         figfilename = "_".join(["reqs-count-err"])
 
-    print("Total error:",
-          (sim_reqs_eventG_count - sim_reqs_traceB_count).abs().sum())
+    # print("Total error:",
+    #       (sim_reqs_eventG_count - sim_reqs_traceB_count).abs().sum())
 
     errs_df = pd.DataFrame()
     for daytype in ["weekday", "weekend"]:

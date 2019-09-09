@@ -177,7 +177,6 @@ class EFFCS_Sim ():
             self.sim_unsatisfied_requests += [booking_request]
 
         if not found_car_flag and available_car_flag:
-#            print(booking_request)
             self.n_deaths += 1
             death = copy.deepcopy(booking_request)
             if available_car_flag_same_zone and available_car_flag_not_same_zone:

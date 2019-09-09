@@ -68,7 +68,7 @@ def get_grouped_zones_errs (sim_reqs_eventG, sim_reqs_traceB, group_col):
 
     origin_tot_err = (traceB_origin_count_grouped - eventG_origin_count_grouped)
     destination_tot_err = (traceB_destination_count_grouped - eventG_destination_count_grouped)
-    print (origin_tot_err, destination_tot_err)
+    # print (origin_tot_err, destination_tot_err)
 
 def get_double_grouped_zones_errs (sim_reqs_eventG, sim_reqs_traceB, group_cols):
 
@@ -86,7 +86,7 @@ def get_double_grouped_zones_errs (sim_reqs_eventG, sim_reqs_traceB, group_cols)
     destination_tot_err =  ((traceB_destination_count_grouped - eventG_destination_count_grouped).abs().sum()\
            / len(sim_reqs_traceB))
 
-    print (origin_tot_err, destination_tot_err)
+    # print (origin_tot_err, destination_tot_err)
 
 def get_day_moments (sim_reqs_eventG, sim_reqs_traceB):
 
@@ -157,6 +157,6 @@ def get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB):
             current_grid["origin_count_diff_" + daymoment] \
             + current_grid["destinations_od_count_diff_" + daymoment]
 
-        print(grid["od_count_diff_" + daymoment].sum())
+        # print(grid["od_count_diff_" + daymoment].sum())
 
     return grid
