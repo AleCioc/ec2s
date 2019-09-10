@@ -32,7 +32,7 @@ class EFFCS_SimInput ():
             len(self.bookings.plate.unique())
 
         self.n_cars = \
-            abs(self.n_cars_original * self.sim_scenario_conf["n_cars_factor"])
+            int(abs(self.n_cars_original * self.sim_scenario_conf["n_cars_factor"]))
 
         self.sim_general_conf["n_cars"] = self.n_cars
 
