@@ -10,7 +10,7 @@ from Loading.load_data import read_sim_input_data
 
 class City:
 
-    def __init__ (self, city_name, sim_general_conf, kde_bw=1):
+    def __init__ (self, city_name, sim_general_conf, kde_bw=0.01):
 
         self.city_name = city_name
         self.sim_general_conf = sim_general_conf
