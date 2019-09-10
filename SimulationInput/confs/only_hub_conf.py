@@ -13,18 +13,18 @@ sim_general_conf = {
 sim_scenario_conf_grid = {
 
     "requests_rate_factor": [1],
-    "n_cars_factor": [1],
+    "n_cars_factor": [0.3, 0.5, 0.75, 0.9],
 
     "time_estimation": [True, False],
     "queuing": [True, False],
     "alpha": [25],
-    "beta": [60, 80, 100],
+    "beta": [60],
 
     "hub": [True],
     "hub_zone_policy": ["num_parkings"],
-    "hub_n_charging_poles": np.arange(20, 80, 5),
+    "hub_n_charging_poles": np.arange(20, 80, 3),
 
-    "relocation": [True],
+    "relocation": [False],
     "finite_workers": [False],
 
     "distributed_cps": [False],

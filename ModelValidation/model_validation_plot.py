@@ -106,9 +106,9 @@ def plot_tot_reqs_count_err_agg(group_col, normed, city, sim_reqs_eventG, sim_re
         title = "normalised"
         figfilename = "_".join(["reqs-count-err-norm"])
         sim_reqs_eventG_count = \
-            sim_reqs_eventG_count / len(sim_reqs_eventG)
+            sim_reqs_eventG_count
         sim_reqs_traceB_count = \
-            sim_reqs_traceB_count / len(sim_reqs_traceB)
+            sim_reqs_traceB_count
     else:
         title = ""
         figfilename = "_".join(["reqs-count-err"])
@@ -119,8 +119,9 @@ def plot_tot_reqs_count_err_agg(group_col, normed, city, sim_reqs_eventG, sim_re
     errs_df = pd.DataFrame()
     for daytype in ["weekday", "weekend"]:
         errs_df[daytype] = \
-            sim_reqs_eventG_count.loc[daytype] \
-            - sim_reqs_traceB_count.loc[daytype]
+            (sim_reqs_eventG_count.loc[daytype] \
+            - sim_reqs_traceB_count.loc[daytype]) \
+                / sim_reqs_traceB_count.sum()
 
     (errs_df).abs() \
         .plot.bar(figsize=(15, 7))
