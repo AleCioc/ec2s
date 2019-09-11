@@ -11,9 +11,16 @@ from SimulationInput.EFFCS_SimConfGrid import EFFCS_SimConfGrid
 from SingleRun.get_eventG_input import get_eventG_input
 from SingleRun.run_eventG_sim import get_eventG_sim_stats
 
-def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid, n_cores = 4):
+def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
+                  n_cores = 4, sim_scenario_name="trial"):
 
-    results_path = os.path.join(os.getcwd(), "Results", city, sim_type)
+    results_path = os.path.join\
+        (os.getcwd(), "Results", city, "multiple_runs")
+    if not os.path.exists(results_path):
+        os.mkdir(results_path)
+
+    results_path = os.path.join \
+        (os.getcwd(), "Results", city, "multiple_runs", sim_scenario_name)
     if not os.path.exists(results_path):
         os.mkdir(results_path)
 
@@ -51,7 +58,7 @@ def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid, n_co
 
     sim_stats_df.to_pickle\
         (os.path.join(results_path,
-                      sim_type + ".pickle"))
+                      "sim_stats.pickle"))
 
     pd.Series(sim_general_conf).to_pickle\
         (os.path.join(results_path,
@@ -60,3 +67,4 @@ def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid, n_co
     pd.Series(sim_scenario_conf_grid).to_pickle\
         (os.path.join(results_path,
                       "sim_scenario_conf_grid.pickle"))
+

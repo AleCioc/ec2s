@@ -9,11 +9,15 @@ matplotlib.rcParams["figure.figsize"] = (15., 7.)
 
 class EFFCS_SimOutputPlotter ():
     
-    def __init__ (self, simOutput, city, grid):
+    def __init__ (self, simOutput, city, grid, sim_scenario_name = "trial"):
 
         self.city = city
 
         self.figures_path = os.path.join(os.getcwd(), "Figures", self.city, "single_run")
+        if not os.path.exists(self.figures_path):
+            os.mkdir(self.figures_path)
+        self.figures_path = os.path.join\
+            (os.getcwd(), "Figures", self.city, "single_run", sim_scenario_name)
         if not os.path.exists(self.figures_path):
             os.mkdir(self.figures_path)
 
@@ -255,14 +259,14 @@ class EFFCS_SimOutputPlotter ():
         # plt.show()
         plt.close()
 
-    def plot_charging_heatmap_system (self):
+    def plot_charging_needed_heatmap_system (self):
 
         fig,ax = plt.subplots(1,1,figsize=(15,15))
         self.grid["charge_needed_system_zones_count"] = \
            self.sim_system_charges_bookings.destination_id.value_counts()
         self.grid.dropna(subset=["charge_needed_system_zones_count"])\
            .plot(column="charge_needed_system_zones_count", ax=ax, legend=True)
-        plt.title("system charging locations heatmap")
+        plt.title("system charging needed locations heatmap")
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
@@ -270,14 +274,14 @@ class EFFCS_SimOutputPlotter ():
         # plt.show()
         plt.close()
 
-    def plot_charging_heatmap_users (self):
+    def plot_charging_needed_heatmap_users (self):
 
         fig,ax = plt.subplots(1,1,figsize=(15,15))
         self.grid["charge_needed_users_zones_count"] = \
            self.sim_users_charges_bookings.destination_id.value_counts()
         self.grid.dropna(subset=["charge_needed_users_zones_count"])\
            .plot(column="charge_needed_users_zones_count", ax=ax, legend=True)
-        plt.title("users charging locations heatmap")
+        plt.title("users charging needed locations heatmap")
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
