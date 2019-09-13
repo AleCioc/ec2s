@@ -22,15 +22,17 @@ class City:
         self.input_bookings = self.get_input_bookings_filtered()
 
         self.valid_zones = self.get_valid_zones()
-        # print (self.grid.shape, len(self.valid_zones))
 
         self.grid = self.grid.loc[self.valid_zones]
         self.grid["new_zone_id"] = range(len(self.grid))
         self.input_bookings[["origin_id", "destination_id"]] = \
             self.input_bookings[["origin_id", "destination_id"]]\
-            .replace(self.grid.new_zone_id.to_dict())
+            .astype(int).replace(self.grid.new_zone_id.to_dict())
         self.grid["zone_id"] = self.grid.new_zone_id
         self.grid = self.grid.reset_index()
+
+        self.original_valid_zones = self.valid_zones.copy()
+        self.valid_zones = self.grid.index
 
         self.od_distances = self.get_od_distances()
 
@@ -52,6 +54,7 @@ class City:
         # cfr. projection distortion
         self.od_distances = pd.read_pickle\
             (path) * 0.7
+
         return self.od_distances
 
     def get_neighbors_dicts (self):
