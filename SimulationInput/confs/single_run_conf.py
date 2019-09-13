@@ -14,14 +14,14 @@ sim_scenario_conf = {
     "requests_rate_factor": 1,
     "n_cars_factor": 1,
 
-    "time_estimation": False,
+    "time_estimation": True,
     "queuing": True,
     "alpha": 25,
-    "beta": 100,
+    "beta": 60,
 
     "hub": True,
     "hub_zone_policy": "num_parkings",
-    "hub_n_charging_poles": 60,
+    "n_poles_n_cars_factor": 0.2,
 
     "relocation": False,
     "finite_workers": False,

@@ -19,12 +19,11 @@ class EFFCS_MultipleRunsPlotter():
 
         self.sim_stats_df = sim_stats_df.copy()
 
-        self.sim_stats_df.loc[:, "poles_cars_factor"] = \
-            self.sim_stats_df.hub_n_charging_poles / self.sim_stats_df.n_cars
-
         self.sim_stats_df["percentage_unsatisfied"] = \
             1.0 - self.sim_stats_df["percentage_satisfied"]
         self.sim_stats_df = self.sim_stats_df[self.sim_stats_df.time_estimation == True]
+
+        idxmin = self.sim_stats_df.percentage_unsatisfied.sort_values().index[0]
 
         self.city = city
 
@@ -35,7 +34,6 @@ class EFFCS_MultipleRunsPlotter():
             (os.getcwd(), "Figures", self.city, "multiple_runs", sim_scenario_name)
         if not os.path.exists(self.figures_path):
             os.mkdir(self.figures_path)
-
 
     def plot_events_profiles_qnoq_best \
         (self,
@@ -70,32 +68,25 @@ class EFFCS_MultipleRunsPlotter():
     def plot_cross_sections_beta_n_cars_qnoq (
             self, 
             x_col="hub_n_charging_poles", 
-            param_col="beta"):
+            param_col="beta",
+            n_cars_factor=0.9,
+            beta=60):
 
         results_df = self.sim_stats_df
 
         results_df_q_best_n_cars = \
             results_df[(results_df.queuing == True) \
-                    & (results_df.n_cars_factor == 0.9)]
-
-        results_df_noq_best_n_cars = \
-            results_df[(results_df.queuing == False) \
-                    & (results_df.n_cars_factor == 0.9)]
+                    & (results_df.n_cars_factor == n_cars_factor)]
 
         results_df_q_best_beta = \
             results_df[(results_df.queuing == True) \
-                    & (results_df.beta == 100)]
-
-        results_df_noq_best_beta = \
-            results_df[(results_df.queuing == False) \
-                    & (results_df.beta == 100)]
+                    & (results_df.beta == beta)]
 
         x_col = x_col
         param_col = param_col
 
-        for y_col in ["percentage_unsatisfied", 
-                        "percentage_deaths_unsatisfied", 
-                        "percentage_no_close_cars_unsatisfied"]:
+        for y_col in ["percentage_unsatisfied",
+                      "cum_relo_t"]:
 
             if param_col == "n_cars_factor":
 
@@ -104,18 +95,9 @@ class EFFCS_MultipleRunsPlotter():
                      x_col, 
                      y_col, 
                      param_col,
-                     "queuing",
+                     "beta = " + str(beta),
                      figpath=self.figures_path,
-                     figname="_".join([y_col, param_col, "q"]))
-
-                plot_param_cross_section \
-                    (results_df_noq_best_beta,
-                     x_col, 
-                     y_col, 
-                     param_col,
-                     "no queuing",
-                     figpath=self.figures_path,
-                     figname="_".join([y_col, param_col, "noq"]))
+                     figname="_".join([y_col, param_col]))
 
             elif param_col == "beta":
 
@@ -124,20 +106,12 @@ class EFFCS_MultipleRunsPlotter():
                      x_col, 
                      y_col, 
                      param_col,
-                     "queuing",
+                     "n_cars_factor = " + str(n_cars_factor),
                      figpath=self.figures_path,
-                     figname="_".join([y_col, param_col, "q"]))
+                     figname="_".join([y_col, param_col]))
 
-                plot_param_cross_section \
-                    (results_df_noq_best_n_cars,
-                     x_col, 
-                     y_col, 
-                     param_col,
-                     "no queuing",
-                     figpath=self.figures_path,
-                     figname="_".join([y_col, param_col, "noq"]))
- 
-    def plot_3d (self, df_plot, x_col, y_col, z_col):
+    def plot_3d (self, df_plot, x_col, y_col, z_col, fixed_param_col, fixed_param_value,
+                 title_add=""):
 
         table = pd.pivot(df_plot,
                        values=z_col,
@@ -151,10 +125,11 @@ class EFFCS_MultipleRunsPlotter():
         ax.set_xlabel(x_col)
         ax.set_ylabel(y_col)
         ax.set_zlabel(z_col)
-        plt.title(z_col + " = f (" + x_col + ", " + y_col + ")")
-        plt.savefig(os.path.join(self.figures_path, "_".join([z_col, x_col, y_col, "q_3d"])))
-        plt.show()
-        
+        plt.title(z_col + " = f (" + x_col + ", " + y_col + ")" + title_add)
+
+        plt.savefig(os.path.join(self.figures_path, "_".join\
+            ([z_col, x_col, y_col, fixed_param_col, str(fixed_param_value), ".png"])))
+
     def plot_beta_n_cars_3d (self, 
                             z_col='percentage_unsatisfied',
                             x_col="n_cars_factor",
@@ -166,12 +141,26 @@ class EFFCS_MultipleRunsPlotter():
 
         results_df_q = \
             results_df[(results_df.queuing == True)]
-
         df_plot = results_df_q[results_df_q.hub_n_charging_poles == hub_n_charging_poles]
+        self.plot_3d(df_plot, x_col, y_col, z_col, "hub_n_charging_poles", hub_n_charging_poles,
+                     title_add=", hub_n_charging_poles = " + str(hub_n_charging_poles))
 
-        self.plot_3d(df_plot, x_col, y_col, z_col)        
+    def plot_beta_n_poles_3d (self,
+                            z_col='percentage_unsatisfied',
+                            x_col="beta",
+                            y_col="hub_n_charging_poles",
+                            n_cars_factor=0.9
+                            ):
 
-    def plot_n_poles_n_cars_3d (self, 
+        results_df = self.sim_stats_df
+
+        results_df_q = \
+            results_df[(results_df.queuing == True)]
+        df_plot = results_df_q[results_df_q.n_cars_factor == n_cars_factor]
+        self.plot_3d(df_plot, x_col, y_col, z_col, "n_cars_factor", n_cars_factor,
+                     title_add=", n_cars_factor = " + str(n_cars_factor))
+
+    def plot_n_poles_n_cars_3d (self,
                             z_col='percentage_unsatisfied',
                             x_col="n_cars_factor",
                             y_col="hub_n_charging_poles",
@@ -182,7 +171,6 @@ class EFFCS_MultipleRunsPlotter():
 
         results_df_q = \
             results_df[(results_df.queuing == True)]
-
         df_plot = results_df_q[results_df_q.beta == beta]
-
-        self.plot_3d(df_plot, x_col, y_col, z_col)
+        self.plot_3d(df_plot, x_col, y_col, z_col, "beta", beta,
+                     title_add=", beta = " + str(beta))

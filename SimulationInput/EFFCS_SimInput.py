@@ -34,10 +34,13 @@ class EFFCS_SimInput ():
         self.n_cars = \
             int(abs(self.n_cars_original * self.sim_scenario_conf["n_cars_factor"]))
 
+        self.hub_n_charging_poles = \
+            int(abs(self.n_cars * self.sim_scenario_conf["n_poles_n_cars_factor"]))
+
         self.sim_general_conf["n_cars"] = self.n_cars
 
-        self.hub_n_charging_poles = \
-            self.sim_scenario_conf["hub_n_charging_poles"]
+        self.sim_scenario_conf["hub_n_charging_poles"] = \
+            self.hub_n_charging_poles
 
         self.n_charging_poles = \
             self.sim_scenario_conf["n_charging_poles"]
