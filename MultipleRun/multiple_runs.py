@@ -13,37 +13,45 @@ from SingleRun.run_eventG_sim import get_eventG_sim_stats
 
 from SimulationOutput.EFFCS_MultipleRunsPlotter import EFFCS_MultipleRunsPlotter
 
-def plot_multiple_runs (sim_stats_df, city, sim_scenario_name):
+def plot_multiple_runs (city_name,
+                        sim_scenario_name):
+
+    results_path = os.path.join \
+        (os.getcwd(), "Results", city_name, "multiple_runs", sim_scenario_name, "sim_stats.pickle")
+    sim_stats_df = pd.read_pickle(results_path)
 
     plotter = EFFCS_MultipleRunsPlotter(sim_stats_df,
-                                        city,
+                                        city_name,
                                         sim_scenario_name)
 
     x_col = "hub_n_charging_poles"
-
-    plotter.plot_events_profiles_qnoq_best\
-        (x_col=x_col)
-
-    plotter.plot_cross_sections_beta_n_cars_qnoq\
-        (x_col=x_col,
-         param_col="beta")
-
-    plotter.plot_cross_sections_beta_n_cars_qnoq\
-        (x_col=x_col,
-         param_col="n_cars_factor")
+    y_col = "n_cars_factor"
+    fixed_param_col = "beta"
 
     for z_col in ["percentage_unsatisfied",
                   "cum_relo_t"]:
+        for fixed_param_value in sim_stats_df[fixed_param_col].unique():
+            plotter.plot_3d\
+                (x_col=x_col,
+                 y_col=y_col,
+                 z_col=z_col,
+                 fixed_param_col=fixed_param_col,
+                 fixed_param_value=fixed_param_value,
+                 title_add=fixed_param_col + "=" + str(fixed_param_value))
 
-        print (z_col)
+    plotter.plot_cross_sections\
+        (x_col=x_col,
+         param_col="beta",
+         fixed_params_dict={"n_cars_factor":0.9})
 
-        plotter.plot_beta_n_cars_3d\
-            (z_col=z_col)
-        plotter.plot_n_poles_n_cars_3d\
-            (z_col=z_col)
-        plotter.plot_beta_n_poles_3d\
-            (z_col=z_col)
+    plotter.plot_cross_sections\
+        (x_col=x_col,
+         param_col="n_cars_factor",
+         fixed_params_dict={"beta":60})
 
+    plotter.plot_events_profiles\
+        (x_col=x_col,
+         params_dict={"n_cars_factor":0.9, "beta":60})
 
 def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
                   n_cores = 4, sim_scenario_name="trial"):
@@ -101,10 +109,3 @@ def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
     pd.Series(sim_scenario_conf_grid).to_pickle\
         (os.path.join(results_path,
                       "sim_scenario_conf_grid.pickle"))
-
-    import pandas as pd
-    results_path = os.path.join \
-        (os.getcwd(), "Results", city, "multiple_runs", "only_hub", "sim_stats.pickle")
-    sim_stats_df = pd.read_pickle(results_path)
-
-    plot_multiple_runs (sim_stats_df, city, sim_scenario_name)

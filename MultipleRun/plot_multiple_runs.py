@@ -51,12 +51,12 @@ def plot_param_cross_section (results_df,
                               x_col, 
                               y_col, 
                               param_col,
-                              title_add,
                               figpath,
-                              figname):
+                              figname,
+                              fixed_params_dict):
 
     plt.figure(figsize=(15, 7))
-    plt.title(y_col + ", " + title_add)
+    plt.title(y_col + ", varying " + param_col + ", " + str(fixed_params_dict))
     plt.ylabel(y_col)
     plt.xlabel(x_col)
     for param_value in results_df[param_col].unique():
