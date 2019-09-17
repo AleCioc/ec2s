@@ -13,38 +13,43 @@ def plot_events_percentage (sim_stats_df,
                             figname):
 
     plt.figure(figsize=(15, 7))
-    plt.title("Percentage of events" + title_add)    
-
-    plt.plot(sim_stats_df[x_col], 
-         sim_stats_df.percentage_satisfied, 
-         label = "satisfied",
-         marker="o")
+    plt.title("Percentage of satisfied events" + title_add)
+    plt.ylim(0, 1)
     
     plt.plot(sim_stats_df[x_col], 
-         sim_stats_df.percentage_same_zone_trips, 
+         sim_stats_df.percentage_same_zone_trips_satisfied, 
          label = "same zone",
          marker="o")
     
     plt.plot(sim_stats_df[x_col], 
-         sim_stats_df.percentage_not_same_zone_trips, 
+         sim_stats_df.percentage_not_same_zone_trips_satisfied, 
          label = "neighbor zone",
          marker="o")
-    
+
+    plt.xlabel(x_col)
+    plt.ylabel("percentage of satisfied events")
+    plt.legend()
+    plt.savefig(os.path.join(figpath, figname + "_satisfied"))
+    plt.close()
+
+    plt.figure(figsize=(15, 7))
+    plt.title("Percentage of unsatisfied events" + title_add)
+    plt.ylim(0, 1)
+
     plt.plot(sim_stats_df[x_col], 
-         sim_stats_df.percentage_deaths, 
-         label = "deaths",
+         sim_stats_df.percentage_deaths_unsatisfied, 
+         label = "not enough energy",
          marker="o")
     
     plt.plot(sim_stats_df[x_col], 
-         sim_stats_df.percentage_no_close_cars, 
+         sim_stats_df.percentage_no_close_cars_unsatisfied, 
          label = "no available cars",
          marker="o")
-    
+
     plt.xlabel(x_col)
-    plt.ylabel("percentage of events")
+    plt.ylabel("percentage of unsatisfied events")
     plt.legend()
-    plt.savefig(os.path.join(figpath,figname))
-#    plt.show()
+    plt.savefig(os.path.join(figpath, figname + "_unsatisfied"))
     plt.close()
 
 def plot_param_cross_section (results_df, 

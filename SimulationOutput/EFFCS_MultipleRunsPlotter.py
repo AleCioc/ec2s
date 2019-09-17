@@ -22,6 +22,8 @@ class EFFCS_MultipleRunsPlotter():
         self.sim_stats_df["percentage_unsatisfied"] = \
             1.0 - self.sim_stats_df["percentage_satisfied"]
         self.sim_stats_df = self.sim_stats_df[self.sim_stats_df.time_estimation == True]
+        self.sim_stats_df.n_cars_factor = \
+            self.sim_stats_df.n_cars_factor.apply(lambda x: np.around(x, decimals=2))
 
         idxmin = self.sim_stats_df.percentage_unsatisfied.sort_values().index[0]
 
@@ -69,10 +71,11 @@ class EFFCS_MultipleRunsPlotter():
             ([z_col, x_col, y_col, fixed_param_col, str(fixed_param_value), "3d.png"])))
 
     def plot_cross_sections (
-            self, 
-            x_col="hub_n_charging_poles", 
-            param_col="beta",
-            fixed_params_dict={}):
+            self,
+            y_col,
+            x_col,
+            param_col,
+            fixed_params_dict):
 
         results_df = self.sim_stats_df
 
@@ -82,25 +85,23 @@ class EFFCS_MultipleRunsPlotter():
             results_df_q = results_df_q\
                 [results_df_q[fixed_param_col] == fixed_params_dict[fixed_param_col]]
 
-        for y_col in ["percentage_unsatisfied",
-                      "cum_relo_t"]:
-
-            plot_param_cross_section \
-                (results_df_q,
-                 x_col,
-                 y_col,
-                 param_col,
-                 figpath=self.figures_path,
-                 figname="_".join\
-                     ([y_col, param_col] +
-                      ["_".join([t[0], str(t[1]).replace(".","-")])
-                       for t in fixed_params_dict.items()]),
-                 fixed_params_dict=fixed_params_dict)
+        plot_param_cross_section \
+            (results_df_q,
+             x_col,
+             y_col,
+             param_col,
+             figpath=self.figures_path,
+             figname="_".join\
+                 ([y_col, param_col] +
+                  ["_".join([t[0], str(t[1]).replace(".","-")])
+                   for t in fixed_params_dict.items()]),
+             fixed_params_dict=fixed_params_dict)
 
     def plot_events_profiles \
         (self,
          x_col,
-         params_dict):
+         params_dict,
+         figname_add=""):
 
         results_df = self.sim_stats_df
 
@@ -116,4 +117,4 @@ class EFFCS_MultipleRunsPlotter():
              x_col=x_col,
              title_add=str(params_dict),
              figpath=self.figures_path,
-             figname="events_profile")
+             figname="events_profile" + figname_add)

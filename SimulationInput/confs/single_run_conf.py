@@ -19,20 +19,19 @@ sim_scenario_conf = {
     "alpha": 25,
     "beta": 60,
 
-    "hub": True,
+    "hub": False,
     "hub_zone_policy": "num_parkings",
     "n_poles_n_cars_factor": 0.2,
 
     "relocation": False,
     "finite_workers": False,
 
-    "distributed_cps": False,
+    "distributed_cps": True,
     "cps_placement_policy": "num_parkings",
-    "n_charging_poles": 20,
     "cps_zones_percentage": 0.1,
 
-    "user_contribution": False,
-    "system_cps": False,
-    "willingness": 0.99,
+    "user_contribution": True,
+    "system_cps": True,
+    "willingness": 0.0,
 
 }

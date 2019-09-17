@@ -24,34 +24,43 @@ def plot_multiple_runs (city_name,
                                         city_name,
                                         sim_scenario_name)
 
-    x_col = "hub_n_charging_poles"
+    x_col = "n_poles_n_cars_factor"
     y_col = "n_cars_factor"
     fixed_param_col = "beta"
 
     for z_col in ["percentage_unsatisfied",
                   "cum_relo_t"]:
-        for fixed_param_value in sim_stats_df[fixed_param_col].unique():
-            plotter.plot_3d\
-                (x_col=x_col,
-                 y_col=y_col,
-                 z_col=z_col,
-                 fixed_param_col=fixed_param_col,
-                 fixed_param_value=fixed_param_value,
-                 title_add=fixed_param_col + "=" + str(fixed_param_value))
 
-    plotter.plot_cross_sections\
-        (x_col=x_col,
-         param_col="beta",
-         fixed_params_dict={"n_cars_factor":0.9})
+        # for fixed_param_value in sim_stats_df[fixed_param_col].unique():
+        #     plotter.plot_3d\
+        #         (x_col=x_col,
+        #          y_col=y_col,
+        #          z_col=z_col,
+        #          fixed_param_col=fixed_param_col,
+        #          fixed_param_value=fixed_param_value,
+        #          title_add=fixed_param_col + "=" + str(fixed_param_value))
 
-    plotter.plot_cross_sections\
-        (x_col=x_col,
-         param_col="n_cars_factor",
-         fixed_params_dict={"beta":60})
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="beta",
+             fixed_params_dict={"n_cars_factor":0.9})
+
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="n_cars_factor",
+             fixed_params_dict={"beta":60})
 
     plotter.plot_events_profiles\
         (x_col=x_col,
-         params_dict={"n_cars_factor":0.9, "beta":60})
+         params_dict={"n_cars_factor": 1.5, "beta":60},
+         figname_add="_min_unsatisfied")
+
+    plotter.plot_events_profiles\
+        (x_col=x_col,
+         params_dict={"n_cars_factor": 0.5, "beta":100},
+         figname_add="_min_cost")
 
 def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
                   n_cores = 4, sim_scenario_name="trial"):

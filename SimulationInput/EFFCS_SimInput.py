@@ -34,22 +34,35 @@ class EFFCS_SimInput ():
         self.n_cars = \
             int(abs(self.n_cars_original * self.sim_scenario_conf["n_cars_factor"]))
 
-        self.hub_n_charging_poles = \
-            int(abs(self.n_cars * self.sim_scenario_conf["n_poles_n_cars_factor"]))
+        if self.sim_scenario_conf["hub"]\
+        and not self.sim_scenario_conf["distributed_cps"]:
+            self.hub_n_charging_poles = \
+                int(abs(self.n_cars * self.sim_scenario_conf["n_poles_n_cars_factor"]))
+            self.sim_scenario_conf["hub_n_charging_poles"] = \
+                self.hub_n_charging_poles
+
+        elif not self.sim_scenario_conf["hub"]\
+        and self.sim_scenario_conf["distributed_cps"]:
+            self.n_charging_poles = \
+                int(abs(self.n_cars * self.sim_scenario_conf["n_poles_n_cars_factor"]))
+            self.sim_scenario_conf["n_charging_poles"] = \
+                self.n_charging_poles
+
+        elif self.sim_scenario_conf["hub"] \
+        and self.sim_scenario_conf["distributed_cps"]:
+
+            self.n_charging_poles = \
+                int(abs(self.n_cars * self.sim_scenario_conf["n_poles_n_cars_factor"])) / 2
+            self.sim_scenario_conf["n_charging_poles"] = \
+                self.n_charging_poles
+
+            self.hub_n_charging_poles = \
+                int(abs(self.n_cars * self.sim_scenario_conf["n_poles_n_cars_factor"])) / 2
+            self.sim_scenario_conf["hub_n_charging_poles"] = \
+                self.hub_n_charging_poles
 
         self.sim_general_conf["n_cars"] = self.n_cars
 
-        self.sim_scenario_conf["hub_n_charging_poles"] = \
-            self.hub_n_charging_poles
-
-        self.n_charging_poles = \
-            self.sim_scenario_conf["n_charging_poles"]
-
-        if self.sim_scenario_conf["cps_placement_policy"] == "num_parkings":
-            self.n_charging_zones = \
-                int(self.sim_scenario_conf["cps_zones_percentage"]\
-                * len(self.valid_zones))
-            
     def get_booking_requests_list (self):
 
         self.booking_requests_list = \
@@ -117,6 +130,10 @@ class EFFCS_SimInput ():
     def init_charging_poles (self):
 
         if self.sim_scenario_conf["cps_placement_policy"] == "num_parkings":
+
+            self.n_charging_zones = \
+                int(self.sim_scenario_conf["cps_zones_percentage"]\
+                * len(self.valid_zones))
 
             top_dest_zones = self.input_bookings\
                 .destination_id.value_counts()\
