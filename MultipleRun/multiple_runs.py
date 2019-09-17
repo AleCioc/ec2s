@@ -1,4 +1,5 @@
 import os
+import datetime
 import multiprocessing as mp
 
 import numpy as np
@@ -103,7 +104,7 @@ def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
             pool_stats_list += pool.map\
                 (get_eventG_sim_stats, sim_inputs)
 
-            print ("Batch", i%n_cores)
+            print ("Batch", i / n_cores, datetime.datetime.now())
 
     sim_stats_df = pd.concat\
         ([sim_stats for sim_stats in pool_stats_list],

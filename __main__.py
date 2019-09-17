@@ -10,11 +10,21 @@ from SingleRun.single_run import single_run
 from MultipleRun.multiple_runs import multiple_runs
 from MultipleRun.multiple_runs import plot_multiple_runs
 
+confs_dict = {}
+from SimulationInput.confs.multiple_runs_conf import sim_general_conf
+from SimulationInput.confs.only_hub_conf import sim_scenario_conf_grid
+confs_dict["only_hub"] = sim_scenario_conf_grid
+from SimulationInput.confs.only_cps_conf import sim_scenario_conf_grid
+confs_dict["only_cps"] = sim_scenario_conf_grid
+from SimulationInput.confs.hub_cps_conf import sim_scenario_conf_grid
+confs_dict["hub_cps"] = sim_scenario_conf_grid
+
 print (sys.argv[2:])
 n_cores = sys.argv[1]
 print(n_cores)
+sim_scenario_name = sys.argv[2]
 
-for city_name in sys.argv[2:]:
+for city_name in sys.argv[3:]:
 
     print (datetime.datetime.now(), city_name)
 
@@ -45,33 +55,13 @@ for city_name in sys.argv[2:]:
     # from SimulationInput.confs.single_run_conf import sim_scenario_conf
     # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", "hub_cps")
 
-    # from SimulationInput.confs.multiple_runs_conf import sim_general_conf
-    # from SimulationInput.confs.only_hub_conf import sim_scenario_conf_grid
-    # multiple_runs(city_name,
-    #               "multiple_runs",
-    #               sim_general_conf,
-    #               sim_scenario_conf_grid,
-    #               int(n_cores),
-    #               sim_scenario_name="only_hub")
-
-    # from SimulationInput.confs.multiple_runs_conf import sim_general_conf
-    # from SimulationInput.confs.only_cps_conf import sim_scenario_conf_grid
-    # multiple_runs(city_name,
-    #               "multiple_runs",
-    #               sim_general_conf,
-    #               sim_scenario_conf_grid,
-    #               int(n_cores),
-    #               sim_scenario_name="only_cps")
-
-    from SimulationInput.confs.multiple_runs_conf import sim_general_conf
-    from SimulationInput.confs.hub_cps_conf import sim_scenario_conf_grid
     multiple_runs(city_name,
                   "multiple_runs",
                   sim_general_conf,
-                  sim_scenario_conf_grid,
+                  confs_dict[sim_scenario_name],
                   int(n_cores),
-                  sim_scenario_name="hub_cps")
+                  sim_scenario_name=sim_scenario_name)
 
-    # plot_multiple_runs (city_name, "only_hub")
+    # plot_multiple_runs (city_name, sim_scenario_name)
 
 print (datetime.datetime.now())
