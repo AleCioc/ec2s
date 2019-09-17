@@ -29,7 +29,7 @@ def plot_events_percentage (sim_stats_df,
     plt.xlabel(x_col)
     plt.ylabel("percentage of satisfied events")
     plt.legend()
-    plt.savefig(os.path.join(figpath, figname + "_satisfied"))
+    plt.savefig(os.path.join(figpath, figname + "_satisfied", ".pdf"))
     plt.close()
 
     plt.figure(figsize=(15, 7))
@@ -49,7 +49,7 @@ def plot_events_percentage (sim_stats_df,
     plt.xlabel(x_col)
     plt.ylabel("percentage of unsatisfied events")
     plt.legend()
-    plt.savefig(os.path.join(figpath, figname + "_unsatisfied"))
+    plt.savefig(os.path.join(figpath, figname + "_unsatisfied", ".pdf"))
     plt.close()
 
 def plot_param_cross_section (results_df, 
@@ -73,7 +73,7 @@ def plot_param_cross_section (results_df,
                  label=param_col + "=" + str(param_value))
     
     plt.legend()
-    plt.savefig(os.path.join(figpath, figname))
+    plt.savefig(os.path.join(figpath, figname, ".pdf"))
 #    plt.show()
     plt.close()
 
