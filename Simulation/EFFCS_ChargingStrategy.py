@@ -16,9 +16,6 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
         self.simInput = \
             simInput
 
-        self.n_charging_poles_by_zone = \
-            simInput.n_charging_poles_by_zone
-
         self.cars_soc_dict = \
             simInput.cars_soc_dict
 
@@ -27,6 +24,8 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
                 (self.env, capacity=self.simInput.hub_n_charging_poles)
 
         if self.simInput.sim_scenario_conf["distributed_cps"]:
+            self.n_charging_poles_by_zone = \
+                simInput.n_charging_poles_by_zone
             self.charging_poles_dict = {}
             for zone, n in self.n_charging_poles_by_zone.items():
                 if n > 0:
@@ -38,6 +37,8 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
 
         self.n_cars_charging_system = 0
         self.n_cars_charging_users = 0
+        self.dead_cars = set()
+        self.n_dead_cars = 0
         
         self.list_system_charging_bookings = []
         self.list_users_charging_bookings = []
@@ -75,6 +76,8 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
 
                 if cr_soc_delta > booking_request["end_soc"]:
                     unfeasible_charge_flag = True
+                    self.dead_cars.add(car)
+                    self.n_dead_cars = len(self.dead_cars)
                     self.sim_unfeasible_charge_bookings += \
                         [booking_request]
 
@@ -126,8 +129,10 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
                 if cr_soc_delta > booking_request["end_soc"]:
 
                     unfeasible_charge_flag = True
+                    self.dead_cars.add(car)
+                    self.n_dead_cars = len(self.dead_cars)
                     self.sim_unfeasible_charge_bookings += \
-                        [booking_request]            
+                        [booking_request]
 
             else:                
 

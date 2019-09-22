@@ -129,7 +129,8 @@ class EFFCS_SimInput ():
 
     def init_charging_poles (self):
 
-        if self.sim_scenario_conf["cps_placement_policy"] == "num_parkings":
+        if self.sim_scenario_conf["distributed_cps"]\
+        and self.sim_scenario_conf["cps_placement_policy"] == "num_parkings":
 
             self.n_charging_zones = \
                 int(self.sim_scenario_conf["cps_zones_percentage"]\
@@ -174,7 +175,7 @@ class EFFCS_SimInput ():
             self.closest_cp_zone = \
                 self.zones_cp_distances.idxmin(axis=1)
 
-        return self.n_charging_poles_by_zone
+            return self.n_charging_poles_by_zone
 
     def init_relocation (self):
         pass

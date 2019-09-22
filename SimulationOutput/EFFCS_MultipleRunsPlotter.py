@@ -24,9 +24,19 @@ class EFFCS_MultipleRunsPlotter():
         self.sim_stats_df = self.sim_stats_df[self.sim_stats_df.time_estimation == True]
         self.sim_stats_df.n_cars_factor = \
             self.sim_stats_df.n_cars_factor.apply(lambda x: np.around(x, decimals=2))
+        if sim_scenario_name == "hub_cps":
+            self.sim_stats_df = self.sim_stats_df\
+                [self.sim_stats_df.willingness > 0.1]
 
-        idxmin = self.sim_stats_df.percentage_unsatisfied.sort_values().index[0]
-
+        self.idxmin_unsatisfied = self.sim_stats_df.percentage_unsatisfied.sort_values().index[0]
+        self.idxmin_relocost = self.sim_stats_df.cum_relo_t.sort_values().index[0]
+        print (self.sim_stats_df.loc[self.idxmin_unsatisfied, "percentage_unsatisfied"],
+               self.sim_stats_df.loc[self.idxmin_relocost, "cum_relo_t"])
+        print(self.idxmin_unsatisfied, self.idxmin_relocost)
+        print (self.sim_stats_df.loc[self.idxmin_unsatisfied,
+                                     ["beta", "willingness", "n_cars_factor"]])
+        print (self.sim_stats_df.loc[self.idxmin_relocost,
+                                     ["beta", "willingness", "n_cars_factor"]])
         self.city = city
 
         self.figures_path = os.path.join(os.getcwd(), "Figures", self.city, "multiple_runs")

@@ -39,8 +39,9 @@ class EFFCS_Sim ():
         self.neighbors_dict = \
             self.simInput.neighbors_dict
 
-        self.n_charging_poles_by_zone = \
-            self.simInput.n_charging_poles_by_zone
+        if simInput.sim_scenario_conf["distributed_cps"]:
+            self.n_charging_poles_by_zone = \
+                self.simInput.n_charging_poles_by_zone
 
         self.cars_soc_dict = \
             self.simInput.cars_soc_dict
@@ -67,8 +68,7 @@ class EFFCS_Sim ():
         self.list_n_cars_charging_users = []
         self.list_n_cars_booked = []
         self.list_n_cars_available = []
-        self.list_death_cars = []
-        self.list_death_cars_zones = []
+        self.list_n_cars_dead = []
 
         self.chargingStrategy = \
             EFFCS_ChargingStrategy\
@@ -114,10 +114,13 @@ class EFFCS_Sim ():
             [self.chargingStrategy.n_cars_charging_system]
         self.list_n_cars_charging_users += \
             [self.chargingStrategy.n_cars_charging_users]
+        self.list_n_cars_dead += \
+            [self.chargingStrategy.n_dead_cars]
         self.list_n_cars_available += \
             [self.simInput.n_cars - \
              self.chargingStrategy.n_cars_charging_system - \
              self.chargingStrategy.n_cars_charging_users - \
+             self.chargingStrategy.n_dead_cars - \
              self.n_booked_cars]
         
         self.sim_booking_requests += [booking_request]

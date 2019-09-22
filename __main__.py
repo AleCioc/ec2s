@@ -48,12 +48,12 @@ for city_name in sys.argv[3:]:
     if not os.path.exists(results_path):
         os.mkdir(results_path)
 
-    # create_input_pickles(city_name, [9, 10], 500)
-    # run_model_validation(city_name)
+    create_input_pickles(city_name, [9, 10], 500)
+    run_model_validation(city_name)
 
     # from SimulationInput.confs.single_run_conf import sim_general_conf
     # from SimulationInput.confs.single_run_conf import sim_scenario_conf
-    # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", "hub_cps")
+    # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", sim_scenario_name)
 
     multiple_runs(city_name,
                   "multiple_runs",

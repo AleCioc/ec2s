@@ -12,16 +12,16 @@ sim_general_conf = {
 sim_scenario_conf = {
 
     "requests_rate_factor": 1,
-    "n_cars_factor": 1,
+    "n_cars_factor": 1.3,
 
     "time_estimation": True,
     "queuing": True,
     "alpha": 25,
     "beta": 100,
 
-    "hub": True,
+    "hub": False,
     "hub_zone_policy": "num_parkings",
-    "n_poles_n_cars_factor": 0.2,
+    "n_poles_n_cars_factor": 0.1,
 
     "relocation": False,
     "finite_workers": False,
@@ -31,7 +31,7 @@ sim_scenario_conf = {
     "cps_zones_percentage": 0.1,
 
     "user_contribution": True,
-    "system_cps": False,
-    "willingness": 0.9,
+    "system_cps": True,
+    "willingness": 0.66,
 
 }

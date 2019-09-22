@@ -73,27 +73,38 @@ def single_run(city,
 
     plotter = EFFCS_SimOutputPlotter\
         (simOutput, city, simInput.grid, sim_scenario_name)
-    plotter.plot_events_profile()
-    plotter.plot_charging_duration_hist()
-    plotter.plot_n_charges_avg()
-    plotter.plot_charging_energy_avg()
-    plotter.plot_n_charges_t()
-    plotter.plot_tot_energy()
-    plotter.plot_fleet_status()
-    plotter.plot_n_cars_charging()
-    plotter.plot_charging_t_hist()
-    plotter.plot_relo_cost_t()
 
-    plotter.plot_origin_heatmap()
-    plotter.plot_charging_needed_heatmap_system()
-    plotter.plot_charging_needed_heatmap_users()
+    plotter.plot_events_profile()
+
+    plotter.plot_charging_t_hist()
+    plotter.plot_hourly_events_boxplot("charges")
+    plotter.plot_hourly_charging_boxplot("system")
+    plotter.plot_hourly_charging_boxplot("users")
+    plotter.plot_fleet_status()
+
     plotter.plot_unsatisfied_t_hist()
+    plotter.plot_hourly_events_boxplot("unsatisfied")
     plotter.plot_unsatisfied_origins_heatmap()
 
-    try:
-        plotter.plot_deaths_t_hist()
-        plotter.plot_deaths_origins_heatmap()
-        plotter.plot_charge_deaths_t_hist()
-        plotter.plot_charge_deaths_origins_heatmap()
-    except:
-        pass
+    plotter.plot_hourly_relocost_boxplot()
+    plotter.plot_charging_needed_heatmap_system()
+    plotter.plot_charging_needed_heatmap_users()
+
+    # plotter.plot_charging_duration_hist()
+    # plotter.plot_charging_energy_avg()
+    # plotter.plot_n_charges_t()
+    # plotter.plot_tot_energy()
+    # plotter.plot_n_cars_charging()
+    # plotter.plot_relo_cost_t()
+
+    # plotter.plot_origin_heatmap()
+    # plotter.plot_charging_needed_heatmap_system()
+    # plotter.plot_charging_needed_heatmap_users()
+    # plotter.plot_unsatisfied_origins_heatmap()
+    # try:
+    #     plotter.plot_deaths_t_hist()
+    #     plotter.plot_deaths_origins_heatmap()
+    #     plotter.plot_charge_deaths_t_hist()
+    #     plotter.plot_charge_deaths_origins_heatmap()
+    # except:
+    #     pass

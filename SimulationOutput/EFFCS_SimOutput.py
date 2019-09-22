@@ -57,8 +57,11 @@ class EFFCS_SimOutput ():
         self.sim_booking_requests["n_cars_booked"] = \
             pd.Series(sim.list_n_cars_booked)
 
+        self.sim_booking_requests["n_cars_dead"] = \
+            pd.Series(sim.list_n_cars_dead)
+
         self.sim_charge_deaths = \
-            pd.DataFrame(sim.chargingStrategy.sim_unfeasible_charge_bookings)
+                    pd.DataFrame(sim.chargingStrategy.sim_unfeasible_charge_bookings)
 
         # Sim Stats creation
 
