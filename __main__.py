@@ -55,13 +55,13 @@ for city_name in sys.argv[3:]:
     # from SimulationInput.confs.single_run_conf import sim_scenario_conf
     # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", sim_scenario_name)
 
-    # multiple_runs(city_name,
-    #               "multiple_runs",
-    #               sim_general_conf,
-    #               confs_dict[sim_scenario_name],
-    #               int(n_cores),
-    #               sim_scenario_name=sim_scenario_name)
+    multiple_runs(city_name,
+                  "multiple_runs",
+                  sim_general_conf,
+                  confs_dict[sim_scenario_name],
+                  int(n_cores),
+                  sim_scenario_name=sim_scenario_name)
 
-    plot_multiple_runs (city_name, sim_scenario_name)
+    # plot_multiple_runs (city_name, sim_scenario_name)
 
 print (datetime.datetime.now())
