@@ -97,24 +97,24 @@ def plot_multiple_runs (city_name,
                 (y_col=z_col,
                  x_col=x_col,
                  param_col="willingness",
-                 fixed_params_dict={"n_cars_factor":1.5, "beta":60})
+                 fixed_params_dict={"n_cars_factor": 1.5, "beta": 60})
 
             plotter.plot_cross_sections\
                 (y_col=z_col,
                  x_col=x_col,
                  param_col="willingness",
-                 fixed_params_dict={"n_cars_factor":1.5, "beta":100})
+                 fixed_params_dict={"n_cars_factor": 1.5, "beta": 100})
 
     if sim_scenario_name == "only_hub":
 
         plotter.plot_events_profiles\
             (x_col=x_col,
-             params_dict={"n_cars_factor": 1.5, "beta":60},
+             params_dict={"n_cars_factor": 1.5, "beta": 60},
              figname_add="_min_unsatisfied")
 
         plotter.plot_events_profiles\
             (x_col=x_col,
-             params_dict={"n_cars_factor": 0.5, "beta":100},
+             params_dict={"n_cars_factor": 0.5, "beta": 100},
              figname_add="_min_cost")
 
     if sim_scenario_name == "only_cps":
@@ -136,7 +136,7 @@ def plot_multiple_runs (city_name,
 
         plotter.plot_events_profiles\
             (x_col=x_col,
-             params_dict={"n_cars_factor": 1.3, "beta":100, "willingness":0.99},
+             params_dict={"n_cars_factor": 1.3, "beta": 100, "willingness":0.99},
              figname_add="_min_cost")
 
     if sim_scenario_name == "hub_cps":
