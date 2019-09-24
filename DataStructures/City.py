@@ -134,6 +134,9 @@ class City:
             tz = pytz.timezone("America/Vancouver")
         elif self.city_name == "New_York_City":
             tz = pytz.timezone("America/New_York")
+        else:
+            tz = pytz.timezone("Europe/Rome")
+            return self.input_bookings
 
         now_utc = datetime.datetime.utcnow()
         now_local = pytz.utc.localize(now_utc, is_dst=None).astimezone(tz)
