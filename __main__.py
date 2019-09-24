@@ -11,7 +11,7 @@ from MultipleRun.multiple_runs import multiple_runs
 from MultipleRun.multiple_runs import plot_multiple_runs
 
 confs_dict = {}
-from SimulationInput.confs.multiple_runs_conf import sim_general_conf
+from SimulationInput.confs.only_hub_conf import sim_general_conf
 from SimulationInput.confs.only_hub_conf import sim_scenario_conf_grid
 confs_dict["only_hub"] = sim_scenario_conf_grid
 from SimulationInput.confs.only_cps_conf import sim_scenario_conf_grid
@@ -50,8 +50,8 @@ for city_name in sys.argv[3:]:
     if not os.path.exists(results_path):
         os.mkdir(results_path)
 
-    create_input_pickles(city_name, [9, 10], 500)
-    run_model_validation(city_name)
+    # create_input_pickles(city_name, [9, 10], 500)
+    # run_model_validation(city_name)
 
     # from SimulationInput.confs.single_run_conf import sim_general_conf
     # from SimulationInput.confs.single_run_conf import sim_scenario_conf

@@ -120,7 +120,6 @@ class City:
               < self.sim_general_conf["model_end"])].copy()
 
         zones_df = self.input_bookings[["origin_id", "destination_id"]]
-        print(zones_df.quantile(q=0.01), zones_df.quantile(q=0.99))
         zone_low_threshold = zones_df.quantile(q=0.01).mean()
         zone_up_threshold = zones_df.quantile(q=0.99).mean()
         self.input_bookings = self.input_bookings\
@@ -132,16 +131,16 @@ class City:
 
         if self.city_name == "Vancouver":
             tz = pytz.timezone("America/Vancouver")
+
         elif self.city_name == "New_York_City":
             tz = pytz.timezone("America/New_York")
+
         else:
             tz = pytz.timezone("Europe/Rome")
             return self.input_bookings
 
         now_utc = datetime.datetime.utcnow()
         now_local = pytz.utc.localize(now_utc, is_dst=None).astimezone(tz)
-        print (now_utc, now_local)
-        print(now_local.utcoffset())
         self.input_bookings.start_time = \
             self.input_bookings.start_time + now_local.utcoffset()
         self.input_bookings.end_time = \
