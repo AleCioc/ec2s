@@ -14,7 +14,7 @@ def plot_events_percentage (sim_stats_df,
 
     plt.figure(figsize=(15, 7))
     plt.title("Percentage of events" + title_add)
-    plt.ylim(0, 1)
+    plt.ylim(0, 100)
 
     plt.plot(sim_stats_df[x_col],
          sim_stats_df.percentage_satisfied,

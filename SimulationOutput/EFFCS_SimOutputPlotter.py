@@ -95,24 +95,18 @@ class EFFCS_SimOutputPlotter ():
         plt.title("Percentage of events, single simulation")
         pd.DataFrame([
             pd.Series( \
-                [self.simOutput.sim_stats["n_same_zone_trips"] \
-                 / self.simOutput.sim_stats["n_bookings"],
-                 self.simOutput.sim_stats["n_not_same_zone_trips"] \
-                 / self.simOutput.sim_stats["n_bookings"]],
+                [self.simOutput.sim_stats["percentage_same_zone_trips_satisfied"],
+                 self.simOutput.sim_stats["percentage_not_same_zone_trips_satisfied"]],
                 index=["same zone", "neighbor zone"],
                 name="satisfied %"),
             pd.Series( \
-                [self.simOutput.sim_stats["n_no_close_cars"] \
-                 / self.simOutput.sim_stats["n_unsatisfied"],
-                 self.simOutput.sim_stats["n_deaths"] \
-                 / self.simOutput.sim_stats["n_unsatisfied"]],
-                index=["no close car", "death"],
+                [self.simOutput.sim_stats["percentage_no_close_cars_unsatisfied"],
+                 self.simOutput.sim_stats["percentage_deaths_unsatisfied"]],
+                index=["no close car", "not enough energy"],
                 name="unsatisfied %"),
             pd.Series( \
-                [self.simOutput.sim_stats["n_unsatisfied"] \
-                 / self.simOutput.sim_stats["n_booking_reqs"],
-                 self.simOutput.sim_stats["n_bookings"] \
-                 / self.simOutput.sim_stats["n_booking_reqs"]],
+                [self.simOutput.sim_stats["percentage_unsatisfied"],
+                 self.simOutput.sim_stats["percentage_satisfied"]],
                 index=["unsatisfied", "satified"],
                 name="events %"),
 

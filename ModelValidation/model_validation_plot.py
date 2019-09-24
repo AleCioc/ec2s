@@ -30,6 +30,7 @@ def plot_ia_validation(ia_threshold, city, sim_reqs_eventG, trace_timeouts):
     plt.close()
 
 def plot_tot_reqs_count(group_col, normed, city, sim_reqs_eventG, sim_reqs_traceB):
+
     sim_reqs_eventG_count, sim_reqs_traceB_count = \
         get_grouped_reqs_count(group_col, sim_reqs_eventG, sim_reqs_traceB)
 
@@ -49,7 +50,7 @@ def plot_tot_reqs_count(group_col, normed, city, sim_reqs_eventG, sim_reqs_trace
         .plot.bar(figsize=(15, 7))
     plt.title(title + " count of booking requests by " + group_col)
     plt.xlabel(group_col)
-    plt.ylabel("% booking requests")
+    plt.ylabel("fraction of booking requests")
     plt.legend()
     plt.savefig("./Figures/" + city + "/validation/" + figfilename)
     # plt.show()

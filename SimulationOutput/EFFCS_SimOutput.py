@@ -105,8 +105,11 @@ class EFFCS_SimOutput ():
         self.sim_stats.loc["percentage_satisfied"] = \
             self.sim_stats["n_bookings"] / self.sim_stats["n_booking_reqs"]
 
+        self.sim_stats.loc["percentage_unsatisfied"] = \
+            1.0 - self.sim_stats.loc["percentage_satisfied"]
+
         self.sim_stats.loc["percentage_same_zone_trips"] = \
-            self.sim_stats["n_unsatisfied"] / self.sim_stats["n_booking_reqs"]
+                    self.sim_stats["n_unsatisfied"] / self.sim_stats["n_booking_reqs"]
             
         self.sim_stats.loc["percentage_same_zone_trips"] = \
             sim.n_same_zone_trips / self.sim_stats["n_booking_reqs"]
@@ -297,3 +300,9 @@ class EFFCS_SimOutput ():
 
         self.sim_stats.loc["avg_hourly_relo_t"] = \
             self.sim_charges.groupby("hour").cr_timeout.sum().mean()
+
+        for idx in self.sim_stats.index:
+            if idx.startswith("percentage"):
+                self.sim_stats.loc[idx] = \
+                    self.sim_stats.loc[idx] * 100
+                # print (idx, self.sim_stats.loc[idx])

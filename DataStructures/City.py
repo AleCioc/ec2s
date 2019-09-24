@@ -1,8 +1,11 @@
 import os
 import datetime
+import pytz
 
 import pandas as pd
 from sklearn.neighbors import KernelDensity
+
+from Retrieval.DB_to_df import pre_process_time
 
 from Loading.load_data import get_input_data
 from Loading.load_data import read_sim_input_data
@@ -10,7 +13,7 @@ from Loading.load_data import read_sim_input_data
 
 class City:
 
-    def __init__ (self, city_name, sim_general_conf, kde_bw=0.01):
+    def __init__ (self, city_name, sim_general_conf, kde_bw=1):
 
         self.city_name = city_name
         self.sim_general_conf = sim_general_conf
@@ -41,6 +44,10 @@ class City:
         self.request_rates = self.get_requests_rates()
 
         self.trip_kdes = self.get_trip_kdes()
+
+        print(self.grid.shape)
+        print(self.od_distances.shape)
+        print(self.input_bookings.destination_id.unique().shape)
 
     def get_od_distances (self):
 
@@ -111,6 +118,32 @@ class City:
               > self.sim_general_conf["model_start"])\
              & (self.bookings.start_time\
               < self.sim_general_conf["model_end"])].copy()
+
+        zones_df = self.input_bookings[["origin_id", "destination_id"]]
+        print(zones_df.quantile(q=0.01), zones_df.quantile(q=0.99))
+        zone_low_threshold = zones_df.quantile(q=0.01).mean()
+        zone_up_threshold = zones_df.quantile(q=0.99).mean()
+        self.input_bookings = self.input_bookings\
+            [(self.input_bookings.origin_id > zone_low_threshold)
+            & (self.input_bookings.destination_id > zone_low_threshold)]
+        self.input_bookings = self.input_bookings\
+            [(self.input_bookings.origin_id < zone_up_threshold)
+            & (self.input_bookings.destination_id < zone_up_threshold)]
+
+        if self.city_name == "Vancouver":
+            tz = pytz.timezone("America/Vancouver")
+        elif self.city_name == "New_York_City":
+            tz = pytz.timezone("America/New_York")
+
+        now_utc = datetime.datetime.utcnow()
+        now_local = pytz.utc.localize(now_utc, is_dst=None).astimezone(tz)
+        print (now_utc, now_local)
+        print(now_local.utcoffset())
+        self.input_bookings.start_time = \
+            self.input_bookings.start_time + now_local.utcoffset()
+        self.input_bookings.end_time = \
+            self.input_bookings.end_time + now_local.utcoffset()
+        self.input_bookings = pre_process_time(self.input_bookings)
 
         return self.input_bookings
 

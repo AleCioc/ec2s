@@ -30,6 +30,10 @@ def plot_multiple_runs (city_name,
     results_path = os.path.join \
         (os.getcwd(), "Results", city_name, "multiple_runs", sim_scenario_name, "sim_stats.pickle")
     sim_stats_df = pd.read_pickle(results_path)
+    for col in sim_stats_df:
+        if col.startswith("percentage"):
+            sim_stats_df[col] = \
+                sim_stats_df[col] * 100
 
     plotter = EFFCS_MultipleRunsPlotter(sim_stats_df,
                                         city_name,

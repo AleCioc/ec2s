@@ -20,7 +20,7 @@ class EFFCS_MultipleRunsPlotter():
         self.sim_stats_df = sim_stats_df.copy()
 
         self.sim_stats_df["percentage_unsatisfied"] = \
-            1.0 - self.sim_stats_df["percentage_satisfied"]
+            100 - self.sim_stats_df["percentage_satisfied"]
         self.sim_stats_df = self.sim_stats_df[self.sim_stats_df.time_estimation == True]
         self.sim_stats_df.n_cars_factor = \
             self.sim_stats_df.n_cars_factor.apply(lambda x: np.around(x, decimals=2))
