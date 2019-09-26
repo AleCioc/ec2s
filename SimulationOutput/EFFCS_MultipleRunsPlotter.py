@@ -19,23 +19,31 @@ class EFFCS_MultipleRunsPlotter():
 
         self.sim_stats_df = sim_stats_df.copy()
 
-        self.sim_stats_df["percentage_unsatisfied"] = \
-            100 - self.sim_stats_df["percentage_satisfied"]
         self.sim_stats_df = self.sim_stats_df[self.sim_stats_df.time_estimation == True]
         self.sim_stats_df.n_cars_factor = \
             self.sim_stats_df.n_cars_factor.apply(lambda x: np.around(x, decimals=2))
+
+        self.sim_stats_df["percentage_unsatisfied"] = \
+            100 - self.sim_stats_df.percentage_satisfied
+
         if sim_scenario_name == "hub_cps":
             self.sim_stats_df = self.sim_stats_df\
                 [self.sim_stats_df.willingness > 0.1]
+
+        # print (self.sim_stats_df.n_booking_reqs)
+        # print (self.sim_stats_df.n_bookings)
+        # print (self.sim_stats_df.n_unsatisfied)
+        # print (self.sim_stats_df.percentage_unsatisfied)
+        # print (self.sim_stats_df.percentage_satisfied)
 
         self.idxmin_unsatisfied = self.sim_stats_df.percentage_unsatisfied.sort_values().index[0]
         self.idxmin_relocost = self.sim_stats_df.cum_relo_t.sort_values().index[0]
         print (self.sim_stats_df.loc[self.idxmin_unsatisfied, "percentage_unsatisfied"],
                self.sim_stats_df.loc[self.idxmin_relocost, "cum_relo_t"])
         print(self.idxmin_unsatisfied, self.idxmin_relocost)
-        print (self.sim_stats_df.loc[self.idxmin_unsatisfied,
+        best_params_unsatisfied = (self.sim_stats_df.loc[self.idxmin_unsatisfied,
                                      ["beta", "willingness", "n_cars_factor"]])
-        print (self.sim_stats_df.loc[self.idxmin_relocost,
+        best_params_relocost = (self.sim_stats_df.loc[self.idxmin_relocost,
                                      ["beta", "willingness", "n_cars_factor"]])
         self.city = city
 

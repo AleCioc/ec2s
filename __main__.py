@@ -52,10 +52,11 @@ for city_name in sys.argv[3:]:
 
     # create_input_pickles(city_name, [9, 10], 500)
     # run_model_validation(city_name)
-
+    #
     # from SimulationInput.confs.single_run_conf import sim_general_conf
     # from SimulationInput.confs.single_run_conf import sim_scenario_conf
-    # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", sim_scenario_name)
+    # single_run(city_name, sim_general_conf, sim_scenario_conf, "traceB", "only_hub_traceB_ideal")
+    # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", "only_hub_eventG_ideal")
 
     multiple_runs(city_name,
                   "multiple_runs",

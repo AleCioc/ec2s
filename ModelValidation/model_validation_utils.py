@@ -2,10 +2,11 @@ import pandas as pd
 
 def get_plot_samples(ia_threshold, sim_reqs_eventG, trace_timeouts):
 
+    up_threshold = trace_timeouts.quantile(q=0.999).mean()
     filtered_reqs_eventG = sim_reqs_eventG.ia_timeout \
-        [(sim_reqs_eventG.ia_timeout < ia_threshold)]
+        [(sim_reqs_eventG.ia_timeout < up_threshold)]
     filtered_reqs_traceB = trace_timeouts \
-        [(trace_timeouts < ia_threshold)]
+        [(trace_timeouts < up_threshold)]
 
     n_samples = min([len(filtered_reqs_eventG), len(filtered_reqs_traceB)])
     # n_samples = 5000

@@ -119,15 +119,15 @@ class City:
              & (self.bookings.start_time\
               < self.sim_general_conf["model_end"])].copy()
 
-        zones_df = self.input_bookings[["origin_id", "destination_id"]]
-        zone_low_threshold = zones_df.quantile(q=0.01).mean()
-        zone_up_threshold = zones_df.quantile(q=0.99).mean()
-        self.input_bookings = self.input_bookings\
-            [(self.input_bookings.origin_id > zone_low_threshold)
-            & (self.input_bookings.destination_id > zone_low_threshold)]
-        self.input_bookings = self.input_bookings\
-            [(self.input_bookings.origin_id < zone_up_threshold)
-            & (self.input_bookings.destination_id < zone_up_threshold)]
+        # zones_df = self.input_bookings[["origin_id", "destination_id"]]
+        # zone_low_threshold = zones_df.quantile(q=0.01).mean()
+        # zone_up_threshold = zones_df.quantile(q=0.99).mean()
+        # self.input_bookings = self.input_bookings\
+        #     [(self.input_bookings.origin_id > zone_low_threshold)
+        #     & (self.input_bookings.destination_id > zone_low_threshold)]
+        # self.input_bookings = self.input_bookings\
+        #     [(self.input_bookings.origin_id < zone_up_threshold)
+        #     & (self.input_bookings.destination_id < zone_up_threshold)]
 
         if self.city_name == "Vancouver":
             tz = pytz.timezone("America/Vancouver")
@@ -199,9 +199,9 @@ class City:
         self.zones_count = pd.concat\
             ([origin_zones_count, dest_zones_count], axis=1)
         valid_origin_zones = origin_zones_count\
-            [(origin_zones_count > 0)]
+            [(origin_zones_count > 10)]
         valid_dest_zones = dest_zones_count\
-            [(dest_zones_count > 0)]
+            [(dest_zones_count > 10)]
         self.valid_zones = valid_origin_zones.index\
             .intersection(valid_dest_zones.index)\
             .astype(int)

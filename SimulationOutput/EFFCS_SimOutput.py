@@ -300,9 +300,3 @@ class EFFCS_SimOutput ():
 
         self.sim_stats.loc["avg_hourly_relo_t"] = \
             self.sim_charges.groupby("hour").cr_timeout.sum().mean()
-
-        for idx in self.sim_stats.index:
-            if idx.startswith("percentage"):
-                self.sim_stats.loc[idx] = \
-                    self.sim_stats.loc[idx] * 100
-                # print (idx, self.sim_stats.loc[idx])
