@@ -38,6 +38,8 @@ def plot_multiple_runs (city_name,
     plotter = EFFCS_MultipleRunsPlotter(sim_stats_df,
                                         city_name,
                                         sim_scenario_name)
+    print(plotter.best_params_unsatisfied)
+    print(plotter.best_params_relocost)
 
     x_col = "n_poles_n_cars_factor"
     y_col = "n_cars_factor"
@@ -55,105 +57,75 @@ def plot_multiple_runs (city_name,
         #          fixed_param_value=fixed_param_value,
         #          title_add=fixed_param_col + "=" + str(fixed_param_value))
 
-        if sim_scenario_name == "only_hub":
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="beta",
+             fixed_params_dict=
+                {"n_cars_factor":plotter.best_params_unsatisfied.loc["n_cars_factor"],
+                 "willingness":plotter.best_params_unsatisfied.loc["willingness"]},
+             figname="best_unsatisfied")
 
-            plotter.plot_cross_sections\
-                (y_col=z_col,
-                 x_col=x_col,
-                 param_col="beta",
-                 fixed_params_dict={"n_cars_factor":0.9})
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="n_cars_factor",
+             fixed_params_dict=
+                {"beta":plotter.best_params_unsatisfied.loc["beta"],
+                 "willingness":plotter.best_params_unsatisfied.loc["willingness"]},
+             figname="best_unsatisfied")
 
-            plotter.plot_cross_sections\
-                (y_col=z_col,
-                 x_col=x_col,
-                 param_col="n_cars_factor",
-                 fixed_params_dict={"beta":60})
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="willingness",
+             fixed_params_dict=
+                {"n_cars_factor":plotter.best_params_unsatisfied.loc["n_cars_factor"],
+                 "beta":plotter.best_params_unsatisfied.loc["beta"]},
+             figname="best_unsatisfied")
 
-        if sim_scenario_name == "only_cps":
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="beta",
+             fixed_params_dict=
+                {"n_cars_factor":plotter.best_params_relocost.loc["n_cars_factor"],
+                 "willingness":plotter.best_params_relocost.loc["willingness"]},
+             figname="best_relocost")
 
-            plotter.plot_cross_sections\
-                (y_col=z_col,
-                 x_col=x_col,
-                 param_col="beta",
-                 fixed_params_dict={"n_cars_factor":1.5, "willingness":0})
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="n_cars_factor",
+             fixed_params_dict=
+                {"beta":plotter.best_params_relocost.loc["beta"],
+                 "willingness":plotter.best_params_relocost.loc["willingness"]},
+             figname="best_relocost")
 
-            plotter.plot_cross_sections\
-                (y_col=z_col,
-                 x_col=x_col,
-                 param_col="n_cars_factor",
-                 fixed_params_dict={"beta":100, "willingness":0})
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="willingness",
+             fixed_params_dict=
+                {"n_cars_factor":plotter.best_params_relocost.loc["n_cars_factor"],
+                 "beta":plotter.best_params_relocost.loc["beta"]},
+             figname="best_relocost")
 
-            plotter.plot_cross_sections\
-                (y_col=z_col,
-                 x_col=x_col,
-                 param_col="willingness",
-                 fixed_params_dict={"beta":70, "n_cars_factor":1.5})
+    plotter.plot_events_profiles\
+        (x_col=x_col,
+         params_dict=
+                {"beta":plotter.best_params_unsatisfied.loc["beta"],
+                 "n_cars_factor": plotter.best_params_unsatisfied.loc["n_cars_factor"],
+                 "willingness":plotter.best_params_unsatisfied.loc["willingness"]},
+         figname_add="_min_unsatisfied")
 
-            plotter.plot_cross_sections\
-                (y_col=z_col,
-                 x_col=x_col,
-                 param_col="willingness",
-                 fixed_params_dict={"beta":100, "n_cars_factor":1.3})
-
-        if sim_scenario_name == "hub_cps":
-
-            plotter.plot_cross_sections\
-                (y_col=z_col,
-                 x_col=x_col,
-                 param_col="willingness",
-                 fixed_params_dict={"n_cars_factor": 1.5, "beta": 60})
-
-            plotter.plot_cross_sections\
-                (y_col=z_col,
-                 x_col=x_col,
-                 param_col="willingness",
-                 fixed_params_dict={"n_cars_factor": 1.5, "beta": 100})
-
-    if sim_scenario_name == "only_hub":
-
-        plotter.plot_events_profiles\
-            (x_col=x_col,
-             params_dict={"n_cars_factor": 1.5, "beta": 60},
-             figname_add="_min_unsatisfied")
-
-        plotter.plot_events_profiles\
-            (x_col=x_col,
-             params_dict={"n_cars_factor": 0.5, "beta": 100},
-             figname_add="_min_cost")
-
-    if sim_scenario_name == "only_cps":
-
-        plotter.plot_events_profiles\
-            (x_col=x_col,
-             params_dict={"n_cars_factor": 1.5, "beta":60, "willingness":0},
-             figname_add="_no_users_min_unsatisfied")
-
-        plotter.plot_events_profiles\
-            (x_col=x_col,
-             params_dict={"n_cars_factor": 0.5, "beta":100, "willingness":0},
-             figname_add="_no_users_min_cost")
-
-        plotter.plot_events_profiles\
-            (x_col=x_col,
-             params_dict={"n_cars_factor": 1.5, "beta":70, "willingness":0.99},
-             figname_add="_min_unsatisfied")
-
-        plotter.plot_events_profiles\
-            (x_col=x_col,
-             params_dict={"n_cars_factor": 1.3, "beta": 100, "willingness":0.99},
-             figname_add="_min_cost")
-
-    if sim_scenario_name == "hub_cps":
-
-        plotter.plot_events_profiles\
-            (x_col=x_col,
-             params_dict={"n_cars_factor": 1.5, "beta": 60, "willingness": 0.33},
-             figname_add="_min_unsatisfied")
-
-        plotter.plot_events_profiles\
-            (x_col=x_col,
-             params_dict={"n_cars_factor": 1.5, "beta": 100, "willingness": 0.99},
-             figname_add="_min_cost")
+    plotter.plot_events_profiles\
+        (x_col=x_col,
+         params_dict=
+                {"beta":plotter.best_params_relocost.loc["beta"],
+                 "n_cars_factor": plotter.best_params_relocost.loc["n_cars_factor"],
+                 "willingness":plotter.best_params_relocost.loc["willingness"]},
+         figname_add="_min_relocost")
 
 def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
                   n_cores = 4, sim_scenario_name="trial"):

@@ -10,6 +10,8 @@ from SingleRun.single_run import single_run
 from MultipleRun.multiple_runs import multiple_runs
 from MultipleRun.multiple_runs import plot_multiple_runs
 
+from utils.path_utils import create_output_folders
+
 confs_dict = {}
 from SimulationInput.confs.only_hub_conf import sim_general_conf
 from SimulationInput.confs.only_hub_conf import sim_scenario_conf_grid
@@ -29,42 +31,22 @@ sim_scenario_name = sys.argv[2]
 for city_name in sys.argv[3:]:
 
     print (datetime.datetime.now(), city_name)
-
-    results_path = os.path.join\
-        (os.getcwd(), "Results")
-    if not os.path.exists(results_path):
-        os.mkdir(results_path)
-
-    results_path = os.path.join\
-        (os.getcwd(), "Figures")
-    if not os.path.exists(results_path):
-        os.mkdir(results_path)
-
-    results_path = os.path.join\
-        (os.getcwd(), "Results", city_name)
-    if not os.path.exists(results_path):
-        os.mkdir(results_path)
-
-    results_path = os.path.join\
-        (os.getcwd(), "Figures", city_name)
-    if not os.path.exists(results_path):
-        os.mkdir(results_path)
+    create_output_folders(city_name)
 
     # create_input_pickles(city_name, [9, 10], 500)
     # run_model_validation(city_name)
     #
     # from SimulationInput.confs.single_run_conf import sim_general_conf
     # from SimulationInput.confs.single_run_conf import sim_scenario_conf
-    # single_run(city_name, sim_general_conf, sim_scenario_conf, "traceB", "only_hub_traceB_ideal")
-    # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", "only_hub_eventG_ideal")
+    # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", sim_scenario_name)
 
-    multiple_runs(city_name,
-                  "multiple_runs",
-                  sim_general_conf,
-                  confs_dict[sim_scenario_name],
-                  int(n_cores),
-                  sim_scenario_name=sim_scenario_name)
+    # multiple_runs(city_name,
+    #               "multiple_runs",
+    #               sim_general_conf,
+    #               confs_dict[sim_scenario_name],
+    #               int(n_cores),
+    #               sim_scenario_name=sim_scenario_name)
 
-    # plot_multiple_runs (city_name, sim_scenario_name)
+    plot_multiple_runs (city_name, sim_scenario_name)
 
 print (datetime.datetime.now())

@@ -6,6 +6,18 @@ matplotlib.style.use('ggplot')
 matplotlib.rcParams["axes.grid"] = True
 matplotlib.rcParams["figure.figsize"] = (15., 7.)
 
+SMALL_SIZE = 8
+MEDIUM_SIZE = 12
+BIGGER_SIZE = 14
+
+plt.rc('font', size=BIGGER_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGER_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=BIGGER_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=BIGGER_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=MEDIUM_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
 def plot_events_percentage (sim_stats_df, 
                             x_col, 
                             title_add,
