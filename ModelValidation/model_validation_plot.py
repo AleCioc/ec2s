@@ -6,6 +6,18 @@ matplotlib.style.use('ggplot')
 matplotlib.rcParams["axes.grid"] = True
 matplotlib.rcParams["figure.figsize"] = (15., 7.)
 
+SMALL_SIZE = 8
+MEDIUM_SIZE = 12
+BIGGER_SIZE = 20
+
+plt.rc('font', size=BIGGER_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGER_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=BIGGER_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=BIGGER_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=MEDIUM_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
 import seaborn as sns
 
 from ModelValidation.model_validation_utils import get_plot_samples
@@ -19,7 +31,7 @@ def plot_ia_validation(ia_threshold, city, sim_reqs_eventG, trace_timeouts):
         get_plot_samples(ia_threshold, sim_reqs_eventG, trace_timeouts)
 
     plt.figure(figsize=(9, 9))
-    plt.title("Q-q plot of interarrival times")
+    plt.title("Q-Q plot of interarrival times")
     plt.scatter(eventG_ia_samples, traceB_ia_samples)
     plt.plot(eventG_ia_samples.sort_values(),
              eventG_ia_samples.sort_values())
@@ -146,7 +158,7 @@ def plot_regr_qq_sns(city, sim_reqs_eventG, trace_timeouts):
 
     sns.jointplot("ia_eventG", "ia_traceB", sns_df, kind="reg", height=9)
     plt.plot(eventG_ia_samples, eventG_ia_samples, color="black", label="bisector")
-    plt.title("Regression and q-q plots for ia times model, with sample distributions")
+    plt.title("Regression and Q-Q plots for ia times model, with sample distributions")
     plt.legend()
     plt.savefig("Figures/" + city + "/validation/reg1000_sns.png")
     sns.despine()

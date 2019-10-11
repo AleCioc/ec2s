@@ -84,32 +84,32 @@ def plot_multiple_runs (city_name,
                  "beta":plotter.best_params_unsatisfied.loc["beta"]},
              figname="best_unsatisfied")
 
-        plotter.plot_cross_sections\
-            (y_col=z_col,
-             x_col=x_col,
-             param_col="beta",
-             fixed_params_dict=
-                {"n_cars_factor":plotter.best_params_relocost.loc["n_cars_factor"],
-                 "willingness":plotter.best_params_relocost.loc["willingness"]},
-             figname="best_relocost")
-
-        plotter.plot_cross_sections\
-            (y_col=z_col,
-             x_col=x_col,
-             param_col="n_cars_factor",
-             fixed_params_dict=
-                {"beta":plotter.best_params_relocost.loc["beta"],
-                 "willingness":plotter.best_params_relocost.loc["willingness"]},
-             figname="best_relocost")
-
-        plotter.plot_cross_sections\
-            (y_col=z_col,
-             x_col=x_col,
-             param_col="willingness",
-             fixed_params_dict=
-                {"n_cars_factor":plotter.best_params_relocost.loc["n_cars_factor"],
-                 "beta":plotter.best_params_relocost.loc["beta"]},
-             figname="best_relocost")
+        # plotter.plot_cross_sections\
+        #     (y_col=z_col,
+        #      x_col=x_col,
+        #      param_col="beta",
+        #      fixed_params_dict=
+        #         {"n_cars_factor":plotter.best_params_relocost.loc["n_cars_factor"],
+        #          "willingness":plotter.best_params_relocost.loc["willingness"]},
+        #      figname="best_relocost")
+		#
+        # plotter.plot_cross_sections\
+        #     (y_col=z_col,
+        #      x_col=x_col,
+        #      param_col="n_cars_factor",
+        #      fixed_params_dict=
+        #         {"beta":plotter.best_params_relocost.loc["beta"],
+        #          "willingness":plotter.best_params_relocost.loc["willingness"]},
+        #      figname="best_relocost")
+		#
+        # plotter.plot_cross_sections\
+        #     (y_col=z_col,
+        #      x_col=x_col,
+        #      param_col="willingness",
+        #      fixed_params_dict=
+        #         {"n_cars_factor":plotter.best_params_relocost.loc["n_cars_factor"],
+        #          "beta":plotter.best_params_relocost.loc["beta"]},
+        #      figname="best_relocost")
 
     plotter.plot_events_profiles\
         (x_col=x_col,

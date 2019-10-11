@@ -8,7 +8,7 @@ matplotlib.rcParams["figure.figsize"] = (15., 7.)
 
 SMALL_SIZE = 8
 MEDIUM_SIZE = 12
-BIGGER_SIZE = 14
+BIGGER_SIZE = 20
 
 plt.rc('font', size=BIGGER_SIZE)          # controls default text sizes
 plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title

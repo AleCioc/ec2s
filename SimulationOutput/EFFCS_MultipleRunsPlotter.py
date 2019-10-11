@@ -7,7 +7,7 @@ from SimulationOutput.plot_multiple_runs import plot_param_cross_section
 
 class EFFCS_MultipleRunsPlotter():
 
-    def __init__(self, sim_stats_df, city, sim_scenario_name = "trial"):
+    def __init__(self, sim_stats_df, city, sim_scenario_name):
 
         self.sim_stats_df = sim_stats_df.copy()
 
