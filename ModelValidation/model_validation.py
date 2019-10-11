@@ -19,12 +19,11 @@ from ModelValidation.model_validation_plot import plot_tot_reqs_count_err_agg
 from ModelValidation.model_validation_plot import plot_regr_qq_sns
 from ModelValidation.model_validation_plot import plot_od_err
 
-def run_traceB_eventG (city, sim_general_conf, sim_scenario_conf, kde_bw=0.01):
+def run_traceB_eventG (city, sim_general_conf, sim_scenario_conf):
 
     city_obj = City\
         (city,
-         sim_general_conf,
-         kde_bw)
+         sim_general_conf)
 
     simInput_traceB = get_traceB_input\
         ((sim_general_conf,

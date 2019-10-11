@@ -13,7 +13,7 @@ from MultipleRun.multiple_runs import plot_multiple_runs
 from utils.path_utils import create_output_folders
 
 confs_dict = {}
-from SimulationInput.confs.only_hub_conf import sim_general_conf
+from SimulationInput.confs.sim_general_conf import sim_general_conf
 from SimulationInput.confs.only_hub_conf import sim_scenario_conf_grid
 confs_dict["only_hub"] = sim_scenario_conf_grid
 from SimulationInput.confs.only_cps_conf import sim_scenario_conf_grid
@@ -36,7 +36,6 @@ for city_name in sys.argv[3:]:
     # create_input_pickles(city_name, [9, 10], 500)
     # run_model_validation(city_name)
     #
-    # from SimulationInput.confs.single_run_conf import sim_general_conf
     # from SimulationInput.confs.single_run_conf import sim_scenario_conf
     # single_run(city_name, sim_general_conf, sim_scenario_conf, "eventG", sim_scenario_name)
 
