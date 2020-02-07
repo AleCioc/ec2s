@@ -8,7 +8,7 @@ from Loading.create_input_pickles import create_input_pickles
 from ModelValidation.model_validation import run_model_validation
 from SingleRun.single_run import single_run
 from MultipleRun.multiple_runs import multiple_runs
-from MultipleRun.multiple_runs import plot_multiple_runs
+from SimulationOutput.EFFCS_MultipleRunsPlotter import plot_multiple_runs
 
 from utils.path_utils import create_output_folders
 
