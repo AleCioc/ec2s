@@ -61,7 +61,7 @@ def plot_events_percentage (sim_stats_df,
     plt.xlabel(x_col)
     plt.ylabel("percentage of events")
     plt.legend()
-    plt.savefig(os.path.join(figpath, figname + ".pdf"))
+    plt.savefig(os.path.join(figpath, figname + ".png"))
     plt.close()
 
 def plot_param_cross_section (results_df, 
@@ -85,7 +85,7 @@ def plot_param_cross_section (results_df,
                  label=param_col + "=" + str(param_value))
     
     plt.legend()
-    plt.savefig(os.path.join(figpath, figname + ".pdf"))
+    plt.savefig(os.path.join(figpath, figname + ".png"))
 #    plt.show()
     plt.close()
 

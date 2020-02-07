@@ -2,27 +2,27 @@ import datetime
 
 sim_scenario_conf = {
 
-    "requests_rate_factor": 1,
-    "n_cars_factor": 1,
+	"requests_rate_factor": 1,
+	"n_cars_factor": 1,
+	"time_estimation": True,
 
-    "time_estimation": False,
-    "queuing": True,
-    "alpha": 25,
-    "beta": 100,
+	"queuing": True,
+	"alpha": 25,
+	"beta": 100,
 
-    "hub": True,
-    "hub_zone_policy": "num_parkings",
-    "n_poles_n_cars_factor": 0.1,
+	"hub": False,
+	"hub_zone_policy": "num_parkings",
+	"n_poles_n_cars_factor": 0.07,
 
-    "relocation": False,
-    "finite_workers": False,
+	"distributed_cps": True,
+	"cps_placement_policy": "num_parkings",
+	"cps_zones_percentage": 0.1,
 
-    "distributed_cps": False,
-    "cps_placement_policy": "num_parkings",
-    "cps_zones_percentage": 0.1,
+	"user_contribution": False,
+	"system_cps": True,
+	"willingness": 0.0,
 
-    "user_contribution": False,
-    "system_cps": False,
-    "willingness": 0.0,
+	"relocation": False,
+	"finite_workers": False,
 
 }

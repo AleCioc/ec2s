@@ -7,7 +7,7 @@ from Loading.load_data import get_input_data
 from Loading.load_data import read_sim_input_data
 
 from DataStructures.City import City
-from SimulationInput.confs.model_validation_conf import sim_general_conf
+from SimulationInput.confs.sim_general_conf import sim_general_conf
 
 def create_input_pickles(city, months, bin_side_length):
 

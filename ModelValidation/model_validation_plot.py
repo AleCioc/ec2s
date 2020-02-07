@@ -23,6 +23,7 @@ import seaborn as sns
 from ModelValidation.model_validation_utils import get_plot_samples
 from ModelValidation.model_validation_utils import get_grouped_reqs_count
 from ModelValidation.model_validation_utils import get_day_moments
+from ModelValidation.model_validation_utils import get_od_err_daymoments
 from ModelValidation.model_validation_utils import get_od_err
 
 def plot_ia_validation(ia_threshold, city, sim_reqs_eventG, trace_timeouts):
@@ -170,7 +171,7 @@ def plot_od_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
     sim_reqs_eventG, sim_reqs_traceB = \
         get_day_moments(sim_reqs_eventG, sim_reqs_traceB)
 
-    grid = get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB)
+    grid = get_od_err_daymoments(grid, sim_reqs_eventG, sim_reqs_traceB)
 
     fig, axs = plt.subplots(2, 2, figsize=(12, 12))
 
@@ -188,6 +189,14 @@ def plot_od_err (city, grid, sim_reqs_eventG, sim_reqs_traceB):
         if j == 1:
             i = (i + 1) % 2
         j = (j + 1) % 2
+
+    plt.savefig("./Figures/" + city + "/validation/sp_err_daymoments.png")
+    # plt.show()
+    plt.close()
+
+    grid = get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB)
+    fig, ax = plt.subplots(1, 1, figsize=(12, 12))
+    grid.plot(column="od_count_diff", ax=ax, legend=True)
 
     plt.savefig("./Figures/" + city + "/validation/sp_err.png")
     # plt.show()

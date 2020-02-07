@@ -9,7 +9,7 @@ from SingleRun.run_eventG_sim import run_eventG_sim
 
 from SimulationOutput.EFFCS_SimOutput import EFFCS_SimOutput
 
-from SimulationInput.confs.model_validation_conf import sim_general_conf
+from SimulationInput.confs.sim_general_conf import sim_general_conf
 from SimulationInput.confs.model_validation_conf import sim_scenario_conf
 
 from ModelValidation.model_validation_plot import plot_ia_validation

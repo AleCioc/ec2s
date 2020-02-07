@@ -5,7 +5,7 @@ import pytz
 import pandas as pd
 from sklearn.neighbors import KernelDensity
 
-from Retrieval.DB_to_df import pre_process_time
+from utils.bookings_utils import pre_process_time
 
 from Loading.load_data import get_input_data
 from Loading.load_data import read_sim_input_data

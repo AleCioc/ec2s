@@ -5,7 +5,7 @@
 Data/**
 Results/**
 Figures/**
-Retrieval/**
+big_data_db_proxy/**
 
 **/*~
 *.ipynb

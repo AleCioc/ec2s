@@ -1,5 +1,10 @@
 import os
 
+def check_create_path (path):
+	if not os.path.exists(path):
+		os.mkdir(path)
+
+
 def create_output_folders (city_name, sim_scenario_name):
 
 	results_path = os.path.join \

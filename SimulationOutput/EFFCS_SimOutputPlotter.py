@@ -9,6 +9,18 @@ matplotlib.style.use('ggplot')
 matplotlib.rcParams["axes.grid"] = True
 matplotlib.rcParams["figure.figsize"] = (15., 7.)
 
+SMALL_SIZE = 8
+MEDIUM_SIZE = 12
+BIGGER_SIZE = 20
+
+plt.rc('font', size=BIGGER_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGER_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=BIGGER_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=BIGGER_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=MEDIUM_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
 class EFFCS_SimOutputPlotter ():
     
     def __init__ (self, simOutput, city, grid, sim_scenario_name = "trial"):
@@ -55,39 +67,64 @@ class EFFCS_SimOutputPlotter ():
 
         self.simOutput = simOutput
 
+        fig, ax = plt.subplots(1, 1, figsize=(15, 15))
+        plt.title("")
+        plt.xlabel(None)
+        plt.xticks([])
+        plt.ylabel(None)
+        plt.yticks([])
+        grid.plot(color="white", edgecolor="black", ax=ax)
+        grid.plot \
+            (color="lavender", edgecolor="blue", column="valid", ax=ax).plot()
+        plt.savefig(os.path.join(self.figures_path,
+             "city_zones.png"),
+                transparent=True)
+        plt.close()
+
         if sim_scenario_name == "only_hub":
 
             fig, ax = plt.subplots(1, 1, figsize=(15, 15))
-            plt.title("Location of hub")
+            plt.title("")
+            plt.xlabel(None)
+            plt.xticks([])
+            plt.ylabel(None)
+            plt.yticks([])
             grid.plot(color="white", edgecolor="black", ax=ax)
             grid.plot \
                 (color="lavender", edgecolor="blue", column="valid", ax=ax).plot()
             grid.iloc[self.simOutput.sim_stats["hub_zone"]:self.simOutput.sim_stats["hub_zone"]+1]\
                 .plot(ax=ax)
             plt.savefig(os.path.join(self.figures_path,
-                 "hub_location.pdf"))
+                 "hub_location.png"),
+                transparent=True)
+            plt.close()
 
         if sim_scenario_name == "only_cps":
 
             charging_zones = \
-                pd.Index(self.sim_users_charges_bookings\
-                .destination_id.unique())
+                pd.Index(self.sim_charges\
+                .zone_id.unique())
             charging_poles_by_zone = \
-                self.sim_users_charges_bookings \
-                .destination_id.value_counts()
+                self.sim_charges \
+                .zone_id.value_counts()
             grid.loc[charging_zones, "poles_count"] = \
                 charging_poles_by_zone
-            print (grid.poles_count)
 
             fig, ax = plt.subplots(1, 1, figsize=(15, 15))
-            plt.title("Location of charging poles")
+            plt.title("")
+            plt.xlabel(None)
+            plt.xticks([])
+            plt.ylabel(None)
+            plt.yticks([])
             grid.plot(color="white", edgecolor="black", ax=ax)
             grid.plot \
                 (color="lavender", edgecolor="blue", column="valid", ax=ax).plot()
             grid.loc[charging_zones].plot(ax=ax)
             # grid.dropna().plot(column="poles_count", ax=ax, legend=True)
             plt.savefig(os.path.join(self.figures_path,
-                 "cps_locations.pdf"))
+                 "cps_locations.png"),
+                transparent=True)
+            plt.close()
 
     def plot_events_profile (self):
 
@@ -114,8 +151,68 @@ class EFFCS_SimOutputPlotter ():
 
         plt.tight_layout()
         plt.savefig(os.path.join(self.figures_path,
-             "events_profile.pdf"))
+             "events_profile.png"))
         # plt.show()
+        plt.close()
+
+        fig, ax = plt.subplots(figsize=(15, 7))
+        pie_s = \
+            pd.Series( \
+                [self.simOutput.sim_stats["percentage_same_zone_trips_satisfied"],
+                 self.simOutput.sim_stats["percentage_not_same_zone_trips_satisfied"]],
+                index=["same zone", "neighbor zone"],
+                name="events %"
+            )
+        plt.pie(pie_s.values,
+                colors=["yellowgreen", "olivedrab"],
+                labels=pie_s.index,
+                autopct="%1.1f%%",)
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.figures_path,
+             "events_profile_pie1.png"),
+                transparent=True)
+#        plt.show()
+        plt.close()
+
+        fig, ax = plt.subplots(figsize=(15, 7))
+        pie_s = \
+            pd.Series( \
+                [self.simOutput.sim_stats["percentage_no_close_cars_unsatisfied"],
+                 self.simOutput.sim_stats["percentage_deaths_unsatisfied"]],
+                index=["no close car", "not enough energy"],
+                name="events %"
+            )
+        plt.pie(pie_s.values,
+                colors=["grey", "yellow"],
+                labels=pie_s.index,
+                autopct="%1.1f%%")
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.figures_path,
+             "events_profile_pie2.png"),
+                transparent=True)
+#        plt.show()
+        plt.close()
+
+        fig, ax = plt.subplots(figsize=(15, 7))
+        pie_s = \
+            pd.Series( \
+                [self.simOutput.sim_stats["percentage_satisfied"],
+                 self.simOutput.sim_stats["percentage_unsatisfied"]],
+                index=["satisfied", "unsatified"],
+                name="events %"
+            )
+        plt.pie(pie_s.values,
+                colors=["green", "red"],
+                labels=pie_s.index,
+                autopct="%1.1f%%")
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.figures_path,
+             "events_profile_pie3.png"),
+                transparent=True)
+#        plt.show()
         plt.close()
 
     def plot_hourly_events_boxplot (self, which_df):
@@ -137,7 +234,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("hour")
         plt.ylabel("n events")
         plt.savefig(os.path.join\
-            (self.figures_path, which_df + "_hourly_boxplot.pdf"))
+            (self.figures_path, which_df + "_hourly_boxplot.png"))
         # plt.show()
         plt.close()
 
@@ -160,7 +257,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("hour")
         plt.ylabel("n cars")
         plt.savefig(os.path.join\
-            (self.figures_path, "n_cars_charging_" + operator + "_hourly_boxplot.pdf"))
+            (self.figures_path, "n_cars_charging_" + operator + "_hourly_boxplot.png"))
         # plt.show()
         plt.close()
 
@@ -178,7 +275,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("hour")
         plt.ylabel("relocation cost [hours]")
         plt.savefig(os.path.join\
-            (self.figures_path, "relocost_hourly_boxplot.pdf"))
+            (self.figures_path, "relocost_hourly_boxplot.png"))
         # plt.show()
         plt.close()
 
@@ -191,7 +288,7 @@ class EFFCS_SimOutputPlotter ():
         plt.title("charge duration histogram")
         plt.xlabel("hours")
         plt.savefig(os.path.join(self.figures_path,
-             "duration_hist.pdf"))
+             "duration_hist.png"))
         # plt.show()
         plt.close()
 
@@ -206,7 +303,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("hour")
         plt.ylabel("E [kwh]")
         plt.savefig(os.path.join(self.figures_path,
-             "avg_charging_energy.pdf"))
+             "avg_charging_energy.png"))
         # plt.show()
         plt.close()
 
@@ -220,7 +317,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("t")
         plt.ylabel("E [kwh]")
         plt.savefig(os.path.join(self.figures_path,
-             "charging_energy_t.pdf"))
+             "charging_energy_t.png"))
         # plt.show()
         plt.close()
 
@@ -258,7 +355,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("t")
         plt.ylabel("E [kwh]")
         plt.savefig(os.path.join(self.figures_path,
-             "n_cars_profile.pdf"))
+             "n_cars_profile.png"))
         # plt.show()
         plt.close()
 
@@ -278,7 +375,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("t")
         plt.ylabel("n cars")
         plt.savefig(os.path.join(self.figures_path,
-             "n_cars_charging_t.pdf"))
+             "n_cars_charging_t.png"))
         # plt.show()
         plt.close()
 
@@ -295,7 +392,7 @@ class EFFCS_SimOutputPlotter ():
         plt.title("charging timestamps histogram system vs users")
         plt.xlabel("hour")
         plt.savefig(os.path.join(self.figures_path,
-             "charging_t_hist.pdf"))
+             "charging_t_hist.png"))
         # plt.show()
         plt.close()
 
@@ -310,7 +407,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
-             "origins_map.pdf"))
+             "origins_map.png"))
         # plt.show()
         plt.close()
 
@@ -325,7 +422,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
-             "destinations_map.pdf"))
+             "destinations_map.png"))
         # plt.show()
         plt.close()
 
@@ -341,7 +438,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
-             "system_charges_map.pdf"))
+             "system_charges_map.png"))
         # plt.show()
         plt.close()
 
@@ -356,7 +453,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
-             "users_charges_map.pdf"))
+             "users_charges_map.png"))
         # plt.show()
         plt.close()
 
@@ -370,7 +467,7 @@ class EFFCS_SimOutputPlotter ():
         plt.title("unsatisfied demand timestamps histogram")
         plt.xlabel("hour")
         plt.savefig(os.path.join(self.figures_path,
-             "unsatisfied_t_hist.pdf"))
+             "unsatisfied_t_hist.png"))
         # plt.show()
         plt.close()
 
@@ -386,7 +483,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
-             "unsatisfied_origins_heatmap.pdf"))
+             "unsatisfied_origins_heatmap.png"))
         # plt.show()
         plt.close()
 
@@ -400,7 +497,7 @@ class EFFCS_SimOutputPlotter ():
         plt.title("deaths timestamps histogram")
         plt.xlabel("hour")
         plt.savefig(os.path.join(self.figures_path,
-             "deaths_t_hist.pdf"))
+             "deaths_t_hist.png"))
         # plt.show()
         plt.close()
 
@@ -415,7 +512,7 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
-             "deaths_origins_heatmap.pdf"))
+             "deaths_origins_heatmap.png"))
         # plt.show()
         plt.close()
 
@@ -429,7 +526,7 @@ class EFFCS_SimOutputPlotter ():
         plt.title("charge deaths timestamps histogram")
         plt.xlabel("hour")
         plt.savefig(os.path.join(self.figures_path,
-             "charge_deaths_t_hist.pdf"))
+             "charge_deaths_t_hist.png"))
         # plt.show()
         plt.close()
 
@@ -437,14 +534,14 @@ class EFFCS_SimOutputPlotter ():
 
         fig,ax = plt.subplots(1,1,figsize=(15,15))
         self.grid["charge_deaths_origins_count"] = \
-           self.sim_charge_deaths.origin_id.value_counts()
+           self.sim_charge_deaths.destination_id.value_counts()
         self.grid.dropna(subset=["charge_deaths_origins_count"])\
            .plot(column="deaths_origins_count", ax=ax, legend=True)
         plt.title("charge deaths origin heatmap")
         plt.xlabel("longitude")
         plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
-             "charge_deaths_origins_heatmap.pdf"))
+             "charge_deaths_origins_heatmap.png"))
         # plt.show()
         plt.close()
 
@@ -460,6 +557,6 @@ class EFFCS_SimOutputPlotter ():
         plt.xlabel("t")
         plt.ylabel("relocation hours")
         plt.savefig(os.path.join(self.figures_path,
-             "relo_cost_t.pdf"))
+             "relo_cost_t.png"))
         # plt.show()
         plt.close()

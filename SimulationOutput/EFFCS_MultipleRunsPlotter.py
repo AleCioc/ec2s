@@ -5,6 +5,120 @@ import numpy as np
 from SimulationOutput.plot_multiple_runs import plot_events_percentage
 from SimulationOutput.plot_multiple_runs import plot_param_cross_section
 
+
+def plot_multiple_runs (city_name,
+                        sim_scenario_name):
+
+    results_path = os.path.join\
+        (os.getcwd(), "Figures", city_name, "multiple_runs")
+    if not os.path.exists(results_path):
+        os.mkdir(results_path)
+
+    results_path = os.path.join\
+        (os.getcwd(), "Figures", city_name, "multiple_runs", sim_scenario_name)
+    if not os.path.exists(results_path):
+        os.mkdir(results_path)
+
+    results_path = os.path.join \
+        (os.getcwd(), "Results", city_name, "multiple_runs", sim_scenario_name, "sim_stats.pickle")
+    sim_stats_df = pd.read_pickle(results_path)
+    for col in sim_stats_df:
+        if col.startswith("percentage"):
+            sim_stats_df[col] = \
+                sim_stats_df[col] * 100
+
+    plotter = EFFCS_MultipleRunsPlotter(sim_stats_df,
+                                        city_name,
+                                        sim_scenario_name)
+    print(plotter.best_params_unsatisfied)
+    print(plotter.best_params_relocost)
+
+    x_col = "n_poles_n_cars_factor"
+    y_col = "n_cars_factor"
+    fixed_param_col = "beta"
+
+    for z_col in ["percentage_unsatisfied",
+                  "cum_relo_t"]:
+
+        # for fixed_param_value in sim_stats_df[fixed_param_col].unique():
+        #     plotter.plot_3d\
+        #         (x_col=x_col,
+        #          y_col=y_col,
+        #          z_col=z_col,
+        #          fixed_param_col=fixed_param_col,
+        #          fixed_param_value=fixed_param_value,
+        #          title_add=fixed_param_col + "=" + str(fixed_param_value))
+
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="beta",
+             fixed_params_dict=
+                {"n_cars_factor":plotter.best_params_unsatisfied.loc["n_cars_factor"],
+                 "willingness":plotter.best_params_unsatisfied.loc["willingness"]},
+             figname="best_unsatisfied")
+
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="n_cars_factor",
+             fixed_params_dict=
+                {"beta":plotter.best_params_unsatisfied.loc["beta"],
+                 "willingness":plotter.best_params_unsatisfied.loc["willingness"]},
+             figname="best_unsatisfied")
+
+        plotter.plot_cross_sections\
+            (y_col=z_col,
+             x_col=x_col,
+             param_col="willingness",
+             fixed_params_dict=
+                {"n_cars_factor":plotter.best_params_unsatisfied.loc["n_cars_factor"],
+                 "beta":plotter.best_params_unsatisfied.loc["beta"]},
+             figname="best_unsatisfied")
+
+        # plotter.plot_cross_sections\
+        #     (y_col=z_col,
+        #      x_col=x_col,
+        #      param_col="beta",
+        #      fixed_params_dict=
+        #         {"n_cars_factor":plotter.best_params_relocost.loc["n_cars_factor"],
+        #          "willingness":plotter.best_params_relocost.loc["willingness"]},
+        #      figname="best_relocost")
+		#
+        # plotter.plot_cross_sections\
+        #     (y_col=z_col,
+        #      x_col=x_col,
+        #      param_col="n_cars_factor",
+        #      fixed_params_dict=
+        #         {"beta":plotter.best_params_relocost.loc["beta"],
+        #          "willingness":plotter.best_params_relocost.loc["willingness"]},
+        #      figname="best_relocost")
+		#
+        # plotter.plot_cross_sections\
+        #     (y_col=z_col,
+        #      x_col=x_col,
+        #      param_col="willingness",
+        #      fixed_params_dict=
+        #         {"n_cars_factor":plotter.best_params_relocost.loc["n_cars_factor"],
+        #          "beta":plotter.best_params_relocost.loc["beta"]},
+        #      figname="best_relocost")
+
+    plotter.plot_events_profiles\
+        (x_col=x_col,
+         params_dict=
+                {"beta":plotter.best_params_unsatisfied.loc["beta"],
+                 "n_cars_factor": plotter.best_params_unsatisfied.loc["n_cars_factor"],
+                 "willingness":plotter.best_params_unsatisfied.loc["willingness"]},
+         figname_add="_min_unsatisfied")
+
+    plotter.plot_events_profiles\
+        (x_col=x_col,
+         params_dict=
+                {"beta":plotter.best_params_relocost.loc["beta"],
+                 "n_cars_factor": plotter.best_params_relocost.loc["n_cars_factor"],
+                 "willingness":plotter.best_params_relocost.loc["willingness"]},
+         figname_add="_min_relocost")
+
 class EFFCS_MultipleRunsPlotter():
 
     def __init__(self, sim_stats_df, city, sim_scenario_name):

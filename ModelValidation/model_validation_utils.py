@@ -117,7 +117,7 @@ def get_day_moments (sim_reqs_eventG, sim_reqs_traceB):
 
     return sim_reqs_eventG, sim_reqs_traceB
 
-def get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB):
+def get_od_err_daymoments(grid, sim_reqs_eventG, sim_reqs_traceB):
 
     for daymoment in ["night", "morning", "afternoon", "evening"]:
 
@@ -159,5 +159,42 @@ def get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB):
             + current_grid["destinations_od_count_diff_" + daymoment]
 
         # print(grid["od_count_diff_" + daymoment].sum())
+
+    return grid
+
+def get_od_err(grid, sim_reqs_eventG, sim_reqs_traceB):
+
+    grid["eventG_origin_count"] = \
+        sim_reqs_eventG.origin_id.value_counts() \
+        / len(sim_reqs_eventG)
+
+    grid["traceB_origin_count"] = \
+        sim_reqs_traceB.origin_id.value_counts() \
+        / len(sim_reqs_eventG)
+
+    grid["eventG_destination_count"] = \
+        sim_reqs_eventG.destination_id.value_counts() \
+        / len(sim_reqs_eventG)
+
+    grid["traceB_destination_count"] = \
+        sim_reqs_traceB.destination_id.value_counts() \
+        / len(sim_reqs_eventG)
+
+    grid["origin_count_diff"] = \
+        (grid["eventG_origin_count" ] \
+        - grid["traceB_origin_count"]).abs()
+
+    grid["destinations_od_count_diff"] = \
+        (grid["eventG_destination_count"] \
+        - grid["traceB_destination_count"]).abs()
+
+    current_grid = grid.loc \
+        [:, ["origin_count_diff",
+             "destinations_od_count_diff"]] \
+        .dropna(how="all").fillna(0)
+
+    grid["od_count_diff"] = \
+        current_grid["origin_count_diff"] \
+        + current_grid["destinations_od_count_diff"]
 
     return grid
