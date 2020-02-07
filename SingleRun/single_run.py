@@ -15,11 +15,17 @@ from SimulationOutput.EFFCS_SimOutputPlotter import EFFCS_SimOutputPlotter
 
 from utils.path_utils import check_create_path
 
-def single_run(city,
-			   sim_general_conf,
-			   sim_scenario_conf,
-			   sim_type="eventG",
-			   sim_scenario_name="trial"):
+
+def single_run(conf_tuple):
+
+	city = \
+		conf_tuple[0]
+	sim_general_conf = \
+		conf_tuple[1]
+	sim_type = \
+		conf_tuple[3]
+	sim_scenario_name = \
+		conf_tuple[4]
 
 	results_path = os.path.join(os.getcwd(), "Results", city, "single_run")
 	if not os.path.exists(results_path):
@@ -181,3 +187,5 @@ def single_run(city,
 	# plotter.plot_deaths_origins_heatmap()
 	# plotter.plot_charge_deaths_t_hist()
 	# plotter.plot_charge_deaths_origins_heatmap()
+
+	return sim_stats
