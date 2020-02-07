@@ -48,7 +48,6 @@ class EFFCS_SimInput ():
                 int(abs(self.n_cars * self.sim_scenario_conf["n_poles_n_cars_factor"]))
             self.sim_scenario_conf["n_charging_poles"] = \
                 self.n_charging_poles
-            print (self.n_charging_poles)
 
         elif self.sim_scenario_conf["hub"] \
         and self.sim_scenario_conf["distributed_cps"]:
@@ -137,7 +136,6 @@ class EFFCS_SimInput ():
             self.n_charging_zones = \
                 int(self.sim_scenario_conf["cps_zones_percentage"]\
                 * len(self.valid_zones))
-            # print(self.n_charging_zones)
 
             top_dest_zones = self.input_bookings\
                 .destination_id.value_counts()\
@@ -174,9 +172,7 @@ class EFFCS_SimInput ():
                 self.grid.centroid.apply\
                 (lambda x: self.grid.loc[zones_with_cps]\
                  .centroid.distance(x))
-            # print(self.zones_cp_distances.shape)
-            # print(self.zones_cp_distances.iloc[:10, :10])
-    
+
             self.closest_cp_zone = \
                 self.zones_cp_distances.idxmin(axis=1)
 
