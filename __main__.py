@@ -23,7 +23,7 @@ confs_dict["hub_cps"] = sim_scenario_conf_grid
 from SimulationInput.confs.multiple_runs_conf import sim_scenario_conf_grid
 confs_dict["trial"] = sim_scenario_conf_grid
 
-n_cores = 4
+n_cores = 40
 print(n_cores)
 
 for sim_scenario_name in ["only_hub", "only_cps"]:
