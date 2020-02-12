@@ -45,10 +45,6 @@ class City:
 
 		self.trip_kdes = self.get_trip_kdes()
 
-		print(self.grid.shape)
-		print(self.od_distances.shape)
-		print(self.input_bookings.destination_id.unique().shape)
-
 	def get_od_distances(self):
 
 		path = os.path.join("Data", self.city_name, "od_distances.pickle")
