@@ -4,16 +4,16 @@ import numpy as np
 sim_scenario_conf_grid = {
 
     "requests_rate_factor": [1],
-    "n_cars_factor": np.arange(0.5, 1.6, 0.2),
+    "n_cars_factor": [1],
 
     "time_estimation": [True],
     "queuing": [True],
-    "alpha": [25],
-    "beta": np.arange(60, 105, 10),
+    "alpha": np.arange(5, 30, 5),
+    "beta": np.arange(70, 105, 5),
 
     "hub": [False],
     "hub_zone_policy": ["num_parkings"],
-    "n_poles_n_cars_factor" : np.arange(0.05, 0.2, 0.005),
+    "n_poles_n_cars_factor": np.arange(0.1, 1, 0.1),
 
     "relocation": [False],
     "finite_workers": [False],
@@ -23,7 +23,7 @@ sim_scenario_conf_grid = {
     "cps_zones_percentage": [0.1],
 
     "system_cps": [True],
-    "user_contribution": [True],
-    "willingness": np.arange(0., 1., 0.33),
+    "user_contribution": [False],
+    "willingness": [0],
 
 }

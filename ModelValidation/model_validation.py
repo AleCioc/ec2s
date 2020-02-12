@@ -19,6 +19,7 @@ from ModelValidation.model_validation_plot import plot_tot_reqs_count_err_agg
 from ModelValidation.model_validation_plot import plot_regr_qq_sns
 from ModelValidation.model_validation_plot import plot_od_err
 
+
 def run_traceB_eventG (city, sim_general_conf, sim_scenario_conf):
 
     city_obj = City\
@@ -63,7 +64,6 @@ def run_model_validation (city):
     trace_timeouts = \
         sim_reqs_traceB.ia_timeout.loc\
         [sim_reqs_traceB.ia_timeout < 5000]
-
 
     plot_ia_validation(999, city, sim_reqs_eventG, trace_timeouts)
     plot_tot_reqs_count("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)

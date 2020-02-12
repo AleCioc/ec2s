@@ -34,7 +34,7 @@ for sim_scenario_name in ["only_hub", "only_cps"]:
 		create_output_folders(city_name, sim_scenario_name)
 
 		# create_input_pickles(city_name, [9, 10], 500)
-		# run_model_validation(city_name)
+		run_model_validation(city_name)
 
 		# from SimulationInput.confs.single_run_conf import sim_scenario_conf
 		# single_run(city_name,
