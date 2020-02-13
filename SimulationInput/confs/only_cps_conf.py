@@ -13,7 +13,7 @@ sim_scenario_conf_grid = {
 
     "hub": [False],
     "hub_zone_policy": ["num_parkings"],
-    "n_poles_n_cars_factor": np.arange(0.1, 0.5, 0.05),
+    "n_poles_n_cars_factor" : np.arange(0.05, 0.2, 0.005),
 
     "relocation": [False],
     "finite_workers": [False],
