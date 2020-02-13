@@ -8,7 +8,7 @@ from utils.car_utils import get_soc_delta
 def get_charging_time (soc_delta,
                        battery_capacity = 17.6,
                        charging_efficiency = 0.92,
-                       charger_rated_power = 7.4):
+                       charger_rated_power = 3.7):
 
     return (soc_delta * 60 * battery_capacity)\
     / (charging_efficiency * charger_rated_power * 100)
