@@ -6,11 +6,11 @@ def remap_plates (events):
     events.loc[:, "plate"] = events.plate.replace(ass_dict)
     return ass_dict, events
 
-def soc_to_kwh(soc, a=0., b=16.7):
+def soc_to_kwh(soc, a=0., b=17.6):
     return (b - a) / (100) * (soc - 100) + b
 
 def get_soc_delta (distance, 
-                   battery_capacity = 16.7,
+                   battery_capacity = 17.6,
                    vehicle_energy_efficiency = 0.15838):
     return (vehicle_energy_efficiency * distance * 100)\
     / (battery_capacity)
