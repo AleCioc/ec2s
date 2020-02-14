@@ -24,6 +24,6 @@ sim_scenario_conf_grid = {
 
     "system_cps": [True],
     "user_contribution": [True],
-    "willingness": [0.33, 0.66, 0.99],
+    "willingness": [0, 0.33, 0.66, 0.99],
 
 }
