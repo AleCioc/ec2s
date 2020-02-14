@@ -25,8 +25,8 @@ confs_dict["trial"] = sim_scenario_conf_grid
 
 n_cores = 40
 print(n_cores)
-city_name = sys.argv[0]
-sim_scenario_name = sys.argv[1]
+city_name = sys.argv[1]
+sim_scenario_name = sys.argv[2]
 
 print (datetime.datetime.now(), city_name)
 create_output_folders(city_name, sim_scenario_name)
