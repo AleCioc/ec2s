@@ -24,6 +24,7 @@ class EFFCS_SimOutput ():
 
 		self.sim_charges = \
 			pd.DataFrame(sim.chargingStrategy.sim_charges)
+		# print(self.sim_charges)
 
 		self.sim_deaths = \
 			pd.DataFrame(sim.sim_booking_requests_deaths)
@@ -193,7 +194,7 @@ class EFFCS_SimOutput ():
 			.date.count().loc["system"]\
 			/ len(self.sim_charges)
 
-		if len(self.sim_users_charges_bookings):
+		if "users" in self.sim_charges.operator.unique():
 			self.sim_stats.loc["percentage_charges_users"] = \
 				self.sim_charges.groupby("operator")\
 				.date.count().loc["users"]\
@@ -201,7 +202,7 @@ class EFFCS_SimOutput ():
 		else:
 			self.sim_stats.loc["percentage_charges_users"] = 0
 
-		if len(self.sim_users_charges_bookings):
+		if "users" in self.sim_charges.operator.unique():
 			self.sim_stats.loc["percentage_energy_system"] = \
 				self.sim_charges.groupby("operator")\
 				.soc_delta_kwh.sum().loc["system"]\

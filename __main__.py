@@ -25,33 +25,24 @@ confs_dict["trial"] = sim_scenario_conf_grid
 
 n_cores = 40
 print(n_cores)
+city_name = sys.argv[0]
+sim_scenario_name = sys.argv[1]
 
-for sim_scenario_name in ["only_hub", "only_cps"]:
+print (datetime.datetime.now(), city_name)
+create_output_folders(city_name, sim_scenario_name)
 
-	for city_name in ["Torino"]:
+# create_input_pickles(city_name, [9, 10], 500)
+# run_model_validation(city_name)
 
-		print (datetime.datetime.now(), city_name)
-		create_output_folders(city_name, sim_scenario_name)
+multiple_runs(
+	city_name,
+	"multiple_runs",
+	sim_general_conf,
+	confs_dict[sim_scenario_name],
+	int(n_cores),
+	sim_scenario_name=sim_scenario_name
+)
 
-		# create_input_pickles(city_name, [9, 10], 500)
-		run_model_validation(city_name)
+# plot_multiple_runs (city_name, sim_scenario_name)
 
-		# from SimulationInput.confs.single_run_conf import sim_scenario_conf
-		# single_run(city_name,
-		#            sim_general_conf,
-		#            sim_scenario_conf,
-		#            "eventG",
-		#            sim_scenario_name)
-
-		multiple_runs(
-			city_name,
-			"multiple_runs",
-			sim_general_conf,
-			confs_dict[sim_scenario_name],
-			int(n_cores),
-			sim_scenario_name=sim_scenario_name
-		)
-
-		# plot_multiple_runs (city_name, sim_scenario_name)
-
-	print (datetime.datetime.now())
+print (datetime.datetime.now())

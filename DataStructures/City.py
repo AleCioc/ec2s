@@ -55,8 +55,7 @@ class City:
 			od_distances.to_pickle(path)
 
 		# cfr. projection distortion
-		self.od_distances = pd.read_pickle \
-			                    (path) * 0.7
+		self.od_distances = pd.read_pickle(path) * 0.7
 
 		return self.od_distances
 

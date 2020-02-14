@@ -18,7 +18,7 @@ sim_scenario_conf = {
 	"cps_placement_policy": "num_parkings",
 	"cps_zones_percentage": 0.1,
 
-	"user_contribution": False,
+	"user_contribution": True,
 	"system_cps": True,
 	"willingness": 0.0,
 

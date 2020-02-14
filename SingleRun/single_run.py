@@ -22,6 +22,8 @@ def single_run(conf_tuple):
 		conf_tuple[0]
 	sim_general_conf = \
 		conf_tuple[1]
+	sim_scenario_conf = \
+		conf_tuple[2]
 	sim_type = \
 		conf_tuple[3]
 	sim_scenario_name = \
@@ -46,8 +48,9 @@ def single_run(conf_tuple):
 			 city_obj))
 		sim_eventG = run_eventG_sim\
 			(simInput = simInput_eventG)
+		print("Ciao")
 		simOutput_eventG = EFFCS_SimOutput(sim_eventG)
-		sim_stats  = simOutput_eventG.sim_stats
+		sim_stats = simOutput_eventG.sim_stats
 		simInput = simInput_eventG
 		simOutput = simOutput_eventG
 
@@ -189,3 +192,13 @@ def single_run(conf_tuple):
 	# plotter.plot_charge_deaths_origins_heatmap()
 
 	return sim_stats
+
+# from SimulationInput.confs.sim_general_conf import sim_general_conf
+# from SimulationInput.confs.single_run_conf import sim_scenario_conf
+# single_run((
+# 	"Torino",
+# 	sim_general_conf,
+# 	sim_scenario_conf,
+# 	"eventG",
+# 	"single_run"
+# ))
