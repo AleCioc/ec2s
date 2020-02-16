@@ -1,6 +1,8 @@
 import itertools
 import datetime
 import numpy as np
+import pandas as pd
+
 
 class EFFCS_SimConfGrid ():
     
@@ -9,13 +11,10 @@ class EFFCS_SimConfGrid ():
         self.conf_keys = conf_grid.values()
         self.conf_list = []        
         for el in itertools.product(*conf_grid.values()):
-#            print (el)
             conf = {k:None for k in conf_grid}
             i = 0
             for k in conf.keys():
                 conf[k] = el[i]
                 i += 1
             self.conf_list += [conf]
-        print(len(self.conf_list))
-        print(len(list(set(self.conf_list))))
-
+        self.conf_list = pd.DataFrame(self.conf_list).drop_duplicates().to_dict("records")
