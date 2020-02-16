@@ -16,4 +16,6 @@ class EFFCS_SimConfGrid ():
                 conf[k] = el[i]
                 i += 1
             self.conf_list += [conf]
+        print(len(self.conf_list))
+        print(len(list(set(self.conf_list))))
 
