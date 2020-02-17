@@ -23,7 +23,7 @@ sim_scenario_conf_grid = {
     "cps_zones_percentage": [0.1],
 
     "system_cps": [True],
-    "user_contribution": [False],
-    "willingness": [0],
+    "user_contribution": [True],
+    "willingness": [0, 0.33, 0.66, 0.99],
 
 }
