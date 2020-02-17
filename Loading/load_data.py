@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 
 from Preprocessing.geo_preprocessing import get_gdfs
@@ -33,6 +34,18 @@ def get_input_data(city, months, bin_side_length):
 
 def read_sim_input_data (city):
 
-    bookings = pd.read_pickle("./Data/" + city + "/bookings.pickle")
-    grid = pd.read_pickle("./Data/" + city + "/grid.pickle")
+    path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "Data",
+        city,
+        "bookings.pickle"
+    )
+    bookings = pd.read_pickle(path)
+    path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "Data",
+        city,
+        "grid.pickle"
+    )
+    grid = pd.read_pickle(path)
     return bookings, grid

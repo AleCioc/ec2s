@@ -18,15 +18,14 @@ from SimulationOutput.EFFCS_MultipleRunsPlotter import EFFCS_MultipleRunsPlotter
 def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
 				  n_cores = 4, sim_scenario_name="trial"):
 
-	results_path = os.path.join\
-		(os.getcwd(), "Results", city, "multiple_runs")
-	if not os.path.exists(results_path):
-		os.mkdir(results_path)
-
-	results_path = os.path.join \
-		(os.getcwd(), "Results", city, "multiple_runs", sim_scenario_name)
-	if not os.path.exists(results_path):
-		os.mkdir(results_path)
+	results_path = os.path.join(
+		os.path.dirname(os.path.dirname(__file__)),
+		"Results",
+		city,
+		"multiple_runs",
+		sim_scenario_name
+	)
+	os.makedirs(results_path, exist_ok=True)
 
 	sim_general_conf["city"] = city
 	sim_general_conf["bin_side_length"] = 500
@@ -44,7 +43,7 @@ def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
 		for i in np.arange(0, len(sim_conf_grid.conf_list), n_cores):
 
 			conf_tuples = []
-			conf_tuples_single_runs = []
+
 			for sim_scenario_conf in sim_conf_grid.conf_list[i: i + n_cores]:
 				conf_tuples += [(sim_general_conf,
 								sim_scenario_conf,

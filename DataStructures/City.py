@@ -47,8 +47,12 @@ class City:
 
 	def get_od_distances(self):
 
-		path = os.path.join("Data", self.city_name, "od_distances.pickle")
-
+		path = os.path.join(
+			os.path.dirname(os.path.dirname(__file__)),
+			"Data",
+			self.city_name,
+			"od_distances.pickle"
+		)
 		if not os.path.exists(path):
 			points = self.grid.centroid.geometry
 			od_distances = points.apply(lambda p: points.distance(p))
