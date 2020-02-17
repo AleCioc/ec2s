@@ -9,6 +9,8 @@ matplotlib.style.use('ggplot')
 matplotlib.rcParams["axes.grid"] = True
 matplotlib.rcParams["figure.figsize"] = (15., 7.)
 
+import contextily as ctx
+
 SMALL_SIZE = 8
 MEDIUM_SIZE = 12
 BIGGER_SIZE = 20
@@ -27,13 +29,14 @@ class EFFCS_SimOutputPlotter ():
 
         self.city = city
 
-        self.figures_path = os.path.join(os.getcwd(), "Figures", self.city, "single_run")
-        if not os.path.exists(self.figures_path):
-            os.mkdir(self.figures_path)
-        self.figures_path = os.path.join\
-            (os.getcwd(), "Figures", self.city, "single_run", sim_scenario_name)
-        if not os.path.exists(self.figures_path):
-            os.mkdir(self.figures_path)
+        self.figures_path = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "Figures",
+            city,
+            "single_run",
+            sim_scenario_name
+        )
+        os.makedirs(self.figures_path, exist_ok=True)
 
         self.grid = grid
 
@@ -327,6 +330,21 @@ class EFFCS_SimOutputPlotter ():
 
         self.sim_booking_requests\
            .set_index("start_time")\
+           .n_cars_available\
+           .plot(label="available", linewidth=2, alpha=0.7)
+        plt.legend()
+        plt.title("number of available cars in time")
+        plt.xlabel("t")
+        plt.ylabel("n_cars")
+        plt.savefig(os.path.join(self.figures_path,
+             "n_cars_available_profile.png"))
+        # plt.show()
+        plt.close()
+
+        plt.figure()
+
+        self.sim_booking_requests\
+           .set_index("start_time")\
            .n_cars_charging_system\
            .plot(label="system charging", linewidth=2, alpha=0.7)
 
@@ -342,18 +360,13 @@ class EFFCS_SimOutputPlotter ():
 
         self.sim_booking_requests\
            .set_index("start_time")\
-           .n_cars_available\
-           .plot(label="available", linewidth=2, alpha=0.7)
-
-        self.sim_booking_requests\
-           .set_index("start_time")\
            .n_cars_dead\
            .plot(label="dead", linewidth=2, alpha=0.7)
 
         plt.legend()
         plt.title("number of cars charging/available/booked in time")
         plt.xlabel("t")
-        plt.ylabel("E [kwh]")
+        plt.ylabel("n_cars")
         plt.savefig(os.path.join(self.figures_path,
              "n_cars_profile.png"))
         # plt.show()
@@ -398,17 +411,18 @@ class EFFCS_SimOutputPlotter ():
 
     def plot_origin_heatmap (self):
 
-        fig,ax = plt.subplots(1,1,figsize=(15,15))
+        fig, ax = plt.subplots(1,1,figsize=(15,15))
         self.grid["origin_count"] = \
            self.sim_booking_requests.origin_id.value_counts()
         self.grid.dropna(subset=["origin_count"])\
            .plot(column="origin_count", ax=ax, legend=True)
         plt.title("origin heatmap")
-        plt.xlabel("longitude")
-        plt.ylabel("latitude")
+        #plt.xlabel("longitude")
+        #plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
              "origins_map.png"))
         # plt.show()
+        ctx.add_basemap(ax)
         plt.close()
 
     def plot_destinations_heatmap (self):
@@ -419,8 +433,8 @@ class EFFCS_SimOutputPlotter ():
         self.grid.dropna(subset=["destination_count"])\
            .plot(column="destination_count", ax=ax, legend=True)
         plt.title("destination heatmap")
-        plt.xlabel("longitude")
-        plt.ylabel("latitude")
+        #plt.xlabel("longitude")
+        #plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
              "destinations_map.png"))
         # plt.show()
@@ -435,8 +449,8 @@ class EFFCS_SimOutputPlotter ():
         self.grid.dropna(subset=["charge_needed_system_zones_count"])\
            .plot(column="charge_needed_system_zones_count", ax=ax, legend=True)
         plt.title("system charging needed locations heatmap")
-        plt.xlabel("longitude")
-        plt.ylabel("latitude")
+        #plt.xlabel("longitude")
+        #plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
              "system_charges_map.png"))
         # plt.show()
@@ -450,8 +464,8 @@ class EFFCS_SimOutputPlotter ():
         self.grid.dropna(subset=["charge_needed_users_zones_count"])\
            .plot(column="charge_needed_users_zones_count", ax=ax, legend=True)
         plt.title("users charging needed locations heatmap")
-        plt.xlabel("longitude")
-        plt.ylabel("latitude")
+        #plt.xlabel("longitude")
+        #plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
              "users_charges_map.png"))
         # plt.show()
@@ -480,8 +494,8 @@ class EFFCS_SimOutputPlotter ():
         self.grid.dropna(subset=["unsatisfied_demand_origins_count"])\
            .plot(column="unsatisfied_demand_origins_count", ax=ax, legend=True)
         plt.title("unsatisfied demand origins heatmap")
-        plt.xlabel("longitude")
-        plt.ylabel("latitude")
+        #plt.xlabel("longitude")
+        #plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
              "unsatisfied_origins_heatmap.png"))
         # plt.show()
@@ -509,8 +523,8 @@ class EFFCS_SimOutputPlotter ():
         self.grid.dropna(subset=["deaths_origins_count"])\
            .plot(column="deaths_origins_count", ax=ax, legend=True)
         plt.title("deaths origin heatmap")
-        plt.xlabel("longitude")
-        plt.ylabel("latitude")
+        #plt.xlabel("longitude")
+        #plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
              "deaths_origins_heatmap.png"))
         # plt.show()
@@ -534,12 +548,12 @@ class EFFCS_SimOutputPlotter ():
 
         fig,ax = plt.subplots(1,1,figsize=(15,15))
         self.grid["charge_deaths_origins_count"] = \
-           self.sim_charge_deaths.destination_id.value_counts()
+           self.sim_charge_deaths.origin_id.value_counts()
         self.grid.dropna(subset=["charge_deaths_origins_count"])\
            .plot(column="deaths_origins_count", ax=ax, legend=True)
         plt.title("charge deaths origin heatmap")
-        plt.xlabel("longitude")
-        plt.ylabel("latitude")
+        #plt.xlabel("longitude")
+        #plt.ylabel("latitude")
         plt.savefig(os.path.join(self.figures_path,
              "charge_deaths_origins_heatmap.png"))
         # plt.show()

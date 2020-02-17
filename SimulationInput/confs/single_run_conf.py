@@ -7,12 +7,12 @@ sim_scenario_conf = {
 	"time_estimation": True,
 
 	"queuing": True,
-	"alpha": 25,
+	"alpha": 15,
 	"beta": 100,
 
 	"hub": False,
 	"hub_zone_policy": "num_parkings",
-	"n_poles_n_cars_factor": 0.07,
+	"n_poles_n_cars_factor": 0.15,
 
 	"distributed_cps": True,
 	"cps_placement_policy": "num_parkings",

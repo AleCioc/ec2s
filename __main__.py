@@ -22,11 +22,12 @@ from SimulationInput.confs.hub_cps_conf import sim_scenario_conf_grid
 confs_dict["hub_cps"] = sim_scenario_conf_grid
 from SimulationInput.confs.multiple_runs_conf import sim_scenario_conf_grid
 confs_dict["trial"] = sim_scenario_conf_grid
+from SimulationInput.confs.single_run_conf import sim_scenario_conf
+confs_dict["single_run"] = sim_scenario_conf
 
-n_cores = 4
-print(n_cores)
-city_name = sys.argv[1]
-sim_scenario_name = sys.argv[2]
+n_cores = sys.argv[1]
+city_name = sys.argv[2]
+sim_scenario_name = sys.argv[3]
 
 print (datetime.datetime.now(), city_name)
 create_output_folders(city_name, sim_scenario_name)
@@ -34,14 +35,22 @@ create_output_folders(city_name, sim_scenario_name)
 # create_input_pickles(city_name, [9, 10], 500)
 # run_model_validation(city_name)
 
-multiple_runs(
+single_run((
 	city_name,
-	"multiple_runs",
 	sim_general_conf,
-	confs_dict[sim_scenario_name],
-	int(n_cores),
-	sim_scenario_name=sim_scenario_name
-)
+	confs_dict["single_run"],
+	"eventG",
+	sim_scenario_name
+))
+
+# multiple_runs(
+# 	city_name,
+# 	"multiple_runs",
+# 	sim_general_conf,
+# 	confs_dict[sim_scenario_name],
+# 	int(n_cores),
+# 	sim_scenario_name=sim_scenario_name
+# )
 
 # plot_multiple_runs (city_name, sim_scenario_name)
 

@@ -2,6 +2,9 @@ import datetime
 import numpy as np
 import pandas as pd
 
+from Simulation.EFFCS_ChargingPrimitives import get_charging_soc
+from utils.car_utils import soc_to_kwh
+
 class EFFCS_SimOutput ():
 
 	def __init__ (self, sim):
@@ -186,7 +189,18 @@ class EFFCS_SimOutput ():
 		else:
 			self.sim_stats.loc["n_charges_by_car_users_avg"] = 0
 
-		self.sim_stats.loc["tot_energy"] =   \
+		self.sim_stats["sim_duration"] = (self.sim_stats.sim_end - self.sim_stats.sim_start).total_seconds()
+
+		self.sim_stats.loc["tot_potential_mobility_energy"] = \
+			self.sim_booking_requests.soc_delta.sum()
+
+		self.sim_stats.loc["tot_potential_charging_energy"] = \
+			get_charging_soc(self.sim_stats["sim_duration"] / 60)
+
+		self.sim_stats.loc["tot_potential_mobility_energy"] = \
+			self.sim_bookings.soc_delta.apply(lambda x: soc_to_kwh(x)).sum()
+
+		self.sim_stats.loc["tot_charging_energy"] = \
 			self.sim_charges["soc_delta_kwh"].sum()
 
 		self.sim_stats.loc["percentage_charges_system"] = \

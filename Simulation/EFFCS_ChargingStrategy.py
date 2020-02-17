@@ -214,18 +214,17 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
 						cr_soc_delta = \
 							compute_hub_charging_params()
 
-						if not unfeasible_charge_flag:
 
-							yield self.env.process\
-							   (self.charge_car\
-								(charge,
-								 self.charging_hub,
-								 car,
-								 "system",
-								 charging_zone_id,
-								 timeout_outward,
-								 timeout_return,
-								 cr_soc_delta))
+						yield self.env.process\
+						   (self.charge_car\
+							(charge,
+							 self.charging_hub,
+							 car,
+							 "system",
+							 charging_zone_id,
+							 timeout_outward,
+							 timeout_return,
+							 cr_soc_delta))
 
 					if self.simInput.sim_scenario_conf["distributed_cps"]\
 					and self.simInput.sim_scenario_conf["system_cps"]:
@@ -241,18 +240,16 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
 						cr_soc_delta = \
 							compute_cp_charging_params()
 
-						if not unfeasible_charge_flag:
-
-							yield self.env.process\
-							   (self.charge_car\
-								(charge,
-								 charging_station,
-								 car,
-								 "system",
-								 charging_zone_id,
-								 timeout_outward,
-								 timeout_return,
-								 cr_soc_delta))
+						yield self.env.process\
+						   (self.charge_car\
+							(charge,
+							 charging_station,
+							 car,
+							 "system",
+							 charging_zone_id,
+							 timeout_outward,
+							 timeout_return,
+							 cr_soc_delta))
 
 		elif not self.simInput.sim_scenario_conf["user_contribution"]:
 
@@ -273,18 +270,16 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
 					cr_soc_delta = \
 						compute_hub_charging_params()
 
-					if not unfeasible_charge_flag:
-
-						yield self.env.process\
-						   (self.charge_car\
-							(charge,
-							 self.charging_hub,
-							 car,
-							 "system",
-							 charging_zone_id,
-							 timeout_outward,
-							 timeout_return,
-							 cr_soc_delta))
+					yield self.env.process\
+					   (self.charge_car\
+						(charge,
+						 self.charging_hub,
+						 car,
+						 "system",
+						 charging_zone_id,
+						 timeout_outward,
+						 timeout_return,
+						 cr_soc_delta))
 
 				if self.simInput.sim_scenario_conf["distributed_cps"]\
 				and self.simInput.sim_scenario_conf["system_cps"]:
@@ -297,18 +292,16 @@ class EFFCS_ChargingStrategy (EFFCS_ChargingPrimitives):
 					cr_soc_delta = \
 						compute_cp_charging_params()
 
-					if not unfeasible_charge_flag:
-
-						yield self.env.process\
-						   (self.charge_car\
-							(charge,
-							 charging_station,
-							 car,
-							 "system",
-							 charging_zone_id,
-							 timeout_outward,
-							 timeout_return,
-							 cr_soc_delta))
+					yield self.env.process\
+					   (self.charge_car\
+						(charge,
+						 charging_station,
+						 car,
+						 "system",
+						 charging_zone_id,
+						 timeout_outward,
+						 timeout_return,
+						 cr_soc_delta))
 
 		# Post-charging relocation
 

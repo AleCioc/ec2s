@@ -121,7 +121,6 @@ class EFFCS_Sim ():
             [self.simInput.n_cars - \
              self.chargingStrategy.n_cars_charging_system - \
              self.chargingStrategy.n_cars_charging_users - \
-             self.chargingStrategy.n_dead_cars - \
              self.n_booked_cars]
         
         self.sim_booking_requests += [booking_request]

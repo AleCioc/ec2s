@@ -29,9 +29,14 @@ def single_run(conf_tuple):
 	sim_scenario_name = \
 		conf_tuple[4]
 
-	results_path = os.path.join(os.getcwd(), "Results", city, "single_run")
-	if not os.path.exists(results_path):
-		os.mkdir(results_path)
+	results_path = os.path.join(
+		os.path.dirname(os.path.dirname(__file__)),
+		"Results",
+		city,
+		"single_run",
+		sim_scenario_name
+	)
+	os.makedirs(results_path, exist_ok=True)
 
 	sim_general_conf["city"] = city
 	sim_general_conf["bin_side_length"] = 500
@@ -48,7 +53,6 @@ def single_run(conf_tuple):
 			 city_obj))
 		sim_eventG = run_eventG_sim\
 			(simInput = simInput_eventG)
-		print("Ciao")
 		simOutput_eventG = EFFCS_SimOutput(sim_eventG)
 		sim_stats = simOutput_eventG.sim_stats
 		simInput = simInput_eventG
@@ -66,10 +70,6 @@ def single_run(conf_tuple):
 		sim_stats  = simOutput_traceB.sim_stats
 		simInput = simInput_traceB
 		simOutput = simOutput_traceB
-
-	results_path = os.path.join(os.getcwd(), "Results", city, "single_run", sim_scenario_name)
-	if not os.path.exists(results_path):
-		os.mkdir(results_path)
 
 	model_conf_string = "_".join([str(v) for v in sim_scenario_conf.values()]).replace("'", "")
 	check_create_path(results_path)
@@ -162,18 +162,14 @@ def single_run(conf_tuple):
 	# plotter.plot_events_profile()
 	#
 	# plotter.plot_charging_t_hist()
-	# plotter.plot_hourly_events_boxplot("charges")
-	# plotter.plot_hourly_charging_boxplot("system")
-	# plotter.plot_hourly_charging_boxplot("users")
-	# plotter.plot_fleet_status()
-	#
+	plotter.plot_hourly_events_boxplot("charges")
+	plotter.plot_hourly_charging_boxplot("system")
+	plotter.plot_hourly_charging_boxplot("users")
+	plotter.plot_fleet_status()
+
 	# plotter.plot_unsatisfied_t_hist()
-	# plotter.plot_hourly_events_boxplot("unsatisfied")
-	# plotter.plot_unsatisfied_origins_heatmap()
-	#
-	# plotter.plot_hourly_relocost_boxplot()
-	# plotter.plot_charging_needed_heatmap_system()
-	# plotter.plot_charging_needed_heatmap_users()
+	plotter.plot_hourly_events_boxplot("unsatisfied")
+	plotter.plot_hourly_relocost_boxplot()
 	#
 	# plotter.plot_charging_duration_hist()
 	# plotter.plot_charging_energy_avg()
@@ -184,12 +180,13 @@ def single_run(conf_tuple):
 	# plotter.plot_origin_heatmap()
 	# plotter.plot_charging_needed_heatmap_system()
 	# plotter.plot_charging_needed_heatmap_users()
-	# plotter.plot_unsatisfied_origins_heatmap()
+	plotter.plot_unsatisfied_origins_heatmap()
 
-	# plotter.plot_deaths_t_hist()
-	# plotter.plot_deaths_origins_heatmap()
-	# plotter.plot_charge_deaths_t_hist()
-	# plotter.plot_charge_deaths_origins_heatmap()
+	plotter.plot_deaths_t_hist()
+	plotter.plot_deaths_origins_heatmap()
+	plotter.plot_charge_deaths_t_hist()
+
+	plotter.plot_charge_deaths_origins_heatmap()
 
 	return sim_stats
 

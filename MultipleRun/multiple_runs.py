@@ -68,6 +68,9 @@ def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
 		([sim_stats for sim_stats in pool_stats_list],
 		 axis=1, ignore_index=True).T
 
+	sim_stats_df.to_csv\
+		(os.path.join(results_path,
+					  "sim_stats.csv"))
 	sim_stats_df.to_pickle\
 		(os.path.join(results_path,
 					  "sim_stats.pickle"))

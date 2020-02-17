@@ -8,12 +8,12 @@ sim_scenario_conf_grid = {
 
     "time_estimation": [True],
     "queuing": [True],
-    "alpha": [25],
-    "beta": [100],
+    "alpha": np.arange(5, 45, 2.5),
+    "beta": np.arange(70, 105, 10),
 
     "hub": [True],
     "hub_zone_policy": ["num_parkings"],
-    "n_poles_n_cars_factor" : np.arange(0.02, 0.15, 0.005),
+    "n_poles_n_cars_factor" : [1],
 
     "relocation": [False],
     "finite_workers": [False],
