@@ -40,17 +40,17 @@ single_run((
 	sim_general_conf,
 	confs_dict["single_run"],
 	"eventG",
-	sim_scenario_name
+	"only_cps"
 ))
 
-# multiple_runs(
-# 	city_name,
-# 	"multiple_runs",
-# 	sim_general_conf,
-# 	confs_dict[sim_scenario_name],
-# 	int(n_cores),
-# 	sim_scenario_name=sim_scenario_name
-# )
+multiple_runs(
+	city_name,
+	"multiple_runs",
+	sim_general_conf,
+	confs_dict[sim_scenario_name],
+	int(n_cores),
+	sim_scenario_name
+)
 
 # plot_multiple_runs (city_name, sim_scenario_name)
 

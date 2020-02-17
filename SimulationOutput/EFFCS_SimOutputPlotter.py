@@ -9,8 +9,6 @@ matplotlib.style.use('ggplot')
 matplotlib.rcParams["axes.grid"] = True
 matplotlib.rcParams["figure.figsize"] = (15., 7.)
 
-import contextily as ctx
-
 SMALL_SIZE = 8
 MEDIUM_SIZE = 12
 BIGGER_SIZE = 20

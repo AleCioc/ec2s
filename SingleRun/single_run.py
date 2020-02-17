@@ -91,6 +91,12 @@ def single_run(conf_tuple):
 		(os.path.join(results_path,
 					  "sim_scenario_conf.pickle"))
 
+	simInput.grid.to_pickle(
+		os.path.join(
+			results_path,
+			"grid.pickle"
+		)
+	)
 	simOutput.sim_booking_requests.to_pickle(
 		os.path.join(
 			results_path,
