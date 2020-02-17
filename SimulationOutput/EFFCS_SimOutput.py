@@ -220,11 +220,11 @@ class EFFCS_SimOutput ():
 			self.sim_stats.loc["percentage_energy_system"] = \
 				self.sim_charges.groupby("operator")\
 				.soc_delta_kwh.sum().loc["system"]\
-				/ self.sim_stats["tot_energy"]
+				/ self.sim_stats["tot_charging_energy"]
 			self.sim_stats.loc["percentage_energy_users"] = \
 				self.sim_charges.groupby("operator")\
 				.soc_delta_kwh.sum().loc["users"]\
-				/ self.sim_stats["tot_energy"]
+				/ self.sim_stats["tot_charging_energy"]
 		else:
 			self.sim_stats.loc["percentage_energy_system"] = 1
 			self.sim_stats.loc["percentage_energy_users"] = 0
