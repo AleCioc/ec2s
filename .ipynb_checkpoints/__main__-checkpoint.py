@@ -13,27 +13,15 @@ from SimulationOutput.EFFCS_MultipleRunsPlotter import plot_multiple_runs
 from utils.path_utils import create_output_folders
 
 confs_dict = {}
-
 from SimulationInput.confs.sim_general_conf import sim_general_conf
-
 from SimulationInput.confs.only_hub_conf import sim_scenario_conf_grid
 confs_dict["only_hub"] = sim_scenario_conf_grid
-
-from SimulationInput.confs.only_hub_np_w_conf import sim_scenario_conf_grid
-confs_dict["only_hub_np_w"] = sim_scenario_conf_grid
-
-from SimulationInput.confs.only_hub_alpha_beta_conf import sim_scenario_conf_grid
-confs_dict["only_hub_alpha_beta"] = sim_scenario_conf_grid
-
 from SimulationInput.confs.only_cps_conf import sim_scenario_conf_grid
 confs_dict["only_cps"] = sim_scenario_conf_grid
-
 from SimulationInput.confs.hub_cps_conf import sim_scenario_conf_grid
 confs_dict["hub_cps"] = sim_scenario_conf_grid
-
 from SimulationInput.confs.multiple_runs_conf import sim_scenario_conf_grid
 confs_dict["trial"] = sim_scenario_conf_grid
-
 from SimulationInput.confs.single_run_conf import sim_scenario_conf
 confs_dict["single_run"] = sim_scenario_conf
 
