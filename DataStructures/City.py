@@ -59,7 +59,7 @@ class City:
 			od_distances.to_pickle(path)
 
 		# cfr. projection distortion
-		self.od_distances = pd.read_pickle(path) * 0.7
+		self.od_distances = pd.read_pickle(path)
 
 		return self.od_distances
 
@@ -117,16 +117,6 @@ class City:
 			  > self.sim_general_conf["model_start"]) \
 			 & (self.bookings.start_time \
 			    < self.sim_general_conf["model_end"])].copy()
-
-		# zones_df = self.input_bookings[["origin_id", "destination_id"]]
-		# zone_low_threshold = zones_df.quantile(q=0.01).mean()
-		# zone_up_threshold = zones_df.quantile(q=0.99).mean()
-		# self.input_bookings = self.input_bookings\
-		#     [(self.input_bookings.origin_id > zone_low_threshold)
-		#     & (self.input_bookings.destination_id > zone_low_threshold)]
-		# self.input_bookings = self.input_bookings\
-		#     [(self.input_bookings.origin_id < zone_up_threshold)
-		#     & (self.input_bookings.destination_id < zone_up_threshold)]
 
 		if self.city_name == "Vancouver":
 			tz = pytz.timezone("America/Vancouver")

@@ -12,3 +12,5 @@ big_data_db_proxy/**
 
 .idea/
 venv/
+
+.ipynb_checkpoints

@@ -19,8 +19,8 @@ from SimulationInput.confs.sim_general_conf import sim_general_conf
 from SimulationInput.confs.only_hub_conf import sim_scenario_conf_grid
 confs_dict["only_hub"] = sim_scenario_conf_grid
 
-from SimulationInput.confs.only_hub_np_w_conf import sim_scenario_conf_grid
-confs_dict["only_hub_np_w"] = sim_scenario_conf_grid
+# from SimulationInput.confs.only_hub_np_w_conf import sim_scenario_conf_grid
+# confs_dict["only_hub_np_w"] = sim_scenario_conf_grid
 
 from SimulationInput.confs.only_hub_alpha_beta_conf import sim_scenario_conf_grid
 confs_dict["only_hub_alpha_beta"] = sim_scenario_conf_grid

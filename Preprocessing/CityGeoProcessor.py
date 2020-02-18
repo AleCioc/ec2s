@@ -33,9 +33,7 @@ class CityGeoProcessor ():
 
     def apply_binning (self, bin_side_length):
 
-        # 0.7 factor correction needed for Mercator projections
-        # Is it the same factor for every latitude?
-        self.bin_side_length = bin_side_length / 0.7
+        self.bin_side_length = bin_side_length
         self.grid = get_city_grid\
             (self.parkings_gdf, self.bin_side_length)
             

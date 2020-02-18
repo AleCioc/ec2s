@@ -64,8 +64,8 @@ class EFFCS_SimInput ():
 
 		self.sim_general_conf["n_cars"] = self.n_cars
 
-		# 2DO: AUTOMATICALLY COMPUTE ALPHA
-#        print(self.od_distances.max().max())
+		if self.sim_scenario_conf["alpha"] == "auto":
+			self.sim_scenario_conf["alpha"] = np.ceil(get_soc_delta(self.od_distances.max().max() / 1000))
 
 	def get_booking_requests_list (self):
 
