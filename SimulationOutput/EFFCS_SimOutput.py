@@ -197,9 +197,6 @@ class EFFCS_SimOutput ():
 		self.sim_stats.loc["tot_potential_charging_energy"] = \
 			get_charging_soc(self.sim_stats["sim_duration"] / 60)
 
-		self.sim_stats.loc["tot_potential_mobility_energy"] = \
-			self.sim_bookings.soc_delta.apply(lambda x: soc_to_kwh(x)).sum()
-
 		self.sim_stats.loc["tot_charging_energy"] = \
 			self.sim_charges["soc_delta_kwh"].sum()
 

@@ -8,8 +8,8 @@ sim_scenario_conf_grid = {
 
     "time_estimation": [True],
     "queuing": [True],
-    "alpha": "auto",
-    "beta": 100,
+    "alpha": ["auto"],
+    "beta": [100],
 
     "hub": [True],
     "hub_zone_policy": ["num_parkings"],

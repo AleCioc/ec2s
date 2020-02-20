@@ -11,20 +11,19 @@ sim_scenario_conf_grid = {
     "alpha": np.arange(5, 105, 5),
     "beta": [100],
 
-    "hub": [True],
+    "hub": [False],
     "hub_zone_policy": ["num_parkings"],
-    "n_poles_n_cars_factor" : [0.1],
+    "n_poles_n_cars_factor": [0.1],
 
     "relocation": [False],
     "finite_workers": [False],
 
-    "distributed_cps": [False],
+    "distributed_cps": [True],
     "cps_placement_policy": ["num_parkings"],
-    "n_charging_poles": [0],
     "cps_zones_percentage": [0.14],
 
-    "user_contribution": [False],
-    "system_cps": [False],
-    "willingness": [0.0],
+    "system_cps": [True],
+    "user_contribution": [True],
+    "willingness": [0.66],
 
 }

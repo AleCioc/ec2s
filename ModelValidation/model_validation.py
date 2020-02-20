@@ -51,9 +51,21 @@ def run_traceB_eventG (city, sim_general_conf, sim_scenario_conf):
 
 def run_model_validation (city):
 
-    figures_path = os.path.join(os.getcwd(), "Figures", city, "validation")
-    if not os.path.exists(figures_path):
-        os.mkdir(figures_path)
+    results_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+            "Results",
+            city,
+            "validation",
+        )
+    os.makedirs(results_path, exist_ok=True)
+
+    figures_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+            "Figures",
+            city,
+            "validation",
+        )
+    os.makedirs(figures_path, exist_ok=True)
 
     sim_general_conf["city"] = city
     sim_general_conf["bin_side_length"] = 500
@@ -65,6 +77,25 @@ def run_model_validation (city):
         sim_reqs_traceB.ia_timeout.loc\
         [sim_reqs_traceB.ia_timeout < 5000]
 
+    city_obj.grid.to_pickle(
+        os.path.join(
+            results_path,
+            "grid.pickle"
+        )
+    )
+    sim_reqs_eventG.to_pickle(
+        os.path.join(
+            results_path,
+            "sim_reqs_eventG.pickle"
+        )
+    )
+    sim_reqs_traceB.to_pickle(
+        os.path.join(
+            results_path,
+            "sim_reqs_traceB.pickle"
+        )
+    )
+    
     plot_ia_validation(999, city, sim_reqs_eventG, trace_timeouts)
     plot_tot_reqs_count("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)
     plot_tot_reqs_count_err("hour", True, city, sim_reqs_eventG, sim_reqs_traceB)
