@@ -165,14 +165,15 @@ class EFFCS_Sim ():
 			max_neighbor = None
 			for neighbor in self.neighbors_dict\
 			[booking_request["origin_id"]].values():
-				if len(self.available_cars_dict[neighbor]) and not found_car_flag:
-					available_car_flag = True
-					available_car_flag_not_same_zone = True
-					found_car_flag, max_soc_car_neighbor, max_soc_neighbor = \
-						find_car(neighbor)
-					if max_soc_neighbors < max_soc_neighbor:
-						max_neighbor = neighbor
-						max_soc_car_neighbors = max_soc_car_neighbor
+				if neighbor in self.available_cars_dict:
+					if len(self.available_cars_dict[neighbor]) and not found_car_flag:
+						available_car_flag = True
+						available_car_flag_not_same_zone = True
+						found_car_flag, max_soc_car_neighbor, max_soc_neighbor = \
+							find_car(neighbor)
+						if max_soc_neighbors < max_soc_neighbor:
+							max_neighbor = neighbor
+							max_soc_car_neighbors = max_soc_car_neighbor
 			if found_car_flag:
 				self.env.process\
 					(self.schedule_booking\
