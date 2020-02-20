@@ -67,16 +67,20 @@ class City:
 
 		self.max_dist = self.od_distances.max().max()
 
+		print(self.od_distances)
+
 		self.neighbors = self.od_distances \
-			[self.od_distances < 1000].apply \
+			[self.od_distances < 1050].apply \
 			(lambda x: pd.Series \
 				(x.sort_values().dropna().iloc[1:].index.values),
 			 axis=1)
+		print(self.neighbors)
 
 		self.neighbors_dict = {}
 		for zone in self.neighbors.index:
 			self.neighbors_dict[int(zone)] = \
 				dict(self.neighbors.loc[zone].dropna())
+		print(self.neighbors_dict)
 
 		return self.neighbors, \
 		       self.neighbors_dict

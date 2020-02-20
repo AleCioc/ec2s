@@ -420,7 +420,6 @@ class EFFCS_SimOutputPlotter ():
         plt.savefig(os.path.join(self.figures_path,
              "origins_map.png"))
         # plt.show()
-        ctx.add_basemap(ax)
         plt.close()
 
     def plot_destinations_heatmap (self):

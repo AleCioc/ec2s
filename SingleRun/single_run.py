@@ -161,21 +161,32 @@ def single_run(conf_tuple):
 		simOutput,
 		f_out
 	)
-
+	simOutput.sim_bookings[simOutput.sim_bookings.plate == 10].to_csv(
+		os.path.join(
+			results_path,
+			"sim_bookings_10.csv"
+		)
+	)
+	simOutput.sim_charges[simOutput.sim_charges.plate == 10].to_csv(
+		os.path.join(
+			results_path,
+			"sim_charges_10.csv"
+		)
+	)
 	plotter = EFFCS_SimOutputPlotter\
 		(simOutput, city, simInput.grid, sim_scenario_name)
 
-	# plotter.plot_events_profile()
-	#
-	# plotter.plot_charging_t_hist()
-	plotter.plot_hourly_events_boxplot("charges")
-	plotter.plot_hourly_charging_boxplot("system")
-	plotter.plot_hourly_charging_boxplot("users")
-	plotter.plot_fleet_status()
+	plotter.plot_events_profile()
 
+	# plotter.plot_charging_t_hist()
+	# plotter.plot_hourly_events_boxplot("charges")
+	# plotter.plot_hourly_charging_boxplot("system")
+	# plotter.plot_hourly_charging_boxplot("users")
+	# plotter.plot_fleet_status()
+	#
 	# plotter.plot_unsatisfied_t_hist()
-	plotter.plot_hourly_events_boxplot("unsatisfied")
-	plotter.plot_hourly_relocost_boxplot()
+	# plotter.plot_hourly_events_boxplot("unsatisfied")
+	# plotter.plot_hourly_relocost_boxplot()
 	#
 	# plotter.plot_charging_duration_hist()
 	# plotter.plot_charging_energy_avg()
@@ -186,13 +197,13 @@ def single_run(conf_tuple):
 	# plotter.plot_origin_heatmap()
 	# plotter.plot_charging_needed_heatmap_system()
 	# plotter.plot_charging_needed_heatmap_users()
-	plotter.plot_unsatisfied_origins_heatmap()
-
-	plotter.plot_deaths_t_hist()
-	plotter.plot_deaths_origins_heatmap()
-	plotter.plot_charge_deaths_t_hist()
-
-	plotter.plot_charge_deaths_origins_heatmap()
+	# plotter.plot_unsatisfied_origins_heatmap()
+	#
+	# plotter.plot_deaths_t_hist()
+	# plotter.plot_deaths_origins_heatmap()
+	#
+	# plotter.plot_charge_deaths_t_hist()
+	# plotter.plot_charge_deaths_origins_heatmap()
 
 	return sim_stats
 
