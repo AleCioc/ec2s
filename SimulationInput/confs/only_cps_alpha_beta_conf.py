@@ -13,7 +13,7 @@ sim_scenario_conf_grid = {
 
     "hub": [False],
     "hub_zone_policy": ["num_parkings"],
-    "n_poles_n_cars_factor": [0.1],
+    "n_poles_n_cars_factor": [0.175],
 
     "relocation": [False],
     "finite_workers": [False],
@@ -24,6 +24,6 @@ sim_scenario_conf_grid = {
 
     "system_cps": [True],
     "user_contribution": [True],
-    "willingness": [0.66],
+    "willingness": [0, 0.33, 0.66, 0.99],
 
 }

@@ -56,22 +56,22 @@ for city_name in ["Torino"]:
     # create_input_pickles(city_name, [9, 10], 500)
     # run_model_validation(city_name)
 
-    single_run((
-        city_name,
-        sim_general_conf,
-        confs_dict["single_run"],
-        "eventG",
-        "only_hub"
-    ))
-
-    #multiple_runs(
+    #single_run((
     #    city_name,
-    #    "multiple_runs",
     #    sim_general_conf,
-    #    confs_dict[sim_scenario_name],
-    #    int(n_cores),
-    #    sim_scenario_name
-    #)
+    #    confs_dict["single_run"],
+    #    "eventG",
+    #    "only_hub"
+    #))
+
+    multiple_runs(
+        city_name,
+        "multiple_runs",
+        sim_general_conf,
+        confs_dict[sim_scenario_name],
+        int(n_cores),
+        sim_scenario_name
+    )
 
     # plot_multiple_runs (city_name, sim_scenario_name)
 

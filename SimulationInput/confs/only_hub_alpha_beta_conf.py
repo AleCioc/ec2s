@@ -13,7 +13,7 @@ sim_scenario_conf_grid = {
 
     "hub": [True],
     "hub_zone_policy": ["num_parkings"],
-    "n_poles_n_cars_factor" : [0.1],
+    "n_poles_n_cars_factor" : [0.175],
 
     "relocation": [False],
     "finite_workers": [False],
