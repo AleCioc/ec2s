@@ -7,7 +7,7 @@ sim_scenario_conf = {
 	"time_estimation": True,
 
 	"queuing": True,
-	"alpha": 100,
+	"alpha": 25,
 	"beta": 100,
 
 	"hub": True,

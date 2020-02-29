@@ -53,16 +53,16 @@ for city_name in ["Torino"]:
     print (datetime.datetime.now(), city_name)
     create_output_folders(city_name, sim_scenario_name)
 
-    # create_input_pickles(city_name, [9, 10], 500)
-    # run_model_validation(city_name)
+    create_input_pickles(city_name, [9, 10], 500)
+    run_model_validation(city_name)
 
-    #single_run((
+    # single_run((
     #    city_name,
     #    sim_general_conf,
     #    confs_dict["single_run"],
     #    "eventG",
     #    "only_hub"
-    #))
+    # ))
 
     multiple_runs(
         city_name,

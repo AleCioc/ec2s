@@ -67,23 +67,18 @@ class City:
 
 		self.max_dist = self.od_distances.max().max()
 
-		print(self.od_distances)
-
 		self.neighbors = self.od_distances \
 			[self.od_distances < 1050].apply \
 			(lambda x: pd.Series \
 				(x.sort_values().dropna().iloc[1:].index.values),
 			 axis=1)
-		print(self.neighbors)
 
 		self.neighbors_dict = {}
 		for zone in self.neighbors.index:
 			self.neighbors_dict[int(zone)] = \
 				dict(self.neighbors.loc[zone].dropna())
-		print(self.neighbors_dict)
 
-		return self.neighbors, \
-		       self.neighbors_dict
+		return self.neighbors, self.neighbors_dict
 
 	def get_input_bookings_filtered(self):
 
@@ -189,7 +184,7 @@ class City:
 		self.kde_columns = [
 			"origin_id",
 			"destination_id",
-			"duration"
+			# "duration"
 		]
 
 		for daytype, daytype_bookings_gdf \
@@ -200,8 +195,7 @@ class City:
 				self.trip_kdes[daytype][hour] = \
 					KernelDensity(
 						bandwidth=self.kde_bw
-					).fit( \
-						hour_df[self.kde_columns].dropna())
+					).fit(hour_df[self.kde_columns].dropna())
 
 		return self.trip_kdes
 

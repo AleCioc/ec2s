@@ -87,7 +87,7 @@ class EventG_EFFCS_Sim (EFFCS_Sim):
             booking_request["euclidean_distance"] * 1.4
 
         booking_request["duration"] = \
-            abs(trip_sample[0][2])
+            abs(booking_request["driving_distance"] / (15 + np.random.normal(0, 2.5)))
 
         booking_request["end_time"] = \
             self.current_datetime + \
