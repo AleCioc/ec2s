@@ -53,8 +53,9 @@ for city_name in ["Torino"]:
     print (datetime.datetime.now(), city_name)
     create_output_folders(city_name, sim_scenario_name)
 
-    create_input_pickles(city_name, [9, 10], 500)
+    #create_input_pickles(city_name, [9, 10], 500)
     run_model_validation(city_name)
+    print (datetime.datetime.now(), city_name, "validation finished")
 
     # single_run((
     #    city_name,
