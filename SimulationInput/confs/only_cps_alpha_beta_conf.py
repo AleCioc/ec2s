@@ -8,7 +8,7 @@ sim_scenario_conf_grid = {
 
     "time_estimation": [True],
     "queuing": [True],
-    "alpha": np.arange(5, 105, 5),
+    "alpha": np.arange(1, 100, 3),
     "beta": [100],
 
     "hub": [False],
@@ -20,10 +20,10 @@ sim_scenario_conf_grid = {
 
     "distributed_cps": [True],
     "cps_placement_policy": ["num_parkings"],
-    "cps_zones_percentage": [0.14],
+    "cps_zones_percentage": [0.1],
 
     "system_cps": [True],
     "user_contribution": [True],
-    "willingness": [0, 0.33, 0.66, 0.99],
+    "willingness": [0, 0.33, 0.66],
 
 }
