@@ -61,7 +61,7 @@ if sim_scenario_name == "single_run":
         sim_general_conf,
         confs_dict["single_run"],
         "eventG",
-        "only_hub"
+        "only_cps"
     ))
 else:
     multiple_runs(

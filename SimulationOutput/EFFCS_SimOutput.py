@@ -195,7 +195,7 @@ class EFFCS_SimOutput ():
 			self.sim_booking_requests.soc_delta.sum()
 
 		self.sim_stats.loc["tot_potential_charging_energy"] = \
-			get_charging_soc(self.sim_stats["sim_duration"] / 60)
+			get_charging_soc(self.sim_stats["sim_duration"] / 60) * self.sim_stats["n_charging_poles"]
 
 		self.sim_stats.loc["tot_charging_energy"] = \
 			self.sim_charges["soc_delta_kwh"].sum()
@@ -317,3 +317,5 @@ class EFFCS_SimOutput ():
 
 		self.sim_stats.loc["avg_hourly_relo_t"] = \
 			self.sim_charges.groupby("hour").cr_timeout.sum().mean()
+
+		self.sim_stats.loc["total_trips_duration"] = self.sim_bookings.duration.sum()
