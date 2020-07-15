@@ -167,7 +167,7 @@ class City:
 					in daytype_bookings_gdf.groupby("hour"):
 				self.request_rates[daytype][hour] = \
 					len(hour_df) \
-					/ (len(hour_df.day.unique())) \
+					/ 30 \
 					/ 3600
 
 		self.sim_general_conf["avg_request_rate"] = \
