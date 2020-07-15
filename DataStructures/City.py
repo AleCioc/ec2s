@@ -172,7 +172,7 @@ class City:
 			for hour, hour_df \
 					in daytype_bookings_gdf.groupby("hour"):
 				self.request_rates[daytype][hour] = \
-					hour_df.count().iloc[:, 0] \
+					len(hour_df) \
 					/ (len(hour_df.day.unique())) \
 					/ 3600
 
