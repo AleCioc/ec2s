@@ -58,17 +58,17 @@ def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
 					sim_scenario_name,
 				)]
 
-			sim_inputs = pool.map\
-				(get_traceB_input, conf_tuples)
-
-			pool_stats_list += pool.map\
-				(get_traceB_sim_stats, sim_inputs)
-
 			# sim_inputs = pool.map\
-			# 	(get_eventG_input, conf_tuples)
+			# 	(get_traceB_input, conf_tuples)
 			#
 			# pool_stats_list += pool.map\
-			# 	(get_eventG_sim_stats, sim_inputs)
+			# 	(get_traceB_sim_stats, sim_inputs)
+
+			sim_inputs = pool.map\
+				(get_eventG_input, conf_tuples)
+
+			pool_stats_list += pool.map\
+				(get_eventG_sim_stats, sim_inputs)
 
 			print ("Batch", i / n_cores, datetime.datetime.now())
 
