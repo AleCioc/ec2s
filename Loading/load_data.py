@@ -41,6 +41,7 @@ def read_sim_input_data (city):
         "bookings.pickle"
     )
     bookings = pd.read_pickle(path)
+    print(bookings)
     path = os.path.join(
         os.path.dirname(os.path.dirname(__file__)),
         "Data",
