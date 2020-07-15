@@ -21,9 +21,10 @@ class City:
 
 		self.bookings, self.grid = read_sim_input_data \
 			(city_name)
-		print(self.grid)
+		print(self.grid.zone_id)
 
 		self.input_bookings = self.get_input_bookings_filtered()
+		print(self.input_bookings.zone_id)
 
 		self.valid_zones = self.get_valid_zones()
 		print(self.valid_zones)
