@@ -77,9 +77,8 @@ class EFFCS_SimInput ():
 					"end_time",
 					"ia_timeout",
 					"euclidean_distance",
-					"day",
+					"date",
 					"hour",
-					"minute",
 					"duration",
 					"soc_delta"
 				 ]].dropna(subset=["ia_timeout", "origin_id", "destination_id"])\
