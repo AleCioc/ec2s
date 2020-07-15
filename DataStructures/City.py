@@ -107,11 +107,11 @@ class City:
 			(self.bookings["euclidean_distance"]) \
 			/ (self.bookings["duration"] / 60)
 
-		# self.input_bookings = self.bookings.loc \
-		# 	[(self.bookings.start_time \
-		# 	  > self.sim_general_conf["model_start"]) \
-		# 	 & (self.bookings.start_time \
-		# 	    < self.sim_general_conf["model_end"])].copy()
+		self.input_bookings = self.bookings.loc \
+			[(self.bookings.start_time \
+			  > self.sim_general_conf["model_start"]) \
+			 & (self.bookings.start_time \
+			    < self.sim_general_conf["model_end"])].copy()
 
 		self.input_bookings = self.bookings
 
