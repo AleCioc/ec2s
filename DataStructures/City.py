@@ -47,6 +47,7 @@ class City:
 
 	def get_od_distances(self):
 
+		print(self.grid)
 		points = self.grid.centroid.geometry
 		print(points)
 		self.od_distances = points.apply(lambda p: points.distance(p))
