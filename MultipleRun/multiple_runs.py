@@ -11,6 +11,8 @@ from SimulationInput.EFFCS_SimConfGrid import EFFCS_SimConfGrid
 
 from SingleRun.get_eventG_input import get_eventG_input
 from SingleRun.run_eventG_sim import get_eventG_sim_stats
+from SingleRun.get_traceB_input import get_traceB_input
+from SingleRun.run_traceB_sim import get_traceB_sim_stats
 
 from SimulationOutput.EFFCS_MultipleRunsPlotter import EFFCS_MultipleRunsPlotter
 
@@ -57,10 +59,16 @@ def multiple_runs(city, sim_type, sim_general_conf, sim_scenario_conf_grid,
 				)]
 
 			sim_inputs = pool.map\
-				(get_eventG_input, conf_tuples)
+				(get_traceB_input, conf_tuples)
 
 			pool_stats_list += pool.map\
-				(get_eventG_sim_stats, sim_inputs)
+				(get_traceB_sim_stats, sim_inputs)
+
+			# sim_inputs = pool.map\
+			# 	(get_eventG_input, conf_tuples)
+			#
+			# pool_stats_list += pool.map\
+			# 	(get_eventG_sim_stats, sim_inputs)
 
 			print ("Batch", i / n_cores, datetime.datetime.now())
 

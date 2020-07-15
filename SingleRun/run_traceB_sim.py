@@ -18,3 +18,9 @@ def run_traceB_sim (simInput):
     # print (t1 - t0)
     
     return sim_traceB
+
+
+def get_traceB_sim_stats(simInput):
+    sim_traceB = run_traceB_sim(simInput)
+    simOutput_traceB = EFFCS_SimOutput(sim_traceB)
+    return simOutput_traceB.sim_stats
