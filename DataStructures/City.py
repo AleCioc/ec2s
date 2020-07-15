@@ -56,7 +56,7 @@ class City:
 		# if not os.path.exists(path):
 
 		points = self.grid.centroid.geometry
-		od_distances = points.apply(lambda p: points.distance(p))
+		od_distances = points.apply(lambda p: points.distance(p)) / 1.4
 		#od_distances.to_pickle(path)
 		# cfr. projection distortion
 		# self.od_distances = pd.read_pickle(path)
