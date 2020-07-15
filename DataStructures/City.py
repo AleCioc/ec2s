@@ -48,7 +48,7 @@ class City:
 	def get_od_distances(self):
 
 		points = self.grid.centroid.geometry
-		self.od_distances = points.apply(lambda p: points.distance(p))
+		self.od_distances = points.apply(lambda p: points.distance(p)) / 1.4
 
 		#od_distances.to_pickle(path)
 
