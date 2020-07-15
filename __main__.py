@@ -60,7 +60,7 @@ if sim_scenario_name == "single_run":
         city_name,
         sim_general_conf,
         confs_dict["single_run"],
-        "eventG",
+        "traceB",
         "only_cps"
     ))
 else:

@@ -59,6 +59,7 @@ class City:
 
 	def get_neighbors_dicts(self):
 
+		print(self.od_distances)
 		self.max_dist = self.od_distances.max().max()
 
 		self.neighbors = self.od_distances \
