@@ -21,13 +21,10 @@ class City:
 
 		self.bookings, self.grid = read_sim_input_data \
 			(city_name)
-		print(self.grid.zone_id)
 
 		self.input_bookings = self.get_input_bookings_filtered()
-		print(self.input_bookings.origin_id)
 
 		self.valid_zones = self.get_valid_zones()
-		print(self.valid_zones)
 
 		self.grid = self.grid.loc[self.valid_zones]
 		self.grid["new_zone_id"] = range(len(self.grid))
@@ -50,9 +47,7 @@ class City:
 
 	def get_od_distances(self):
 
-		print(self.grid)
 		points = self.grid.centroid.geometry
-		print(points)
 		self.od_distances = points.apply(lambda p: points.distance(p))
 
 		#od_distances.to_pickle(path)
@@ -64,7 +59,6 @@ class City:
 
 	def get_neighbors_dicts(self):
 
-		print(self.od_distances)
 		self.max_dist = self.od_distances.max().max()
 
 		self.neighbors = self.od_distances \
