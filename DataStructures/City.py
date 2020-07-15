@@ -100,6 +100,7 @@ class City:
 
 		self.bookings = \
 			filter_bookings_for_simulation(self.bookings)
+		print(self.bookings.shape)
 		self.bookings.loc[:, "ia_timeout"] = \
 			(self.bookings.start_time - \
 			 self.bookings.start_time.shift()) \
@@ -111,11 +112,11 @@ class City:
 			(self.bookings["euclidean_distance"]) \
 			/ (self.bookings["duration"] / 60)
 
-		self.input_bookings = self.bookings.loc \
-			[(self.bookings.start_time \
-			  > self.sim_general_conf["model_start"]) \
-			 & (self.bookings.start_time \
-			    < self.sim_general_conf["model_end"])].copy()
+		# self.input_bookings = self.bookings.loc \
+		# 	[(self.bookings.start_time \
+		# 	  > self.sim_general_conf["model_start"]) \
+		# 	 & (self.bookings.start_time \
+		# 	    < self.sim_general_conf["model_end"])].copy()
 
 		if self.city_name == "Vancouver":
 			tz = pytz.timezone("America/Vancouver")
