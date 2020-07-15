@@ -47,20 +47,25 @@ class City:
 
 	def get_od_distances(self):
 
+		# path = os.path.join(
+		# 	os.path.dirname(os.path.dirname(__file__)),
+		# 	"Data",
+		# 	self.city_name,
+		# 	"od_distances.pickle"
+		# )
+		# if not os.path.exists(path):
+
 		points = self.grid.centroid.geometry
-		self.od_distances = points.apply(lambda p: points.distance(p)) / 1.4
-
+		od_distances = points.apply(lambda p: points.distance(p))
 		#od_distances.to_pickle(path)
-
 		# cfr. projection distortion
-		#self.od_distances = pd.read_pickle(path)
+		# self.od_distances = pd.read_pickle(path)
 
-		return self.od_distances
+		return od_distances
 
 	def get_neighbors_dicts(self):
 
 		self.max_dist = self.od_distances.max().max()
-		print(self.max_dist)
 
 		self.neighbors = self.od_distances \
 			[self.od_distances < 1050].apply \
@@ -95,7 +100,6 @@ class City:
 
 		self.bookings = \
 			filter_bookings_for_simulation(self.bookings)
-		print(self.bookings.shape)
 		self.bookings.loc[:, "ia_timeout"] = \
 			(self.bookings.start_time - \
 			 self.bookings.start_time.shift()) \
@@ -112,8 +116,6 @@ class City:
 			  > self.sim_general_conf["model_start"]) \
 			 & (self.bookings.start_time \
 			    < self.sim_general_conf["model_end"])].copy()
-
-		self.input_bookings = self.bookings
 
 		if self.city_name == "Vancouver":
 			tz = pytz.timezone("America/Vancouver")
@@ -167,8 +169,8 @@ class City:
 			for hour, hour_df \
 					in daytype_bookings_gdf.groupby("hour"):
 				self.request_rates[daytype][hour] = \
-					len(hour_df) \
-					/ 30 \
+					hour_df.city.count() \
+					/ (len(hour_df.day.unique())) \
 					/ 3600
 
 		self.sim_general_conf["avg_request_rate"] = \
