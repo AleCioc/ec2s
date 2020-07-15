@@ -24,7 +24,7 @@ class City:
 		print(self.grid.zone_id)
 
 		self.input_bookings = self.get_input_bookings_filtered()
-		print(self.input_bookings.zone_id)
+		print(self.input_bookings.origin_id)
 
 		self.valid_zones = self.get_valid_zones()
 		print(self.valid_zones)
