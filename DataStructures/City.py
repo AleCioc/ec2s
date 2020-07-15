@@ -118,6 +118,8 @@ class City:
 		# 	 & (self.bookings.start_time \
 		# 	    < self.sim_general_conf["model_end"])].copy()
 
+		self.input_bookings = self.bookings
+
 		if self.city_name == "Vancouver":
 			tz = pytz.timezone("America/Vancouver")
 
